@@ -1,0 +1,266 @@
+Fonksiyon Prototipleri ve Açıklamaları
+
+readline
+Prototip: char *readline(const char *prompt);
+Kütüphane: <readline/readline.h>
+Açıklama: prompt dizgesini ekrana yazdırır ve kullanıcıdan bir satır okur. Dönen dize malloc ile ayrılmıştır; kullanımdan sonra free() ile serbest bırakılmalıdır.
+
+rl_clear_history
+Prototip: void rl_clear_history(void);
+Kütüphane: <readline/readline.h>
+Açıklama: Readline girdi geçmişini temizler; tüm geçmiş satırları siler ve Readline tarafından yönetilen ek belleği serbest bırakır.
+
+rl_on_new_line
+Prototip: int rl_on_new_line(void);
+Kütüphane: <readline/readline.h>
+Açıklama: Readline’in satır düzenleyicisini yeni bir (boş) satır başlangıcına taşıdığını bildirir. Genellikle çıktıdan sonra yeni bir satıra geçildiğinde ('\n' eklendiğinde) kullanılır.
+
+rl_replace_line
+Prototip: void rl_replace_line(const char *text, int clear_undo);
+Kütüphane: <readline/readline.h>
+Açıklama: readline tarafından düzenlenen mevcut satır içeriğini text ile değiştirir. clear_undo sıfır değilse, mevcut satırın geri alma bilgisi temizlenir.
+
+rl_redisplay
+Prototip: void rl_redisplay(void);
+Kütüphane: <readline/readline.h>
+Açıklama: Ekranda görünen satırı Readline’in dahili durumuna göre günceller ve yeniden çizer.
+
+add_history
+Prototip: void add_history(const char *string);
+Kütüphane: <readline/history.h>
+Açıklama: Verilen string satırını geçmiş listesine ekler. Böylece bu satır daha sonra geçmişten geri çağrılabilir. Genellikle readline ile okunan satırlar için kullanılır.
+
+printf
+Prototip: int printf(const char *format, ...);
+Kütüphane: <stdio.h>
+Açıklama: Verilen format dizgesine uygun biçimde formatlı çıktı üretir ve standart çıktıya yazar. Başarılı olduğunda yazdırılan karakter sayısını döner.
+
+malloc
+Prototip: void *malloc(size_t size);
+Kütüphane: <stdlib.h>
+Açıklama: Belirtilen bayt sayısı kadar dinamik bellek bloğu ayırır ve bu bloğun başlangıç adresini içeren bir işaretçi döner. Başarısız olursa NULL döner.
+
+free
+Prototip: void free(void *ptr);
+Kütüphane: <stdlib.h>
+Açıklama: malloc veya ilişkili fonksiyonlarla ayrılmış bir bellek bloğunu serbest bırakır.
+
+write
+Prototip: ssize_t write(int fd, const void *buf, size_t count);
+Kütüphane: <unistd.h>
+Açıklama: Dosya tanımlayıcısı fd'ye, buf işaretçisinin gösterdiği bellekten count bayt yazar. Dönen değer yazılan bayt sayısıdır; hata durumunda -1 döner.
+
+access
+Prototip: int access(const char *pathname, int mode);
+Kütüphane: <unistd.h>
+Açıklama: Belirtilen pathname yolundaki dosyanın erişim izinlerini test eder. mode ile R_OK, W_OK, X_OK, F_OK gibi izinler kontrol edilir. Başarılı olursa 0, aksi halde -1 döner.
+
+open
+Prototip: int open(const char *pathname, int flags, ...);
+Kütüphane: <fcntl.h> (veya <sys/stat.h> izin modları için)
+Açıklama: Dosyayı belirtilen flags ile açar. Örneğin O_RDONLY, O_WRONLY, O_CREAT gibi bayraklar kullanılır. Başarılı olursa yeni dosya tanımlayıcısı (file descriptor) döner; hata durumunda -1 döner.
+
+read
+Prototip: ssize_t read(int fd, void *buf, size_t count);
+Kütüphane: <unistd.h>
+Açıklama: Dosya tanımlayıcısı fd üzerinden en fazla count bayt okuyarak bunları buf işaretçisinin gösterdiği belleğe kopyalar. Dönen değer okunan bayt sayısıdır; hata durumunda -1 döner.
+
+close
+Prototip: int close(int fd);
+Kütüphane: <unistd.h>
+Açıklama: Açık haldeki dosya tanımlayıcısı fd’yi kapatır. Başarılı olursa 0, hata durumunda -1 döner.
+
+fork
+Prototip: pid_t fork(void);
+Kütüphane: <unistd.h>
+Açıklama: Yeni bir süreç (çocuk süreç) oluşturur. Ebeveyn süreçte çocuk sürecin PID’sini, çocuk süreçte 0 döner. Hata durumunda -1 döner.
+
+wait
+Prototip: pid_t wait(int *status);
+Kütüphane: <sys/wait.h>
+Açıklama: Bir çocuk sürecin sonlanmasını bekler. Parametre olarak verilen status işaretçisine çocuğun çıkış durumu yazılır. Başarılı olursa beklenen çocuğun PID’si döner; hata durumunda -1 döner.
+
+waitpid
+Prototip: pid_t waitpid(pid_t pid, int *status, int options);
+Kütüphane: <sys/wait.h>
+Açıklama: Belirtilen pidli çocuk sürecin sonlanmasını bekler. options ile WNOHANG, WUNTRACED gibi bayraklar kullanılabilir. Başarılı olursa çocuğun PID’si döner; hata durumunda -1 döner.
+
+wait3
+Prototip: pid_t wait3(int *status, int options, struct rusage *rusage);
+Kütüphane: <sys/wait.h> (BSD’den)
+Açıklama: Bir çocuk sürecin sonlanmasını bekler, çıkış durumunu status işaretçisine yazar ve rusage yapısına kaynak kullanım bilgilerini aktarır. BSD kökenlidir. Başarılı olursa çocuk PID’si döner; hata durumunda -1 döner.
+
+wait4
+Prototip: pid_t wait4(pid_t pid, int *status, int options, struct rusage *rusage);
+Kütüphane: <sys/wait.h> (BSD’den)
+Açıklama: waitpid ile benzer; belirtilen pidli çocuk için çalışır ve rusage ile kaynak bilgilerini alır. Başarılı olursa çocuk PID’si döner; hata durumunda -1 döner.
+
+signal
+Prototip: void (*signal(int signum, void (*handler)(int)))(int);
+Kütüphane: <signal.h>
+Açıklama: Belirtilen sinyal numarası signum için sinyal işleyici (handler) atar. Sinyal oluştuğunda bu işleyici çağrılır. Başarılı olursa önceki işleyici, hata durumunda (sighandler_t)SIG_ERR döner.
+
+sigaction
+Prototip: int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);
+Kütüphane: <signal.h>
+Açıklama: Sinyaller için daha gelişmiş kontrol sağlar. act ile belirtilen yeni eylem (handler veya maske) atanır, eski eylem oldact adresine yazılabilir. Başarılı olursa 0, hata durumunda -1 döner.
+
+sigemptyset
+Prototip: int sigemptyset(sigset_t *set);
+Kütüphane: <signal.h>
+Açıklama: Sinyal kümesini boş hale getirir (set tarafından gösterilen sinyal setindeki tüm bitler sıfırlanır). Başarılı olursa 0 döner.
+
+sigaddset
+Prototip: int sigaddset(sigset_t *set, int signum);
+Kütüphane: <signal.h>
+Açıklama: Sinyal kümesine (set) belirtilen sinyal (signum) eklenir. Başarılı olursa 0 döner.
+
+kill
+Prototip: int kill(pid_t pid, int sig);
+Kütüphane: <signal.h>
+Açıklama: Belirtilen pid’li sürece sig sinyalini gönderir. Başarılı olursa 0, hata durumunda -1 döner.
+
+exit
+Prototip: void exit(int status);
+Kütüphane: <stdlib.h>
+Açıklama: Programı status çıkış kodu ile sonlandırır. İlgili temizlik işlemleri çağrılır ve işlem sonlandırılır (geri dönüşü yoktur).
+
+getcwd
+Prototip: char *getcwd(char *buf, size_t size);
+Kütüphane: <unistd.h>
+Açıklama: Geçerli çalışma dizininin tam yolunu alır ve buf’a kopyalar (en fazla size-1 karakter). Başarılı olursa buf’u döner; hata durumunda NULL döner.
+
+chdir
+Prototip: int chdir(const char *path);
+Kütüphane: <unistd.h>
+Açıklama: Çalışma dizinini path ile belirtilen dizine değiştirir. Başarılı olursa 0, aksi halde -1 döner.
+
+stat
+Prototip: int stat(const char *path, struct stat *buf);
+Kütüphane: <sys/stat.h>
+Açıklama: Dosya sistemi nesnesinin (dosya, dizin vb.) durum bilgilerini buf yapısına yazar. path ile belirtilen nesnenin türü, boyutu, izinleri vb. bilgiler alınır. Başarılı olursa 0, aksi halde -1 döner.
+
+lstat
+Prototip: int lstat(const char *path, struct stat *buf);
+Kütüphane: <sys/stat.h>
+Açıklama: stat ile benzer, ancak path bir sembolik bağlantı ise bağlantının kendisinin (hedef yerine) bilgi yapısı elde edilir. Başarılı olursa 0, aksi halde -1 döner.
+
+fstat
+Prototip: int fstat(int fd, struct stat *buf);
+Kütüphane: <sys/stat.h>
+Açıklama: Açık dosya tanımlayıcısı fd için dosya durum bilgilerini buf yapısına yazar. Diğer bilgileri stat gibi içerir. Başarılı olursa 0, aksi halde -1 döner.
+
+unlink
+Prototip: int unlink(const char *pathname);
+Kütüphane: <unistd.h>
+Açıklama: Belirtilen pathname dosyasını veya sembolik bağlantıyı siler. Başarılı olursa 0, aksi halde -1 döner.
+
+execve
+Prototip: int execve(const char *path, char *const argv[], char *const envp[]);
+Kütüphane: <unistd.h>
+Açıklama: path ile belirtilen programı çalıştırır ve geçerli süreci bu yeni programla değiştirir. argv argüman listesini, envp ise ortam değişkenlerini belirtir. Başarılı olursa geriye dönmez (program değişir); hata durumunda -1 döner.
+
+dup
+Prototip: int dup(int oldfd);
+Kütüphane: <unistd.h>
+Açıklama: Mevcut oldfd dosya tanımlayıcısını kopyalar ve en küçük kullanılabilir yeni bir tanımlayıcı döner. Başarılı olursa yeni tanımlayıcı, aksi halde -1 döner.
+
+dup2
+Prototip: int dup2(int oldfd, int newfd);
+Kütüphane: <unistd.h>
+Açıklama: oldfd dosya tanımlayıcısını newfd ile eşitler. Eğer newfd zaten açıksa önce kapatılır. Başarılı olursa newfd, aksi halde -1 döner.
+
+pipe
+Prototip: int pipe(int pipefd[2]);
+Kütüphane: <unistd.h>
+Açıklama: İki yönlü bir veri akışı (pipe) oluşturur. pipefd[0] okuma, pipefd[1] yazma ucu olarak atanır. Başarılı olursa 0, aksi halde -1 döner.
+
+opendir
+Prototip: DIR *opendir(const char *name);
+Kütüphane: <dirent.h>
+Açıklama: name ile belirtilen dizini açar ve üzerinde gezinmek için bir DIR * işaretçisi döner. Hata durumunda NULL döner.
+
+readdir
+Prototip: struct dirent *readdir(DIR *dirp);
+Kütüphane: <dirent.h>
+Açıklama: opendir ile açılan dirp dizininden bir sonraki girdiyi temsil eden struct dirent * döner. Dizinin sonuna gelinince NULL döner.
+
+closedir
+Prototip: int closedir(DIR *dirp);
+Kütüphane: <dirent.h>
+Açıklama: opendir ile açılan dizini kapatır ve kaynakları serbest bırakır. Başarılı olursa 0, aksi halde -1 döner.
+
+strerror
+Prototip: char *strerror(int errnum);
+Kütüphane: <string.h>
+Açıklama: Hata kodu errnum için anlamlı bir hata mesajı dizgesi döner. Dönen dizge statiktir ve değiştirilmemelidir.
+
+perror
+Prototip: void perror(const char *s);
+Kütüphane: <stdio.h>
+Açıklama: Son meydana gelen hata (errno) için hata mesajını, isteğe bağlı s öneki ile birlikte standart hata çıkışına yazar. Örneğin s olarak "fopen" verilirse "fopen: <hata mesajı>" biçiminde yazılır.
+
+isatty
+Prototip: int isatty(int fd);
+Kütüphane: <unistd.h>
+Açıklama: fd dosya tanımlayıcısının bir terminal (TTY) ile bağlantılı olup olmadığını kontrol eder. Terminal ise 1, değilse 0 döner.
+
+ttyname
+Prototip: char *ttyname(int fd);
+Kütüphane: <unistd.h>
+Açıklama: fd dosya tanımlayıcısına karşılık gelen terminal cihazının tam yol adını döner. Başarısız olursa NULL döner.
+
+ttyslot
+Prototip: int ttyslot(void);
+Kütüphane: <unistd.h>
+Açıklama: Mevcut terminal oturumunun sistemdeki sıra numarasını döner (bazı sistemlerde desteklenmeyebilir).
+
+ioctl
+Prototip: int ioctl(int fd, unsigned long request, ...);
+Kütüphane: <sys/ioctl.h>
+Açıklama: Çeşitli cihazlara özel giriş/çıkış kontrol komutları gönderir. fd cihaz tanımlayıcısı, request komut kodu, gerekirse ek argümanlarla kullanılır. Başarılı olursa komuta özgü bir değer (genellikle 0), hata durumunda -1 döner.
+
+getenv
+Prototip: char *getenv(const char *name);
+Kütüphane: <stdlib.h>
+Açıklama: Ortam değişkeni name’in değerini döner. Değişken tanımlı değilse NULL döner.
+
+tcsetattr
+Prototip: int tcsetattr(int fd, int optional_actions, const struct termios *termios_p);
+Kütüphane: <termios.h>
+Açıklama: fd dosya tanımlayıcısı için terminal ayarlarını termios_p ile belirtilen değerlere göre ayarlar. optional_actions, işlemin zamanlamasını belirler (TCSANOW, TCSADRAIN, TCSAFLUSH gibi). Başarılı olursa 0, aksi halde -1 döner.
+
+tcgetattr
+Prototip: int tcgetattr(int fd, struct termios *termios_p);
+Kütüphane: <termios.h>
+Açıklama: fd dosya tanımlayıcısı için terminal ayarlarını termios_p yapısına yazar. Başarılı olursa 0, aksi halde -1 döner.
+
+tgetent
+Prototip: int tgetent(char *bp, const char *name);
+Kütüphane: <termcap.h>
+Açıklama: Termcap veri tabanından name terminalinin girişini alır ve bp tamponuna yükler. Başarılı olursa 1 döner; name bulunamazsa 0, hata durumunda -1 döner.
+
+tgetflag
+Prototip: int tgetflag(const char *id);
+Kütüphane: <termcap.h>
+Açıklama: id ile belirtilen termcap yeteneğinin (bayrağın) var olup olmadığını sorgular. Varsa 1, yoksa 0 döner.
+
+tgetnum
+Prototip: int tgetnum(const char *id);
+Kütüphane: <termcap.h>
+Açıklama: id ile belirtilen termcap yeteneğinin sayısal değerini döner. Yetenek yoksa -1 döner.
+
+tgetstr
+Prototip: char *tgetstr(const char *id, char **area);
+Kütüphane: <termcap.h>
+Açıklama: id ile belirtilen termcap yeteneğinin karakter dizisi değerini döner. area ile belirtilen tampon, bu diziyi depolamak için kullanılır.
+
+tgoto
+Prototip: char *tgoto(const char *cap, int col, int row);
+Kütüphane: <termcap.h>
+Açıklama: Termcap cap hareket yeteneğini kullanarak imleci (col, row) koordinatına taşıyan kaçış dizisini döner.
+
+tputs
+Prototip: int tputs(const char *str, int affcnt, int (*putc)(int));
+Kütüphane: <termcap.h>
+Açıklama: Termcap kaçış dizilerini standart çıkışa yazmak için kullanılır. str yazılacak diziyi, affcnt affine etkisini (genellikle 1) ve putc ise karakter yazdırma fonksiyonunu belirtir. Bu işlev genellikle terminal kontrol dizelerini ekrana güvenli şekilde göndermek için kullanılır.

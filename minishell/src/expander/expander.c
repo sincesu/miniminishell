@@ -1,0 +1,111 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
+/*   Updated: 2025/06/24 15:59:10 by saincesu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../Libft/libft.h"
+#include "../../include/minishell.h"
+#include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+char	*find_dollar(char *input, char **env)
+{
+	int i;
+	int var_len;
+	char *str;
+	char *env_val;
+	char *expanded;
+
+	str = NULL;
+	env_val = NULL;
+	i = 0;
+	if (input[0] != '$')
+		return (input);
+	
+	input++;
+	while (ft_isalnum(input[i]) || input[i] == '_')
+		i++;
+	var_len = i;
+	if (var_len == 0)
+		return (input - 1); //sadece $ varsa $'ı da geri ekle
+	
+	str = ft_substr(input, 0, var_len);
+		
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], str, var_len) == 0 && env[i][var_len] == '=')
+		{
+			env_val = ft_strchr(env[i], '=') + 1;
+			break;
+		}
+		i++;
+	}
+	if (env_val)
+		expanded = ft_strjoin(env_val, input + var_len);
+	else
+		expanded = ft_strdup(input + var_len);
+	
+	free(str);
+	return (expanded);
+}
+
+char *expand(char *input, t_shell *shell)
+{
+	input = find_dollar(input, shell->env);
+	return (input);
+	// find_dollar fonksiyonu doların başladığı indexi bulacak sonra o indeksten başlayıp çevre değişkeninin uzunluğunu bulacaksın
+	// uzunluğunu aldıktan sonra yerine çevre değğiş
+}
+
+
+// Bu fonksiyon quoted ve unquoted blokları tırnaksız olarak birleştirir
+char	*remove_outer_quote_all(char *s)
+{
+	int len = ft_strlen(s);
+	char *result = malloc(len + 1); // max uzunluk input kadar olabilir
+	int i = 0, j = 0;
+
+	while (s[i])
+	{
+		if (is_quote(s[i]))
+		{
+			char quote = s[i++];
+			while (s[i] && s[i] != quote)
+				result[j++] = s[i++];
+			if (s[i] == quote)
+				i++; // kapanış tırnağı geç
+		}
+		else
+		{
+			result[j++] = s[i++];
+		}
+	}
+	result[j] = '\0';
+	free(s);
+	return result;
+	//gelen args'ın contentini freele.
+}
+
+void	expander(t_shell *shell)
+{
+	t_token *args;
+	
+	args = shell->args;
+	while (args)
+	{
+		if (args->type == D_WORD || args->type == S_WORD)
+			args->content = remove_outer_quote_all(args->content);
+		if (args->type != S_WORD)
+			args->content = expand(args->content, shell);
+		args = args->next;
+	}
+}
