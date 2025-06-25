@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/24 12:16:15 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:51:28 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,6 @@ enum
 	D_WORD,		// çift tırnak
 	U_WORD,		// tırnaksız
 };
-
-// # define R_OUT 1 	//> redirection out
-// # define R_APPEND 2	// >> 
-// # define PIPE 3		//|
-// # define R_IN 4		//< redirection in
-// # define R_HERE 5		//<< heredoc
-// # define S_WORD 6		//tek tırnak
-// # define D_WORD 7		//çift tırnak
-// # define U_WORD 8		//tırnaksız
 
 typedef struct s_mem_list
 {

@@ -1,19 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   allocator.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/25 12:51:48 by saincesu          #+#    #+#             */
+/*   Updated: 2025/06/25 12:51:48 by saincesu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 #include <stdlib.h>
 
-t_mem_list	**get_head_mem()
+t_mem_list	**get_head_mem(void)
 {
-	static t_mem_list *head_list = NULL;
+	static t_mem_list	*head_list = NULL;
 
 	return (&head_list);
 }
 
-void	ft_free()
+void	ft_free(void)
 {
 	t_mem_list	**head_mem;
 	t_mem_list	*cur_mem;
 	t_mem_list	*next_mem;
-	
+
 	head_mem = get_head_mem();
 	cur_mem = *head_mem;
 	while (cur_mem != NULL)
@@ -44,7 +56,7 @@ void	register_alloc_mem(void *ptr)
 		safe_abort(1);
 	}
 	mem->block = ptr;
-	mem->next = NULL; 
+	mem->next = NULL;
 	head_mem = get_head_mem();
 	if (*head_mem == NULL)
 		*head_mem = mem;

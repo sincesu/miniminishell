@@ -83,14 +83,8 @@ int main(int ac, char **av, char **env)
 				return 1;
 			if (shell.args && strcmp(shell.args->content, "env") == 0)
 				print_env(shell.env);
-			if (shell.args && ft_strncmp(shell.args->content, "cd", 2) == 0)	//strcmp(shell.args, "cd") == 0)
-			{
-				if (shell.args && shell.args->next)
-					ft_cd(token_list_to_argv(shell.args)[1]);
-				else
-					fprintf(stderr, "minishell: cd: missing argument\n");
-			}
-
+			if (shell.args && ft_strncmp(shell.args->content, "cd", 2) == 0)
+				ft_cd(token_list_to_argv(shell.args)[1]);
 			else if (shell.args && strcmp(shell.args->content, "pwd") == 0)
 				ft_pwd();
 

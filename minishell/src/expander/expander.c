@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/24 15:59:10 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/06/25 10:19:33 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,15 @@ char	*find_dollar(char *input, char **env)
 
 char *expand(char *input, t_shell *shell)
 {
-	input = find_dollar(input, shell->env);
+	if (input[0] == '~' && ft_strlen(input) == 1)
+		ft_strlcpy(input, "$HOME", 6);
+	if (input[0] == '$' && input[1] == '?' && ft_strlen(input) == 2)
+	{
+		input = ft_itoa(shell->exit_code); //bunuda freelemek lazım ve inputu da freelemek lazım
+	}
+	else
+		input = find_dollar(input, shell->env);
 	return (input);
-	// find_dollar fonksiyonu doların başladığı indexi bulacak sonra o indeksten başlayıp çevre değişkeninin uzunluğunu bulacaksın
-	// uzunluğunu aldıktan sonra yerine çevre değğiş
 }
 
 
