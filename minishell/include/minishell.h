@@ -6,14 +6,14 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/29 14:42:22 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/06/29 17:27:40 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-typedef enum e_case
+enum
 {
 	R_OUT = 1,	// > redirection out
 	R_APPEND,	// >>
@@ -23,7 +23,7 @@ typedef enum e_case
 	S_WORD,		// tek tırnak
 	D_WORD,		// çift tırnak
 	U_WORD,		// tırnaksız
-}	t_case;
+};
 
 typedef struct s_mem_list
 {
@@ -41,11 +41,20 @@ typedef struct s_token
 
 typedef struct s_parser
 {
-	char	*cmd;
-	char	*flags;
+	char	*command;
+	char	**flags;
+	char	**args;
 	char	*input;
 	char	*output;
 }	t_parser;
+
+/*
+1-) 0. argüman kesinlikle komut
+2-) 1. argüman ve sonrasında gelenlerden başında - olanlar komut
+3-) 1. argümandan sonra gelen ve başında - olmayanlar input (| > >> < <<) olmadığı sürece
+4-) 2. argümandan sonra gelen ve | olan bir token görürse önceki argümanı input olarak alıcak 
+eğer sağında argüman yoksa outputu stdout'a verecek, argüman varsa argümana input olarak verecek,
+*/
 
 typedef struct s_shell
 {
@@ -75,6 +84,7 @@ void		register_alloc_mem(void *ptr);
 void		*ft_alloc(unsigned long size);
 
 void	ft_exit(char *arg, t_shell *shell);
+void	parser(t_shell *shell, t_parser *parsed);
 
 int			env_len(char **env);
 char		**copy_env(char **env);

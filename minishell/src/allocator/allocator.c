@@ -16,6 +16,7 @@
 t_mem_list	**get_head_mem(void)
 {
 	static t_mem_list	*head_list = NULL;
+
 	return (&head_list);
 }
 
@@ -69,7 +70,7 @@ void	register_alloc_mem(void *ptr)
 void	*ft_alloc(unsigned long size)
 {
 	void	*ptr;
-	
+
 	ptr = malloc(size);
 	if (ptr == NULL)
 		safe_abort(1);

@@ -75,11 +75,53 @@ int	syntax_error(char *input, t_shell *shell)
 	return (0);
 }
 
+void mini_parser_debugger(t_parser *parsed)
+{
+    int i;
+
+    printf("----- MINI PARSER DEBUG -----\n");
+
+    // Komut
+    printf("Command : %s\n", parsed->command ? parsed->command : "(none)");
+
+    // Flags
+    printf("Flags   : ");
+    if (parsed->flags)
+    {
+        for (i = 0; parsed->flags[i]; i++)
+            printf("[%s] ", parsed->flags[i]);
+        if (i == 0)
+            printf("(none)");
+    }
+    else
+        printf("(none)");
+    printf("\n");
+
+    // Args
+    printf("Args    : ");
+    if (parsed->args)
+    {
+        for (i = 0; parsed->args[i]; i++)
+            printf("[%s] ", parsed->args[i]);
+        if (i == 0)
+            printf("(none)");
+    }
+    else
+        printf("(none)");
+    printf("\n");
+
+    printf("----------------------------\n");
+}
+
+
+
+
 int main(int ac, char **av, char **env)
 {
 	(void)ac;
 	(void)av;
 	t_shell shell;
+	t_parser parsed;
 	shell.env = copy_env(env);
 	shell.exit_code = 0;
 	if (!shell.env)
@@ -103,7 +145,6 @@ int main(int ac, char **av, char **env)
 				continue;
 			expander(&shell);
 			
-			
 			//TOKEN YAZDIRMA KISMI
 			t_token *tmp = shell.args;
 			while (tmp)
@@ -111,6 +152,10 @@ int main(int ac, char **av, char **env)
 				printf("TOKEN: [%s] (type: %d)\n", tmp->content, tmp->type);
 				tmp = tmp->next;
 			}
+			
+			parser(&shell, &parsed);
+			mini_parser_debugger(&parsed);
+
 			
 			if (!shell.args)
 				return 1;

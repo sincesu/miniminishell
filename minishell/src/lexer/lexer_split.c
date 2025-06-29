@@ -36,13 +36,7 @@ static int next_chunk_len(const char *s)
 
 static char *token_collect(const char *s, int *offset)
 {
-	int start;
-	int	len;
-	int	cap;
-	
-	start = 0;
-	len = 0;
-	cap = 64;
+	int start = 0, len = 0, cap = 64;
 	char *tmp = ft_alloc(cap);
 	tmp[0] = 0;
 	while (s[start] && s[start] != ' ')
@@ -52,7 +46,7 @@ static char *token_collect(const char *s, int *offset)
 		{
 			free(tmp);
 			*offset = -1;
-			return (NULL);
+			return NULL;
 		}
 		if (len + chunk + 1 > cap)
 		{

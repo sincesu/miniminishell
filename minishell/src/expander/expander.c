@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/29 14:44:04 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:15:45 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,50 +16,49 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static void	func(char **env, char *env_val, char *str, int var_len)
+char	*find_dollar(char *input, char **env)
 {
-	int	i;
+	int i;
+	int var_len;
+	char *str;
+	char *env_val;
+	char *expanded;
 
+	str = NULL;
+	env_val = NULL;
+	i = 0;
+	if (input[0] != '$')
+		return (input);
+	
+	input++;
+	while (ft_isalnum(input[i]) || input[i] == '_')
+		i++;
+	var_len = i;
+	if (var_len == 0)
+		return (input - 1); //sadece $ varsa $'ı da geri ekle
+	
+	str = ft_substr(input, 0, var_len);
+		
 	i = 0;
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], str, var_len) == 0 && env[i][var_len] == '=')
 		{
 			env_val = ft_strchr(env[i], '=') + 1;
-			free(str);
-			return ;
+			break;
 		}
 		i++;
 	}
-	free(str);
-}
-
-static char	*find_dollar(char *input, char **env)
-{
-	int i;
-	char *str;
-	char *env_val;
-	char *expanded;
-
-	env_val = NULL;
-	i = 0;
-	if (input[0] != '$')
-		return (input);
-	input++;
-	while (ft_isalnum(input[i]) || input[i] == '_')
-		i++;
-	if (i == 0)
-		return (input - 1); //sadece $ varsa $'ı da geri ekle
-	func(env, env_val, ft_substr(input, 0, i), i);
 	if (env_val)
-		expanded = ft_strjoin(env_val, input + i);
+		expanded = ft_strjoin(env_val, input + var_len);
 	else
-		expanded = ft_strdup(input + i);
+		expanded = ft_strdup(input + var_len);
+	
 	free(str);
 	return (expanded);
 }
 
-static char *expand(char *input, t_shell *shell)
+char *expand(char *input, t_shell *shell)
 {
 	if (input[0] == '~' && ft_strlen(input) == 1)
 		ft_strlcpy(input, "$HOME", 6);
@@ -72,12 +71,12 @@ static char *expand(char *input, t_shell *shell)
 	return (input);
 }
 
+
 // Bu fonksiyon quoted ve unquoted blokları tırnaksız olarak birleştirir
-static char	*remove_outer_quote_all(char *s)
+char	*remove_outer_quote_all(char *s)
 {
 	int len;
 	char *result;
-	char quote;
 	int i;
 	int j;
 
@@ -89,7 +88,7 @@ static char	*remove_outer_quote_all(char *s)
 	{
 		if (is_quote(s[i]))
 		{
-			quote = s[i++];
+			char quote = s[i++];
 			while (s[i] && s[i] != quote)
 				result[j++] = s[i++];
 			if (s[i] == quote)
@@ -100,7 +99,7 @@ static char	*remove_outer_quote_all(char *s)
 	}
 	result[j] = '\0';
 	free(s);
-	return (result);
+	return result;
 	//gelen args'ın contentini freele.
 }
 
