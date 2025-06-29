@@ -16,49 +16,50 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-char	*find_dollar(char *input, char **env)
+static void	func(char **env, char *env_val, char *str, int var_len)
 {
-	int i;
-	int var_len;
-	char *str;
-	char *env_val;
-	char *expanded;
+	int	i;
 
-	str = NULL;
-	env_val = NULL;
-	i = 0;
-	if (input[0] != '$')
-		return (input);
-	
-	input++;
-	while (ft_isalnum(input[i]) || input[i] == '_')
-		i++;
-	var_len = i;
-	if (var_len == 0)
-		return (input - 1); //sadece $ varsa $'ı da geri ekle
-	
-	str = ft_substr(input, 0, var_len);
-		
 	i = 0;
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], str, var_len) == 0 && env[i][var_len] == '=')
 		{
 			env_val = ft_strchr(env[i], '=') + 1;
-			break;
+			free(str);
+			return ;
 		}
 		i++;
 	}
+	free(str);
+}
+
+static char	*find_dollar(char *input, char **env)
+{
+	int i;
+	char *str;
+	char *env_val;
+	char *expanded;
+
+	env_val = NULL;
+	i = 0;
+	if (input[0] != '$')
+		return (input);
+	input++;
+	while (ft_isalnum(input[i]) || input[i] == '_')
+		i++;
+	if (i == 0)
+		return (input - 1); //sadece $ varsa $'ı da geri ekle
+	func(env, env_val, ft_substr(input, 0, i), i);
 	if (env_val)
-		expanded = ft_strjoin(env_val, input + var_len);
+		expanded = ft_strjoin(env_val, input + i);
 	else
-		expanded = ft_strdup(input + var_len);
-	
+		expanded = ft_strdup(input + i);
 	free(str);
 	return (expanded);
 }
 
-char *expand(char *input, t_shell *shell)
+static char *expand(char *input, t_shell *shell)
 {
 	if (input[0] == '~' && ft_strlen(input) == 1)
 		ft_strlcpy(input, "$HOME", 6);
@@ -71,12 +72,12 @@ char *expand(char *input, t_shell *shell)
 	return (input);
 }
 
-
 // Bu fonksiyon quoted ve unquoted blokları tırnaksız olarak birleştirir
-char	*remove_outer_quote_all(char *s)
+static char	*remove_outer_quote_all(char *s)
 {
 	int len;
 	char *result;
+	char quote;
 	int i;
 	int j;
 
@@ -88,20 +89,18 @@ char	*remove_outer_quote_all(char *s)
 	{
 		if (is_quote(s[i]))
 		{
-			char quote = s[i++];
+			quote = s[i++];
 			while (s[i] && s[i] != quote)
 				result[j++] = s[i++];
 			if (s[i] == quote)
 				i++; // kapanış tırnağı geç
 		}
 		else
-		{
 			result[j++] = s[i++];
-		}
 	}
 	result[j] = '\0';
 	free(s);
-	return result;
+	return (result);
 	//gelen args'ın contentini freele.
 }
 

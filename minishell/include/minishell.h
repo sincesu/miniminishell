@@ -13,7 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-enum
+typedef enum e_case
 {
 	R_OUT = 1,	// > redirection out
 	R_APPEND,	// >>
@@ -23,7 +23,7 @@ enum
 	S_WORD,		// tek tırnak
 	D_WORD,		// çift tırnak
 	U_WORD,		// tırnaksız
-};
+}	t_case;
 
 typedef struct s_mem_list
 {
