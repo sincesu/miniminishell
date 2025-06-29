@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 01:18:00 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/24 10:25:23 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:54:58 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,6 @@ static int next_chunk_len(const char *s)
 			i++;
 		if (s[i] == quote)
 			return i + 1;
-		else
-		{
-			fprintf(stderr, "minishell: syntax error: unmatched quote\n");
-			return -1; // HATA!
-		}
 	}
 	int i = 0;
 	while (s[i] && !is_quote(s[i]) && s[i] != ' ')
@@ -42,9 +37,7 @@ static int next_chunk_len(const char *s)
 static char *token_collect(const char *s, int *offset)
 {
 	int start = 0, len = 0, cap = 64;
-	char *tmp = malloc(cap);
-	if (!tmp)
-		return NULL;
+	char *tmp = ft_alloc(cap);
 	tmp[0] = 0;
 	while (s[start] && s[start] != ' ')
 	{
@@ -102,9 +95,7 @@ char **lexer_split(const char *s)
 		count++;
 		i += offset;
 	}
-	result = malloc(sizeof(char *) * (count + 1));
-	if (!result)
-		return NULL;
+	result = ft_alloc(sizeof(char *) * (count + 1));
 	i = 0;
 	while (s[i])
 	{

@@ -6,14 +6,14 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:53:19 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/25 13:05:09 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:55:35 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <limits.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
+#include "../../include/minishell.h"
 
 void	ft_cd(const char *path)
 {
@@ -26,13 +26,13 @@ void	ft_cd(const char *path)
 		perror("cd");
 		return ;
 	}
-	cwd = (char *)malloc(PATH_MAX);
+	cwd = ft_alloc(4096);
 	if (!cwd)
 	{
 		perror("malloc");
 		return ;
 	}
-	if (getcwd(cwd, PATH_MAX))
+	if (getcwd(cwd, 4096))
 	{}
 	else
 		perror("getcwd");

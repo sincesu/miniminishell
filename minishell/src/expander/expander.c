@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/25 10:19:33 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:44:04 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,15 @@ char *expand(char *input, t_shell *shell)
 // Bu fonksiyon quoted ve unquoted blokları tırnaksız olarak birleştirir
 char	*remove_outer_quote_all(char *s)
 {
-	int len = ft_strlen(s);
-	char *result = malloc(len + 1); // max uzunluk input kadar olabilir
-	int i = 0, j = 0;
+	int len;
+	char *result;
+	int i;
+	int j;
 
+	i = 0;
+	j = 0;
+	len = ft_strlen(s);
+	result = ft_alloc(len + 1);
 	while (s[i])
 	{
 		if (is_quote(s[i]))

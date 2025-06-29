@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "../include/minishell.h"
 
 static int	ft_numlen(int num)
 {
@@ -40,9 +41,7 @@ char	*ft_itoa(int n)
 		len++;
 		nbr = -nbr;
 	}
-	ptr = (char *)malloc(sizeof(char) * (len + 1));
-	if (!ptr)
-		return (NULL);
+	ptr = ft_alloc(sizeof(char) * (len + 1));
 	ptr[len] = '\0';
 	while (nbr > 0)
 	{

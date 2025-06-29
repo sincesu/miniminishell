@@ -8,7 +8,6 @@
 
 void	ft_cd(const char *path);
 int		ft_pwd(void);
-void	ft_exit(char *arg);
 int		ft_echo(char **args);
 
 
@@ -44,6 +43,38 @@ char	**token_list_to_argv(t_token *tokens)
 	return (av);
 }
 
+int	syntax_error(char *input, t_shell *shell)
+{
+	int i;
+	char quote;
+
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == '\'' || input[i] == '"')
+		{
+			quote = input[i++];
+			while (input[i] && input[i] != quote)
+				i++;
+			if (input[i] != quote)
+			{
+				printf("minishell: syntax error: unmatched quote\n");
+				shell->exit_code = 1;
+				return (1);
+			}
+		}
+		if (input[i])
+			i++;
+	}
+	if (input[0] && input[0] == '|')
+	{
+		printf("minishell: syntax error: near unexpected token '|'\n");
+		shell->exit_code = 1;
+		return (1);
+	}
+	return (0);
+}
+
 int main(int ac, char **av, char **env)
 {
 	(void)ac;
@@ -59,17 +90,19 @@ int main(int ac, char **av, char **env)
 		shell.input = readline("minishell> ");
 		if (!shell.input)
   		{
-        	printf("exit\n");
-        	ft_exit(0);
+        	ft_exit(NULL, &shell);
         	break ;
     	}
 		if (*shell.input)
 		{
 			add_history(shell.input);
+			if(syntax_error(shell.input, &shell))
+				continue;
 			shell.args = lexer(shell.input); //bu satıra bak bugün
 			if (!shell.args)
 				continue;
 			expander(&shell);
+			
 			
 			//TOKEN YAZDIRMA KISMI
 			t_token *tmp = shell.args;
@@ -92,7 +125,7 @@ int main(int ac, char **av, char **env)
 				ft_echo(token_list_to_argv(shell.args)); //buraya tekrar bak
 
 			else if (shell.args && strcmp(shell.args->content, "exit") == 0)
-				ft_exit(shell.args->content);
+				ft_exit(shell.args->content, &shell);
 			// else
 			// {
 			// 	t_token *tmp = shell.args;

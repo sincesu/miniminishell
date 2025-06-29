@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/25 12:51:28 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:42:22 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_parser
+{
+	char	*cmd;
+	char	*flags;
+	char	*input;
+	char	*output;
+}	t_parser;
+
 typedef struct s_shell
 {
 	//t_list	*collector; //burasına ihtiyaç duymayacağım.
@@ -65,6 +73,8 @@ void		ft_free();
 void		safe_abort(int exit_code);
 void		register_alloc_mem(void *ptr);
 void		*ft_alloc(unsigned long size);
+
+void	ft_exit(char *arg, t_shell *shell);
 
 int			env_len(char **env);
 char		**copy_env(char **env);
