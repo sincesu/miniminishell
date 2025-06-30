@@ -49,6 +49,7 @@ int	syntax_error(char *input, t_shell *shell)
 	char quote;
 
 	i = 0;
+	// >>> ve <<< hatası ekle
 	while (input[i])
 	{
 		if (input[i] == '\'' || input[i] == '"')
@@ -86,29 +87,31 @@ void mini_parser_debugger(t_parser *parsed)
 
     // Flags
     printf("Flags   : ");
-    if (parsed->flags)
-    {
+    if (parsed->flags) {
         for (i = 0; parsed->flags[i]; i++)
-            printf("[%s] ", parsed->flags[i]);
+            printf("[%s] ", parsed->flags[i] ? parsed->flags[i] : "(null)");
         if (i == 0)
             printf("(none)");
-    }
-    else
+    } else {
         printf("(none)");
+    }
     printf("\n");
 
     // Args
     printf("Args    : ");
-    if (parsed->args)
-    {
+    if (parsed->args) {
         for (i = 0; parsed->args[i]; i++)
-            printf("[%s] ", parsed->args[i]);
+            printf("[%s] ", parsed->args[i] ? parsed->args[i] : "(null)");
         if (i == 0)
             printf("(none)");
-    }
-    else
+    } else {
         printf("(none)");
+    }
     printf("\n");
+
+    printf("Input   : %s\n", parsed->input ? parsed->input : "(none)");
+	printf("Output  : %s\n", parsed->output ? parsed->output : "(none)");
+
 
     printf("----------------------------\n");
 }
