@@ -83,6 +83,9 @@ void		safe_abort(int exit_code);
 void		register_alloc_mem(void *ptr);
 void		*ft_alloc(unsigned long size);
 
+void	ft_cd(const char *path);
+int		ft_pwd(void);
+int		ft_echo(char **args);
 void	ft_exit(char *arg, t_shell *shell);
 void	parser(t_shell *shell, t_parser *parsed);
 

@@ -6,25 +6,6 @@
 #include "../include/minishell.h"
 #include "../Libft/libft.h"
 
-void	ft_cd(const char *path);
-int		ft_pwd(void);
-int		ft_echo(char **args);
-
-
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < n && (s1[i] || s2[i]))
-	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-	}
-	return (0);
-}
-
 char	**token_list_to_argv(t_token *tokens)
 {
 	int	size;
@@ -221,21 +202,18 @@ int main(int ac, char **av, char **env)
 			
 			parser(&shell, &parsed);
 			mini_parser_debugger(&parsed);
-
 			
 			if (!shell.args)
 				return 1;
-			if (shell.args && strcmp(shell.args->content, "env") == 0)
+			else if (shell.args && ft_strncmp(shell.args->content, "env", 4) == 0)
 				print_env(shell.env);
-			if (shell.args && ft_strncmp(shell.args->content, "cd", 2) == 0)
+			else if (shell.args && ft_strncmp(shell.args->content, "cd", 3) == 0)
 				ft_cd(token_list_to_argv(shell.args)[1]);
-			else if (shell.args && strcmp(shell.args->content, "pwd") == 0)
+			else if (shell.args && ft_strncmp(shell.args->content, "pwd", 4) == 0)
 				ft_pwd();
-
-			else if (shell.args && strcmp(shell.args->content, "echo") == 0)
+			else if (shell.args && ft_strncmp(shell.args->content, "echo", 5) == 0)
 				ft_echo(token_list_to_argv(shell.args)); //buraya tekrar bak
-
-			else if (shell.args && strcmp(shell.args->content, "exit") == 0)
+			else if (shell.args && ft_strncmp(shell.args->content, "exit", 5) == 0)
 				ft_exit(shell.args->content, &shell);
 			// else
 			// {
