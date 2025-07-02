@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 16:31:49 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/30 18:17:20 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/02 05:00:49 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../../Libft/libft.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void	parser(t_shell *shell, t_parser *parsed)
 {
@@ -49,19 +50,23 @@ void	parser(t_shell *shell, t_parser *parsed)
 	}
 	while (a && a->content)
 	{
-		if (ft_strncmp(a->content, ">", 1) == 0 && a->next && a->next->content)
+		if ((strcmp(a->content, ">") == 0 || strcmp(a->content, ">>") == 0) && a->next && a->next->content)
+		{
 			parsed->output = ft_strdup(a->next->content);
-		else if (ft_strncmp(a->content, ">>", 2) == 0 && a->next && a->next->content)
-			parsed->output = ft_strdup(a->next->content);
-		else if (ft_strncmp(a->content, "<", 1) == 0 && a->next && a->next->content)
+			a = a->next;
+		}
+		else if ((strcmp(a->content, "<") == 0 || strcmp(a->content, "<<") == 0) && a->next && a->next->content)
+		{
 			parsed->input = ft_strdup(a->next->content);
+			a = a->next;
+		}
 		else if (a->content[0] == '-')
 			parsed->flags[i++] = ft_strdup(a->content);
-		else if (!is_operator(a->content[0])) // bu satıra bak > b yazınca b'yi de argsa atıyor
-			parsed->args[j++] = ft_strdup(a->content);
-		// else if heredoc yazcam.
+		else if (!is_operator(a->content[0]))
+			parsed->args[j++] = ft_strdup(a->content); 
 		a = a->next;
 	}
+	//redirection'un yanındakini sadece args'a 
 	parsed->flags[i] = NULL;
 	parsed->args[j] = NULL;
 }
