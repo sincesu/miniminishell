@@ -206,7 +206,7 @@ int main(int ac, char **av, char **env)
 			if (!shell.args)
 				return 1;
 			else if (shell.args && ft_strncmp(shell.args->content, "env", 4) == 0)
-				print_env(shell.env);
+				ft_env(shell.env);
 			else if (shell.args && ft_strncmp(shell.args->content, "cd", 3) == 0)
 				ft_cd(token_list_to_argv(shell.args)[1]);
 			else if (shell.args && ft_strncmp(shell.args->content, "pwd", 4) == 0)

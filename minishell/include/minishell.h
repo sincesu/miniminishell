@@ -87,11 +87,12 @@ void	ft_cd(const char *path);
 int		ft_pwd(void);
 int		ft_echo(char **args);
 void	ft_exit(char *arg, t_shell *shell);
+void	ft_env(char **env_copy);
+
 void	parser(t_shell *shell, t_parser *parsed);
 
 int			env_len(char **env);
 char		**copy_env(char **env);
-void		print_env(char **env_copy);
 
 t_token		*ft_lstnew_token(t_token token);
 void		ft_lstadd_back_token(t_token **lst, t_token *new_node);

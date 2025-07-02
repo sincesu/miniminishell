@@ -32,12 +32,3 @@ char	**copy_env(char **env)
 	copy_env[env_line] = NULL;
 	return (copy_env);
 }
-
-void	print_env(char **env_copy)
-{
-	int i;
-
-	i = 0;
-	while (env_copy[i])
-		printf("%s\n", env_copy[i++]);
-}
