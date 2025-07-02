@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 01:18:00 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/29 13:54:58 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/02 04:33:11 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,29 @@
 #include <stdio.h>
 #include <string.h>
 
+static int	is_operator_token(const char *s)
+{
+	if (s[0] == '>' && s[1] == '>')
+		return (2);
+	if (s[0] == '<' && s[1] == '<')
+		return (2);
+	if (s[0] == '>')
+		return (1);
+	if (s[0] == '<')
+		return (1);
+	if (s[0] == '|')
+		return (1);
+	return (0);
+}
+
 static int next_chunk_len(const char *s)
 {
+	int op_len;
+
+	op_len = is_operator_token(s);
+	if (op_len)
+		return (op_len);
+		
 	if (is_quote(s[0]))
 	{
 		char quote = s[0];
@@ -29,42 +50,24 @@ static int next_chunk_len(const char *s)
 			return i + 1;
 	}
 	int i = 0;
-	while (s[i] && !is_quote(s[i]) && s[i] != ' ')
+	while (s[i] && !is_quote(s[i]) && s[i] != ' ' && !is_operator(s[i]))
 		i++;
 	return i;
 }
 
 static char *token_collect(const char *s, int *offset)
 {
-	int start = 0, len = 0, cap = 64;
-	char *tmp = ft_alloc(cap);
-	tmp[0] = 0;
-	while (s[start] && s[start] != ' ')
-	{
-		int chunk = next_chunk_len(&s[start]);
-		if (chunk == -1)
-		{
-			free(tmp);
-			*offset = -1;
-			return NULL;
-		}
-		if (len + chunk + 1 > cap)
-		{
-			cap *= 2;
-			char *newtmp = realloc(tmp, cap);
-			if (!newtmp)
-			{
-				free(tmp);
-				return NULL;
-			}
-			tmp = newtmp;
-		}
-		strncat(tmp, &s[start], chunk);
-		len += chunk;
-		start += chunk;
-	}
-	*offset = start;
-	return tmp;
+    int len = next_chunk_len(s);
+    if (len <= 0)
+    {
+        *offset = -1;
+        return NULL;
+    }
+    char *tmp = ft_alloc(len + 1);
+    strncpy(tmp, s, len);
+    tmp[len] = '\0';
+    *offset = len;
+    return tmp;
 }
 
 char **lexer_split(const char *s)
@@ -118,22 +121,3 @@ char **lexer_split(const char *s)
 	return result;
 }
 
-// // Test main
-// int main()
-// {
-// 	char str1[] = "\"e\"\"c\"'h''o'";
-// 	char str2[] = "echo 'zort 'asd''";
-// 	char str3[] = "  ab  'cd ef'  \"gh\"ij ";
-// 	char **s;
-// 	int i;
-
-// 	printf("Test1:\n");
-// 	s = lexer_split(str1);
-// 	for (i = 0; s[i]; i++) printf("[%s]\n", s[i]);
-// 	printf("Test2:\n");
-// 	s = lexer_split(str2);
-// 	for (i = 0; s[i]; i++) printf("[%s]\n", s[i]);
-// 	printf("Test3:\n");
-// 	s = lexer_split(str3);
-// 	for (i = 0; s[i]; i++) printf("[%s]\n", s[i]);
-// }
