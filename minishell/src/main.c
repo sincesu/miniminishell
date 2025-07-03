@@ -24,49 +24,12 @@ char	**token_list_to_argv(t_token *tokens)
 	return (av);
 }
 
-int	operator_syntax_error(char *input, t_shell *shell)
-{
-	if (input[0] && input[0] == '<' && ft_strlen(input) == 1)
-	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
-		shell->exit_code = 2;
-		return (1);
-	}
-	if (ft_strncmp(input, "<<", 2) && ft_strlen(input) == 2)
-	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
-		shell->exit_code = 2;
-		return (1);
-	}
-	if (input[0] && input[0] == '>' && ft_strlen(input) == 1)
-	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
-		shell->exit_code = 2;
-		return (1);
-	}
-	if (ft_strncmp(input, ">>", 2) && ft_strlen(input) == 2)
-	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
-		shell->exit_code = 2;
-		return (1);
-	}
-	if (input[0] && input[0] == '|')
-	{
-		printf("minishell: syntax error: near unexpected token '|'\n");
-		shell->exit_code = 2;
-		return (1);
-	}
-	return (0);
-}
-
 int	syntax_error(char *input, t_shell *shell)
 {
 	int i;
 	char quote;
 
 	i = 0;
-	if(operator_syntax_error(input, shell))
-		return (1);
 	while (input[i])
 	{
 		if (input[i] == '\'' || input[i] == '"')
@@ -127,40 +90,6 @@ void mini_parser_debugger(t_parser *parsed)
     printf("----------------------------\n");
 }
 
-// int	redirection_control(t_shell *shell)
-// {
-// 	t_token *a;
-
-// 	a = shell->args;
-// 	while (a)
-// 	{
-// 		if(is_operator(a->content[0]))
-// 		{
-// 			if (strcmp(a->content, ">") == 0 ||
-// 				strcmp(a->content, ">>") == 0 ||
-// 				strcmp(a->content, "<") == 0 ||
-// 				strcmp(a->content, "<<") == 0)
-// 			{
-// 				if (!a->next || !a->next->content)
-// 				{
-// 					printf("minishell: syntax error near unexpected token `newline`\n");
-// 					shell->exit_code = 2;
-// 					return (1);		
-// 				}
-// 				a = a->next;
-// 			}
-// 			else
-// 			{
-// 				printf("minishell: syntax error near unexpected token\n");
-// 				shell->exit_code = 2;
-// 				return (1);
-// 			}
-// 		}
-// 		a = a->next;
-// 	}
-// 	return (0);
-// }
-
 int main(int ac, char **av, char **env)
 {
 	(void)ac;
@@ -188,8 +117,6 @@ int main(int ac, char **av, char **env)
 			shell.args = lexer(shell.input); //bu satıra bak bugün
 			if (!shell.args)
 				continue;
-			// if (redirection_control(&shell))
-			// 	continue;
 			expander(&shell);
 			
 			//TOKEN YAZDIRMA KISMI
