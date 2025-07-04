@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/29 17:27:40 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/04 19:41:36 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ enum
 	R_OUT = 1,	// > redirection out
 	R_APPEND,	// >>
 	PIPE,		// |
-	R_IN,		// redirection in
+	R_IN,		// < redirection in
 	R_HERE,		// << heredoc
 	S_WORD,		// tek tırnak
 	D_WORD,		// çift tırnak
@@ -82,6 +82,14 @@ void		ft_free();
 void		safe_abort(int exit_code);
 void		register_alloc_mem(void *ptr);
 void		*ft_alloc(unsigned long size);
+
+int			r_append_error(t_token *a, t_shell *shell);
+int			r_here_error(t_token *a, t_shell *shell);
+int			r_in_and_r_out_error(t_token *a, t_shell *shell);
+int			pipe_error(char *str, t_token *a, t_shell *shell);
+int			syntax_error(t_shell *shell);
+int			operator_error(int c, t_shell *shell);
+int			quote_error(char *input, t_shell *shell);
 
 void	ft_cd(const char *path);
 int		ft_pwd(void);
