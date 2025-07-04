@@ -16,16 +16,50 @@
 #include "../../include/minishell.h"
 #include <stdio.h>
 
-void	ft_exit(char *arg, t_shell *shell)
+static int ft_check_param(char *str)
 {
-	int	exit_code;
+    int i = 0;
+    
+    if (!str)
+        return (1);
+    if (str[0] == '-' || str[0] == '+')
+        i = 1;
+    if (str[i] == '\0')
+        return (1);
+    while (str[i])
+    {
+        if (str[i] < '0' || str[i] > '9')
+            return (1);
+        i++;
+    }
+    return (0);
+}
 
-	if (arg == NULL)
-	{
-		printf("exit\n");
-		safe_abort(shell->exit_code);
-	}
-	exit_code = ft_atoi(arg);
-	printf("exit\n");
-	safe_abort(exit_code);
+void ft_exit(t_shell *shell)
+{
+    int exit_code;
+    
+    if (shell->args->next == NULL)
+    {
+        printf("exit\n");
+        safe_abort(shell->exit_code);
+        return;
+    }
+    if (ft_check_param(shell->args->next->content))
+    {
+        printf("exit\n");
+        printf("minishell: exit: %s: numeric argument required\n",
+               shell->args->next->content);
+        safe_abort(shell->exit_code);
+        return;
+    }
+    if (shell->args->next->next)
+    {
+        printf("exit\n");
+        printf("minishell: exit: too many arguments\n");
+        return ;
+    }
+    exit_code = ft_atoi(shell->args->next->content);
+    printf("exit\n");
+    safe_abort(exit_code);
 }

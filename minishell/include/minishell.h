@@ -86,7 +86,7 @@ void		*ft_alloc(unsigned long size);
 void	ft_cd(const char *path);
 int		ft_pwd(void);
 int		ft_echo(char **args);
-void	ft_exit(char *arg, t_shell *shell);
+void	ft_exit(t_shell *shell);
 void	ft_env(char **env_copy);
 
 void	parser(t_shell *shell, t_parser *parsed);

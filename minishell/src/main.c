@@ -204,7 +204,7 @@ int main(int ac, char **av, char **env)
 		shell.input = readline("minishell> ");
 		if (!shell.input)
   		{
-        	ft_exit(NULL, &shell);
+        	ft_exit(&shell);
         	break ;
     	}
 		if (*shell.input)
@@ -241,7 +241,7 @@ int main(int ac, char **av, char **env)
 			else if (shell.args && ft_strncmp(shell.args->content, "echo", 5) == 0)
 				ft_echo(token_list_to_argv(shell.args)); //buraya tekrar bak
 			else if (shell.args && ft_strncmp(shell.args->content, "exit", 5) == 0)
-				ft_exit(shell.args->content, &shell);
+				ft_exit(&shell);
 			// else
 			// {
 			// 	t_token *tmp = shell.args;
