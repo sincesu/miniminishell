@@ -13,7 +13,7 @@ char	**token_list_to_argv(t_token *tokens)
 	int i;
 
 	size = ft_lstsize_token(tokens);
-	av = ft_alloc(sizeof(char *) * size + 1); //garbage collector'a eklenmesi gerekiyor.
+	av = ft_alloc(sizeof(char *) * size + 1);
 	i = 0;
 	while (tokens)
 	{
@@ -121,15 +121,6 @@ int main(int ac, char **av, char **env)
 				ft_echo(token_list_to_argv(shell.args)); //buraya tekrar bak
 			else if (shell.args && ft_strncmp(shell.args->content, "exit", 5) == 0)
 				ft_exit(&shell);
-			// else
-			// {
-			// 	t_token *tmp = shell.args;
-			// 	while(tmp)
-			// 	{
-			// 		printf("%s\n", tmp->content);
-			// 		tmp = tmp->next;
-			// 	}
-			// }
 		}
 		
 		free(shell.input);
