@@ -24,7 +24,7 @@ char	**token_list_to_argv(t_token *tokens)
 	return (av);
 }
 
-int	syntax_error(char *input, t_shell *shell)
+int	quote_error(char *input, t_shell *shell)
 {
 	int i;
 	char quote;
@@ -44,7 +44,7 @@ int	syntax_error(char *input, t_shell *shell)
 				return (1);
 			}
 		}
-		if (input[i])
+		if (input[i]) //check
 			i++;
 	}
 	return (0);
@@ -90,6 +90,112 @@ void mini_parser_debugger(t_parser *parsed)
     printf("----------------------------\n");
 }
 
+int	syntax_error(t_shell *shell, t_parser *parsed)
+{
+	t_token *a;
+
+	a = shell->args;
+	while (a && a->content)
+	{
+		if(is_operator(a->content[0]))
+		{
+			if (a->content[0] == '>')
+			{
+				if (!a->next)
+				{
+					printf("minishell: syntax error near unexpected token 'newline'\n");
+					shell->exit_code = 2;
+					return (1);
+				}
+				else if (!is_operator(a->next->content[0]))
+					parsed->output = a->next->content;
+				else
+				{
+					printf("syntax error1\n");
+					return (1);
+				}
+			}
+			else if (a->content[0] == '<')
+			{
+				if (!a->next)
+				{
+					printf("minishell: syntax error near unexpected token 'newline'\n");
+					shell->exit_code = 2;
+					return (1);
+				}
+				else if (!is_operator(a->next->content[0]))
+					parsed->input = a->next->content;
+				else
+				{
+					printf("syntax error2\n");
+					return (1);
+				}
+			}
+			else if (a->content[0] == '|')
+			{
+				if (!a->next)
+				{
+					printf("minishell: syntax error: unexpected end of file\n");
+					shell->exit_code = 2;
+					return (1);
+				}
+				else if (!is_operator(a->next->content[0]))
+					; //must be checked
+				else
+				{
+					printf("syntax error3\n");
+					return (1);
+				}
+			}
+			else if (ft_strncmp(a->content, ">>", 3))
+			{
+				if (!a->next)
+				{
+					printf("minishell: syntax error near unexpected token 'newline'\n");
+					shell->exit_code = 2;
+					return (1);
+				}
+				if (!is_operator(a->next->content[0]))
+					parsed->output = a->next->content; //must be checked
+				else
+				{
+					printf("syntax error4\n");
+					return (1);
+				}
+			}
+			else if (ft_strncmp(a->content, "<<", 3))
+			{
+				if (!a->next)
+				{
+					printf("minishell: syntax error near unexpected token 'newline'\n");
+					shell->exit_code = 2;
+					return (1);
+				}
+				if (!is_operator(a->next->content[0]))
+					parsed->input = a->next->content; //must be checked
+				else
+				{
+					printf("syntax error5\n");
+					return (1);
+				}
+			}
+		}
+		a = a->next;
+	}
+	return (0);
+}
+
+int	operator_error(int c, t_shell *shell)
+{
+	if (c == '|')
+	{
+		printf("minishell: syntax error near unexpected token '|'\n");
+		shell->exit_code = 2;
+		return (1);
+	}
+	return (0);
+}
+
 int main(int ac, char **av, char **env)
 {
 	(void)ac;
@@ -112,10 +218,12 @@ int main(int ac, char **av, char **env)
 		if (*shell.input)
 		{
 			add_history(shell.input);
-			if(syntax_error(shell.input, &shell))
+			if(quote_error(shell.input, &shell) || operator_error(shell.input[0], &shell))
 				continue;
-			shell.args = lexer(shell.input); //bu satıra bak bugün
+			shell.args = lexer(shell.input);
 			if (!shell.args)
+				continue;
+			if(syntax_error(&shell, &parsed))
 				continue;
 			expander(&shell);
 			
