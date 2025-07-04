@@ -6,12 +6,13 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 19:41:07 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/04 19:41:26 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/04 19:47:38 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
+#include <stdio.h>
 
 int	quote_error(char *input, t_shell *shell)
 {

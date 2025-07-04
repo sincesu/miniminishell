@@ -6,12 +6,13 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 19:41:09 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/04 19:41:10 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/04 19:47:42 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
+#include <stdio.h>
 
 int	syntax_error(t_shell *shell)
 {
