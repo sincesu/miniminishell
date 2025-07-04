@@ -99,7 +99,41 @@ int	syntax_error(t_shell *shell, t_parser *parsed)
 	{
 		if(is_operator(a->content[0]))
 		{
-			if (a->content[0] == '>')
+			if (a->type == R_APPEND)
+			{
+				if (!a->next)
+				{
+					printf("minishell: syntax error near unexpected token 'newline'\n");
+					shell->exit_code = 2;
+					return (1);
+				}
+				if (!is_operator(a->next->content[0]))
+					parsed->output = a->next->content; //must be checked
+				else
+				{
+					printf("minishell: syntax error near unexpected token `>>'\n");
+					shell->exit_code = 2;
+					return (1);
+				}
+			}
+			else if (a->type == R_HERE)
+			{
+				if (!a->next)
+				{
+					printf("minishell: syntax error near unexpected token 'newline'\n");
+					shell->exit_code = 2;
+					return (1);
+				}
+				if (!is_operator(a->next->content[0]))
+					parsed->input = a->next->content; //must be checked
+				else
+				{
+					printf("minishell: syntax error near unexpected token `<<'\n");
+					shell->exit_code = 2;
+					return (1);
+				}
+			}
+			else if (a->type == R_OUT)
 			{
 				if (!a->next)
 				{
@@ -109,11 +143,6 @@ int	syntax_error(t_shell *shell, t_parser *parsed)
 				}
 				else if (!is_operator(a->next->content[0]))
 					parsed->output = a->next->content;
-				else
-				{
-					printf("syntax error1\n");
-					return (1);
-				}
 			}
 			else if (a->content[0] == '<')
 			{
@@ -125,11 +154,6 @@ int	syntax_error(t_shell *shell, t_parser *parsed)
 				}
 				else if (!is_operator(a->next->content[0]))
 					parsed->input = a->next->content;
-				else
-				{
-					printf("syntax error2\n");
-					return (1);
-				}
 			}
 			else if (a->content[0] == '|')
 			{
@@ -144,38 +168,6 @@ int	syntax_error(t_shell *shell, t_parser *parsed)
 				else
 				{
 					printf("syntax error3\n");
-					return (1);
-				}
-			}
-			else if (ft_strncmp(a->content, ">>", 3))
-			{
-				if (!a->next)
-				{
-					printf("minishell: syntax error near unexpected token 'newline'\n");
-					shell->exit_code = 2;
-					return (1);
-				}
-				if (!is_operator(a->next->content[0]))
-					parsed->output = a->next->content; //must be checked
-				else
-				{
-					printf("syntax error4\n");
-					return (1);
-				}
-			}
-			else if (ft_strncmp(a->content, "<<", 3))
-			{
-				if (!a->next)
-				{
-					printf("minishell: syntax error near unexpected token 'newline'\n");
-					shell->exit_code = 2;
-					return (1);
-				}
-				if (!is_operator(a->next->content[0]))
-					parsed->input = a->next->content; //must be checked
-				else
-				{
-					printf("syntax error5\n");
 					return (1);
 				}
 			}
