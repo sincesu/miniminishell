@@ -17,7 +17,7 @@
 
 void	ft_cd(const char *path)
 {
-	char	*cwd;
+	//char	*cwd;
 
 	if (path == NULL)
 		path = getenv("HOME");
@@ -26,15 +26,15 @@ void	ft_cd(const char *path)
 		perror("cd");
 		return ;
 	}
-	cwd = ft_alloc(4096);
-	if (!cwd)
-	{
-		perror("malloc");
-		return ;
-	}
-	if (getcwd(cwd, 4096))
-	{}
-	else
-		perror("getcwd");
-	free(cwd);
+	// cwd = ft_alloc(4096);
+	// if (!cwd)
+	// {
+	// 	perror("malloc");
+	// 	return ;
+	// }
+	// if (getcwd(cwd, 4096))
+	// {}
+	// else
+	// 	perror("getcwd");
+	// free(cwd);
 }

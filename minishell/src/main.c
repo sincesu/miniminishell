@@ -80,12 +80,19 @@ int main(int ac, char **av, char **env)
 	ft_init_signals();
 	while (1)
 	{
-		shell.input = readline("minishell> ");
+		shell.old_input = readline("minishell> ");
+		if (!shell.old_input)
+		{
+    		ft_exit(&shell);
+    		break;
+		}
+		shell.input = ft_strdup(shell.old_input);
+		free(shell.old_input);
 		if (!shell.input)
-  		{
-        	ft_exit(&shell);
-        	break ;
-    	}
+		{
+	    	ft_exit(&shell);
+    		break;
+		}
 		if (*shell.input)
 		{
 			add_history(shell.input);
@@ -122,8 +129,6 @@ int main(int ac, char **av, char **env)
 			else if (shell.args && ft_strncmp(shell.args->content, "exit", 5) == 0)
 				ft_exit(&shell);
 		}
-		
-		free(shell.input);
 	}
 	safe_abort(0);
 	return 0;
