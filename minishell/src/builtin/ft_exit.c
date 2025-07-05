@@ -39,7 +39,7 @@ void ft_exit(t_shell *shell)
 {
     int exit_code;
     
-    if (shell->args->next == NULL)
+    if (shell->args == NULL || shell->args->next == NULL)
     {
         printf("exit\n");
         safe_abort(shell->exit_code);
