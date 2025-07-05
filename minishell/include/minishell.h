@@ -114,4 +114,7 @@ void		ft_handle_sigint(int signum);
 void		ft_handle_sigquit(int signum);
 void		ft_init_signals(void);
 
+//executer
+void    ft_execute_commands(t_shell shell);
+
 #endif
