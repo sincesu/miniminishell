@@ -13,7 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-enum
+typedef enum e_token_type
 {
 	R_OUT = 1,	// > redirection out
 	R_APPEND,	// >>
@@ -23,7 +23,7 @@ enum
 	S_WORD,		// tek tırnak
 	D_WORD,		// çift tırnak
 	U_WORD,		// tırnaksız
-};
+}	t_token_type;
 
 typedef struct s_mem_list
 {
@@ -60,6 +60,7 @@ typedef struct s_shell
 {
 	//t_list	*collector; //burasına ihtiyaç duymayacağım.
 	char	*input;
+	char	*old_input;
 	t_token	*args;
 	char	**env;
 	int		exit_code;
@@ -112,6 +113,5 @@ t_token		*ft_lstlast_token(t_token *lst);
 void		ft_handle_sigint(int signum);
 void		ft_handle_sigquit(int signum);
 void		ft_init_signals(void);
-
 
 #endif
