@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/29 16:15:45 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/06 16:50:04 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-char	*find_dollar(char *input, char **env)
+char	*find_dollar(char *input, char **env, int flag)
 {
 	int i;
 	int var_len;
@@ -27,7 +27,7 @@ char	*find_dollar(char *input, char **env)
 	str = NULL;
 	env_val = NULL;
 	i = 0;
-	if (input[0] != '$')
+	if (input[0] != '$'|| flag == R_HERE)
 		return (input);
 	
 	input++;
@@ -38,7 +38,7 @@ char	*find_dollar(char *input, char **env)
 		return (input - 1); //sadece $ varsa $'ı da geri ekle
 	
 	str = ft_substr(input, 0, var_len);
-		
+
 	i = 0;
 	while (env[i])
 	{
@@ -54,11 +54,10 @@ char	*find_dollar(char *input, char **env)
 	else
 		expanded = ft_strdup(input + var_len);
 	
-	free(str);
 	return (expanded);
 }
 
-char *expand(char *input, t_shell *shell)
+char *expand(char *input, t_shell *shell, int flag)
 {
 	if (input[0] == '~' && ft_strlen(input) == 1)
 		ft_strlcpy(input, "$HOME", 6);
@@ -67,7 +66,7 @@ char *expand(char *input, t_shell *shell)
 		input = ft_itoa(shell->exit_code); //bunuda freelemek lazım ve inputu da freelemek lazım
 	}
 	else
-		input = find_dollar(input, shell->env);
+		input = find_dollar(input, shell->env, flag);
 	return (input);
 }
 
@@ -98,7 +97,6 @@ char	*remove_outer_quote_all(char *s)
 			result[j++] = s[i++];
 	}
 	result[j] = '\0';
-	free(s);
 	return result;
 	//gelen args'ın contentini freele.
 }
@@ -106,14 +104,17 @@ char	*remove_outer_quote_all(char *s)
 void	expander(t_shell *shell)
 {
 	t_token *args;
+	int		x;
 	
+	x = 0;
 	args = shell->args;
 	while (args)
 	{
 		if (args->type == D_WORD || args->type == S_WORD)
 			args->content = remove_outer_quote_all(args->content);
 		if (args->type != S_WORD)
-			args->content = expand(args->content, shell);
+			args->content = expand(args->content, shell, x);
+		x = args->type;
 		args = args->next;
 	}
 }
