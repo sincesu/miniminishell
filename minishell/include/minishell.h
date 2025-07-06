@@ -34,7 +34,7 @@ typedef struct s_mem_list
 typedef struct s_token
 {
 	char			*content;
-	int				type;
+	int				type; //t_token_type olarak değiştirilebilir
 	int				last;
 	struct s_token	*next;
 }	t_token;
