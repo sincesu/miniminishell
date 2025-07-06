@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saincesu <saincesu@student.42kocaeli.com.  +#+  +:+       +#+        */
+/*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:11:14 by saincesu          #+#    #+#             */
-/*   Updated: 2024/10/21 14:11:15 by saincesu         ###   ########.tr       */
+/*   Updated: 2025/07/06 16:50:54 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
+#include "../include/minishell.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
@@ -21,9 +22,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	len = ft_strlen(s1) + ft_strlen(s2);
-	buffer = (char *)malloc((len + 1) * sizeof(char));
-	if (!buffer)
-		return (NULL);
+	buffer = ft_alloc(len + 1);
 	ft_memcpy(buffer, s1, ft_strlen(s1));
 	ft_memcpy(buffer + ft_strlen(s1), s2, ft_strlen(s2) + 1);
 	return (buffer);
