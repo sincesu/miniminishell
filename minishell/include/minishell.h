@@ -116,5 +116,9 @@ void		ft_init_signals(void);
 
 //executer
 void    ft_execute_commands(t_shell shell);
+int		ft_shell_commands(t_shell *shell);
+void	ft_one_command(t_shell shell);
+void	ft_multi_command(t_shell shell);
+char	**token_list_to_argv(t_token *tokens);
 
 #endif
