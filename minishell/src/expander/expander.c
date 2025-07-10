@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/06 16:50:04 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:00:55 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*find_dollar(char *input, char **env, int flag)
 	i = 0;
 	if (input[0] != '$'|| flag == R_HERE)
 		return (input);
-	
+
 	input++;
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
@@ -52,8 +52,7 @@ char	*find_dollar(char *input, char **env, int flag)
 	if (env_val)
 		expanded = ft_strjoin(env_val, input + var_len);
 	else
-		expanded = ft_strdup(input + var_len);
-	
+		return (NULL);
 	return (expanded);
 }
 
@@ -70,19 +69,12 @@ char *expand(char *input, t_shell *shell, int flag)
 	return (input);
 }
 
-
-// Bu fonksiyon quoted ve unquoted blokları tırnaksız olarak birleştirir
 char	*remove_outer_quote_all(char *s)
 {
-	int len;
-	char *result;
-	int i;
-	int j;
+	int len = ft_strlen(s);
+	char *result = ft_alloc(len + 1); // kendi alloc fonksiyonunu kullandım
+	int i = 0, j = 0;
 
-	i = 0;
-	j = 0;
-	len = ft_strlen(s);
-	result = ft_alloc(len + 1);
 	while (s[i])
 	{
 		if (is_quote(s[i]))
@@ -91,14 +83,42 @@ char	*remove_outer_quote_all(char *s)
 			while (s[i] && s[i] != quote)
 				result[j++] = s[i++];
 			if (s[i] == quote)
-				i++; // kapanış tırnağı geç
+				i++; // kapanış tırnağını geç
 		}
 		else
 			result[j++] = s[i++];
 	}
 	result[j] = '\0';
 	return result;
-	//gelen args'ın contentini freele.
+}
+
+void	remove_empty_tokens(t_token **head)
+{
+	t_token	*curr;
+	t_token	*prev;
+
+	curr = *head;
+	prev = NULL;
+	while (curr)
+	{
+		if (!curr->content || curr->content[0] == '\0')
+		{
+			if (prev)
+				prev->next = curr->next;
+			else
+				*head = curr->next; //baştaki node'u atladım
+		
+			if (prev)
+				curr = prev->next;
+			else
+				curr = *head;
+		}
+		else
+		{
+			prev = curr;
+			curr = curr->next;
+		}
+	}
 }
 
 void	expander(t_shell *shell)
@@ -116,5 +136,6 @@ void	expander(t_shell *shell)
 			args->content = expand(args->content, shell, x);
 		x = args->type;
 		args = args->next;
-	}
+	} 
+	remove_empty_tokens(&(shell->args));
 }
