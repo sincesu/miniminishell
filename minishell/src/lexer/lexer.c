@@ -29,21 +29,22 @@ int	tokenize(char *str)
 
 t_token	*lexer(char *input)
 {
-	char **str;
-	int tmp_token;
+	char	**str;
+	int		*flag_array;
+	int 	tmp_token;
 	t_token *head_list;
 	int i;
 
 	i = 0;
 	head_list = NULL;
-	str = lexer_split(input);
+	str = lexer_split(input, &flag_array);
 	if (!str)
 		return NULL;
 	while (str[i])
 	{
 		tmp_token = tokenize(str[i]);
 		ft_lstadd_back_token(&head_list, ft_lstnew_token((t_token){
-			.content = ft_strdup(str[i]), .type = tmp_token , .last = 0, .next = NULL}));
+			.content = ft_strdup(str[i]), .type = tmp_token , .flag = flag_array[i], .next = NULL}));
 		i++;
 	}
 	return (head_list);

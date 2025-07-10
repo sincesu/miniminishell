@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 01:18:00 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/02 04:33:11 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:36:47 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static char *token_collect(const char *s, int *offset)
     return tmp;
 }
 
-char **lexer_split(const char *s)
+char **lexer_split(const char *s, int **flag_array)
 {
 	int count;
 	int i;
@@ -78,7 +78,10 @@ char **lexer_split(const char *s)
 	int m;
 	int offset;
 	char **result;
+	int	lookahead;
+	int	flag;
 
+	flag = 0;
 	count = 0;
 	i = 0;
 	k = 0;
@@ -99,6 +102,7 @@ char **lexer_split(const char *s)
 		i += offset;
 	}
 	result = ft_alloc(sizeof(char *) * (count + 1));
+	*flag_array = ft_alloc(sizeof(int) * count);
 	i = 0;
 	while (s[i])
 	{
@@ -107,7 +111,13 @@ char **lexer_split(const char *s)
 		if (!s[i])
 			break;
 		offset = 0;
-		result[k++] = token_collect(&s[i], &offset);
+		result[k] = token_collect(&s[i], &offset);
+		flag = 0;
+		lookahead = i + offset;
+		if (lookahead < (int)ft_strlen(s) && s[lookahead] != ' ' && !is_operator(s[lookahead]))
+			flag = 1;
+		(*flag_array)[k] = flag;
+		k++;
 		if (offset < 0)
 		{
 			while (m < k -1)
