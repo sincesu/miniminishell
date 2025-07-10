@@ -8,43 +8,47 @@
 
 void mini_parser_debugger(t_parser *parsed)
 {
-    int i;
+	int i = 0;
 
-    printf("----- MINI PARSER DEBUG -----\n");
+	printf("----- MINI PARSER DEBUG -----\n");
 
-    // Komut
-    printf("Command : %s\n", parsed->command ? parsed->command : "(none)");
+	// Args
+	printf("Args    : ");
+	if (parsed->args)
+	{
+		while (parsed->args[i])
+			printf("[%s] ", parsed->args[i++]);
+		if (i == 0)
+			printf("(none)");
+	}
+	else
+		printf("(none)");
+	printf("\n");
 
-    // Flags
-    printf("Flags   : ");
-    if (parsed->flags) {
-        for (i = 0; parsed->flags[i]; i++)
-            printf("[%s] ", parsed->flags[i] ? parsed->flags[i] : "(null)");
-        if (i == 0)
-            printf("(none)");
-    } else {
-        printf("(none)");
-    }
-    printf("\n");
+	// Redirects
+	printf("Redirects (%d):\n", parsed->redirect_count);
+	if (parsed->redirect && parsed->redirect_count > 0)
+	{
+		for (i = 0; i < parsed->redirect_count; i++)
+		{
+			printf("  - type: %d | file: %s", parsed->redirect[i].type,
+				parsed->redirect[i].file_name ? parsed->redirect[i].file_name : "(none)");
+			printf(" | flags: %d", parsed->redirect[i].flags);
+			if (parsed->redirect[i].document)
+				printf(" | document: %s", parsed->redirect[i].document);
+			printf("\n");
+		}
+	}
+	else
+		printf("  (none)\n");
 
-    // Args
-    printf("Args    : ");
-    if (parsed->args) {
-        for (i = 0; parsed->args[i]; i++)
-            printf("[%s] ", parsed->args[i] ? parsed->args[i] : "(null)");
-        if (i == 0)
-            printf("(none)");
-    } else {
-        printf("(none)");
-    }
-    printf("\n");
+	// fd_in / fd_out
+	printf("fd_in   : %d\n", parsed->fd_in);
+	printf("fd_out  : %d\n", parsed->fd_out);
 
-    printf("Input   : %s\n", parsed->input ? parsed->input : "(none)");
-	printf("Output  : %s\n", parsed->output ? parsed->output : "(none)");
-
-
-    printf("----------------------------\n");
+	printf("----------------------------\n");
 }
+
 
 
 int main(int ac, char **av, char **env)
@@ -52,9 +56,8 @@ int main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	t_shell shell;
-	t_parser parsed;
+	t_parser *parsed;
 	ft_bzero(&shell, sizeof(t_shell));
-	ft_bzero(&parsed, sizeof(t_parser));
 	shell.env = copy_env(env);
 	shell.exit_code = 0;
 	if (!shell.env)
@@ -95,9 +98,9 @@ int main(int ac, char **av, char **env)
 				tmp = tmp->next;
 			}
 			
-			parser(&shell, &parsed);
-			mini_parser_debugger(&parsed);
-			
+			parsed = parser(shell.args);
+			mini_parser_debugger(parsed);
+
 			if (!shell.args)
 				return 1;
 			else
