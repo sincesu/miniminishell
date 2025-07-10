@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/10 11:54:59 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:36:22 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ typedef struct s_token
 {
 	char			*content;
 	int				type;
-	int				last;
+	//int				last;
+	int				flag;
 	struct s_token	*next;
 }	t_token;
 
@@ -67,7 +68,7 @@ typedef struct s_shell
 	int		exit_code;
 }	t_shell;
 
-char		**lexer_split(const	char *s);
+char 		**lexer_split(const char *s, int **flag_array);
 t_token		*lexer(char *input);
 void		expander(t_shell *shell);
 t_mem_list	**get_head_mem(void);
@@ -84,6 +85,7 @@ void		safe_abort(int exit_code);
 void		register_alloc_mem(void *ptr);
 void		*ft_alloc(unsigned long size);
 int			is_operator_type(int type);
+int			tokenize(char *str);
 
 int			r_append_error(t_token *a, t_shell *shell);
 int			r_here_error(t_token *a, t_shell *shell);
