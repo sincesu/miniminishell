@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 16:31:49 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/02 05:00:49 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/10 11:52:24 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,57 +16,125 @@
 #include <stdlib.h>
 #include <string.h>
 
-void	parser(t_shell *shell, t_parser *parsed)
+int	red_len_counter(t_token *token)
 {
-	t_token *a;
-	int i;
-	int j;
-	int flag_count;
-	int arg_count;
+	int	red_len_count;
+	
+	red_len_count = 0;
+	while (token && token->type != PIPE)
+	{
+		if (is_operator_type(token->type))
+			red_len_count++;
+		token = token->next;
+	}
+	return (red_len_count);
+}
+
+int	arg_len_counter(t_token *token)
+{
+	int	arg_len_count;
+
+	arg_len_count = 0;
+	while (token && token->type != PIPE)
+	{
+		if (!is_operator_type(token->type))
+			arg_len_count++;
+		token = token->next;
+	}
+	return (arg_len_count);
+}
+
+t_parser	*new_node(t_parser current)
+{
+	t_parser	*new_node;
+	
+	new_node = ft_alloc(sizeof(t_parser));
+	*new_node = current;
+	return (new_node);
+}
+
+t_parser	*ft_init_parser(t_parser *prev, t_token *token)
+{
+	t_parser current;
+	int	i;
+	int	red_len_count;
+	int	arg_len_count;
+
+	i = 0;
+	red_len_count = red_len_counter(token);
+	arg_len_count = arg_len_counter(token);
+	current = (t_parser){
+		.args = ft_alloc(sizeof(char *) * arg_len_count),
+		.redirect = ft_alloc(sizeof(t_redirect) * red_len_count),
+		.redirect_count = red_len_count,
+		.fd_in = 0,
+		.fd_out = 1,
+		.prev = prev,
+		.next = NULL,
+	};
+	current.args[arg_len_count] = NULL;
+	return (new_node(current));
+}
+
+void	ft_addback_node(t_parser **head_node, t_parser *current)
+{
+	if (*head_node == NULL)
+	{
+		(*head_node) = current;
+		(*head_node)->prev = NULL;
+	}
+	else
+	{
+		(*head_node)->next = current;
+		current->prev = (*head_node);
+	}
+}
+
+t_token	*ft_set_parser(t_token *token, t_parser *current)
+{
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-	flag_count = 0;
-	arg_count = 0;
-	a = shell->args;
-	while (a)
+	while (token && token->type != PIPE)
 	{
-		if (a->content && a->content[0] == '-')
-			flag_count++;
-		else if (a->content && !is_operator(a->content[0]))
-			arg_count++;
-		a = a->next;
-	}
-	parsed->flags = ft_alloc(sizeof(char *) * (flag_count + 1));
-	parsed->args = ft_alloc(sizeof(char *) * (arg_count + 1));
-	parsed->input = NULL;
-	parsed->output = NULL;
-	a = shell->args;
-	
-	if (a && a->content)
-	{
-		parsed->command = a->content;
-		a = a->next;
-	}
-	while (a && a->content)
-	{
-		if ((strcmp(a->content, ">") == 0 || strcmp(a->content, ">>") == 0) && a->next && a->next->content)
+		if (is_operator_type(token->type))
 		{
-			parsed->output = ft_strdup(a->next->content);
-			a = a->next;
+			current->redirect[i].type = token->type;
+			if (current->redirect[i].type == R_HERE)
+				current->redirect[i].flags = 1;
+			else
+				current->redirect[i].flags = 0;
+			if (token->next)
+			{
+				token = token->next;
+				current->redirect[i].file_name = token->content;
+				current->redirect[i].flags = token->type; //burayı mert özcana bahset.
+				current->redirect[i].document = NULL;
+			}
+			i++;
 		}
-		else if ((strcmp(a->content, "<") == 0 || strcmp(a->content, "<<") == 0) && a->next && a->next->content)
+		else if (!is_operator_type(token->type))
 		{
-			parsed->input = ft_strdup(a->next->content);
-			a = a->next;
+			current->args[j++] = token->content;
 		}
-		else if (a->content[0] == '-')
-			parsed->flags[i++] = ft_strdup(a->content);
-		else if (!is_operator(a->content[0]))
-			parsed->args[j++] = ft_strdup(a->content); 
-		a = a->next;
+		token = token->next;
 	}
-	//redirection'un yanındakini sadece args'a 
-	parsed->flags[i] = NULL;
-	parsed->args[j] = NULL;
+	return (token);
+}
+
+t_parser	*parser(t_token *token)
+{
+	t_parser	*head_node;
+	t_parser	*current;
+
+	head_node = NULL;
+	while (token)
+	{
+		current = ft_init_parser(head_node, token);
+		ft_addback_node(&head_node, current);
+		token = ft_set_parser(token, current);
+	}
+	return (head_node);
 }
