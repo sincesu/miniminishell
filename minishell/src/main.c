@@ -50,7 +50,6 @@ void mini_parser_debugger(t_parser *parsed)
 }
 
 
-
 int main(int ac, char **av, char **env)
 {
 	(void)ac;
@@ -89,15 +88,16 @@ int main(int ac, char **av, char **env)
 			if(syntax_error(&shell))
 				continue;
 			expander(&shell);
-			
+			merger(shell.args);
+
 			//TOKEN YAZDIRMA KISMI
 			t_token *tmp = shell.args;
 			while (tmp)
 			{
-				printf("TOKEN: [%s] (type: %d)\n", tmp->content, tmp->type);
+				printf("TOKEN: [%s] (type: %d) (flag: %d)\n", tmp->content, tmp->type, tmp->flag);
 				tmp = tmp->next;
 			}
-			
+
 			parsed = parser(shell.args);
 			mini_parser_debugger(parsed);
 
