@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 16:31:49 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/10 11:52:24 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/12 14:45:23 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,9 @@ t_parser	*new_node(t_parser current)
 t_parser	*ft_init_parser(t_parser *prev, t_token *token)
 {
 	t_parser current;
-	int	i;
 	int	red_len_count;
 	int	arg_len_count;
 
-	i = 0;
 	red_len_count = red_len_counter(token);
 	arg_len_count = arg_len_counter(token);
 	current = (t_parser){
