@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:49:06 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/13 15:05:13 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/13 15:59:54 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,7 @@ char	*fill_dolar(char *input, char **env, int var_len)
 	}
 	if (env_val)
 		expanded = ft_strjoin(env_val, input + var_len);
+	else
+		expanded = ft_strdup(input + var_len);
 	return (expanded);
 }
