@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "../include/minishell.h"
 #include <stdlib.h>
 
 static int	ft_wordcount(char const *s, char c)
@@ -43,17 +44,6 @@ static int	ft_wordlen(char const *s, char c)
 	return (i);
 }
 
-static char	**ft_free(char **split, int i)
-{
-	while (i >= 0)
-	{
-		free(split[i]);
-		i--;
-	}
-	free(split);
-	return (NULL);
-}
-
 char	**ft_split(char const *s, char c)
 {
 	int		i;
@@ -66,16 +56,12 @@ char	**ft_split(char const *s, char c)
 	x = ft_wordcount(s, c);
 	i = 0;
 	j = 0;
-	split = (char **)malloc(sizeof(char *) * (x + 1));
-	if (!split)
-		return (NULL);
+	split = (char **)ft_alloc(sizeof(char *) * (x + 1));
 	while (i < x)
 	{
 		while (s[j] == c)
 			j++;
 		split[i] = ft_substr(s, j, ft_wordlen(&s[j], c));
-		if (!split[i])
-			return (ft_free(split, i));
 		j += ft_wordlen(&s[j], c);
 		i++;
 	}

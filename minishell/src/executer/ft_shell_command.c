@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 int	ft_is_direct_path(char *cmd)
 {
@@ -19,7 +20,7 @@ char	*str_arr_join(char **arr, int count)
     i = 0; 
 	while (i < count)
 		total_len += ft_strlen(arr[i++]);
-	result = ft_calloc(total_len + 1, sizeof(char));
+	result = ft_alloc(total_len + 1 * sizeof(char));
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -49,7 +50,6 @@ char	*ft_search_command_path(char *command)
 		full_path = str_arr_join((char *[]){paths[i], "/", command}, 3);
 		if (access(full_path, X_OK) == 0)
 			return (full_path);
-		free(full_path);
 		i++;
 	}
 	return (NULL);
@@ -87,6 +87,6 @@ int	ft_shell_command(t_shell *shell, t_exec_unit *parsed)
 		waitpid(pid, &status, 0);
 		shell->exit_code = WEXITSTATUS(status);
 	}
-	free(full_path);
+	//free(full_path);
 	return (shell->exit_code);
 }
