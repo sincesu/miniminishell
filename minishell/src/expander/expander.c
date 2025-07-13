@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/13 15:05:06 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/13 19:04:09 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,18 @@ char	*find_dollar(char *input, char **env, int flag)
 
 char	*expand(char *input, t_shell *shell, int flag)
 {
+	char	*exit_code;
+	char	*result;
+
+	exit_code = NULL;
+	result = NULL;
 	if (input[0] == '~' && ft_strlen(input) == 1)
 		ft_strlcpy(input, "$HOME", 6);
-	if (input[0] == '$' && input[1] == '?' && ft_strlen(input) == 2)
+	if (input[0] == '$' && input[1] == '?')
 	{
-		input = ft_itoa(shell->exit_code);
+		exit_code = ft_itoa(shell->exit_code);
+		result = ft_strjoin(exit_code, input + 2);
+		return (result);
 	}
 	else
 		input = find_dollar(input, shell->env, flag);
