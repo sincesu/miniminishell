@@ -67,14 +67,16 @@ int main(int ac, char **av, char **env)
 		shell.old_input = readline("minishell> ");
 		if (!shell.old_input)
 		{
-    		ft_exit(&shell);
+			safe_abort(0);
+    		//ft_exit(&shell);
     		break;
 		}
 		shell.input = ft_strdup(shell.old_input);
 		free(shell.old_input);
 		if (!shell.input)
 		{
-	    	ft_exit(&shell);
+	    	safe_abort(0);
+    		//ft_exit(&shell);
     		break;
 		}
 		if (*shell.input)
@@ -91,12 +93,12 @@ int main(int ac, char **av, char **env)
 			merger(shell.args);
 
 			//TOKEN YAZDIRMA KISMI
-			t_token *tmp = shell.args;
-			while (tmp)
-			{
-				//printf("TOKEN: [%s] (type: %d) (flag: %d)\n", tmp->content, tmp->type, tmp->flag);
-				tmp = tmp->next;
-			}
+			// t_token *tmp = shell.args;
+			// while (tmp)
+			// {
+			// 	printf("TOKEN: [%s] (type: %d) (flag: %d)\n", tmp->content, tmp->type, tmp->flag);
+			// 	tmp = tmp->next;
+			// }
 
 			parsed = parser(shell.args);
 			//mini_parser_debugger(parsed);

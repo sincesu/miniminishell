@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 01:18:00 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/10 16:36:47 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/13 15:05:20 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,117 +17,103 @@
 #include <stdio.h>
 #include <string.h>
 
-static int	is_operator_token(const char *s)
+static int	get_token_len(const char *s)
 {
-	if (s[0] == '>' && s[1] == '>')
-		return (2);
-	if (s[0] == '<' && s[1] == '<')
-		return (2);
-	if (s[0] == '>')
-		return (1);
-	if (s[0] == '<')
-		return (1);
-	if (s[0] == '|')
-		return (1);
-	return (0);
-}
-
-static int next_chunk_len(const char *s)
-{
-	int op_len;
+	int		i;
+	int		op_len;
+	char	quote;
 
 	op_len = is_operator_token(s);
 	if (op_len)
 		return (op_len);
-		
+	i = 0;
 	if (is_quote(s[0]))
 	{
-		char quote = s[0];
-		int i = 1;
+		quote = s[0];
+		i++;
 		while (s[i] && s[i] != quote)
 			i++;
 		if (s[i] == quote)
-			return i + 1;
+			i++;
+		return i;
 	}
-	int i = 0;
 	while (s[i] && !is_quote(s[i]) && s[i] != ' ' && !is_operator(s[i]))
 		i++;
-	return i;
+	return (i);
 }
 
-static char *token_collect(const char *s, int *offset)
+static char	*token_collect(const char *s, int *word_len)
 {
-    int len = next_chunk_len(s);
-    if (len <= 0)
-    {
-        *offset = -1;
-        return NULL;
-    }
-    char *tmp = ft_alloc(len + 1);
-    strncpy(tmp, s, len);
-    tmp[len] = '\0';
-    *offset = len;
-    return tmp;
+	int		len;
+	char	*tmp;
+
+	len = get_token_len(s);
+	tmp = ft_alloc(len + 1);
+	ft_strlcpy(tmp, s, len + 1);
+	*word_len = len;
+	return (tmp);
 }
 
-char **lexer_split(const char *s, int **flag_array)
+static int	count_tokens(const char *s)
 {
-	int count;
-	int i;
-	int k;
-	int m;
-	int offset;
-	char **result;
-	int	lookahead;
-	int	flag;
+	int		count;
+	int		i;
+	int		word_len;
 
-	flag = 0;
 	count = 0;
 	i = 0;
-	k = 0;
-	m = 0;
-
-	// İlk pass: kaç token var say
 	while (s[i])
 	{
 		while (s[i] == ' ')
 			i++;
 		if (!s[i])
+			break ;
+		word_len = 0;
+		token_collect(&s[i], &word_len);
+		if (word_len <= 0)
 			break;
-		offset = 0;
-		token_collect(&s[i], &offset);
-		if (offset < 0)
-			return (NULL);
 		count++;
-		i += offset;
+		i += word_len;
 	}
-	result = ft_alloc(sizeof(char *) * (count + 1));
-	*flag_array = ft_alloc(sizeof(int) * count);
-	i = 0;
-	while (s[i])
-	{
-		while (s[i] == ' ')
-			i++;
-		if (!s[i])
-			break;
-		offset = 0;
-		result[k] = token_collect(&s[i], &offset);
-		flag = 0;
-		lookahead = i + offset;
-		if (lookahead < (int)ft_strlen(s) && s[lookahead] != ' ' && !is_operator(s[lookahead]))
-			flag = 1;
-		(*flag_array)[k] = flag;
-		k++;
-		if (offset < 0)
-		{
-			while (m < k -1)
-				free(result[m++]);
-			free(result);
-			return NULL;
-		}
-		i += offset;
-	}
-	result[k] = NULL;
-	return result;
+	return (count);
 }
 
+void	fill_tokens_and_flags(const char *s, char **result, int *flag_array)
+{
+	int	i;
+	int	k;
+	int	word_len;
+	int	lookahead;
+
+	i = 0;
+	k = 0;
+	while (s[i])
+	{
+		while (s[i] == ' ')
+			i++;
+		if (!s[i])
+			break ;
+		word_len = 0;
+		result[k] = token_collect(&s[i], &word_len);
+		if (word_len <= 0)
+			break;
+		lookahead = i + word_len;
+		flag_array[k] = (lookahead < (int)ft_strlen(s) && s[lookahead] != ' '
+				&& !is_operator(s[lookahead]));
+		i += word_len;
+		k++;
+	}
+	result[k] = (NULL);
+}
+
+char	**lexer_split(const char *s, int **flag_array)
+{
+	int		count;
+	char	**result;
+
+	count = count_tokens(s);
+	result = ft_alloc(sizeof(char *) * (count + 1));
+	*flag_array = ft_alloc(sizeof(int) * count);
+	fill_tokens_and_flags(s, result, *flag_array);
+	return (result);
+}

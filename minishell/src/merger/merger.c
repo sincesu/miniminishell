@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:34:29 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/12 14:40:24 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/13 15:07:09 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	merger(t_token	*a)
 	token = a;
 	while (token)
 	{
-		if (token->flag == 1 && token->next)
+		while (token->flag == 1 && token->next)
 		{
 			token->content = ft_strjoin((char const *)token->content,
 					(char const *)token->next->content);

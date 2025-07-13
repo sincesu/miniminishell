@@ -12,7 +12,7 @@ SRCS	= 	src/main.c src/allocator/allocator.c src/builtin/ft_cd.c \
 			src/executer/ft_shell_command.c src/list/ft_lstclear_token.c src/list/ft_lstdelone_token.c src/list/ft_lstlast_token.c \
 			src/list/ft_lstnew_token.c src/list/ft_lstsize_token.c src/env.c src/signal.c src/lexer/lexer_split.c \
 			src/expander/expander.c src/parser/parser.c src/syntax_error/quote_error.c src/syntax_error/syntax_error.c \
-			src/merger/merger.c 
+			src/merger/merger.c src/expander/expander_utils.c src/parser/parser_utils.c
 
 OBJS	= $(SRCS:.c=.o)
 

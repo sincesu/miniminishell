@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 19:41:07 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/04 19:47:38 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/13 15:08:39 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 int	quote_error(char *input, t_shell *shell)
 {
-	int i;
-	char quote;
+	int		i;
+	char	quote;
 
 	i = 0;
 	while (input[i])
@@ -29,12 +29,12 @@ int	quote_error(char *input, t_shell *shell)
 				i++;
 			if (input[i] != quote)
 			{
-				printf("minishell: syntax error: unmatched quote\n");
+				ft_putstr_fd("minishell: syntax error: unmatched quote\n", 2);
 				shell->exit_code = 2;
 				return (1);
 			}
 		}
-		if (input[i]) //check
+		if (input[i])
 			i++;
 	}
 	return (0);
@@ -44,7 +44,7 @@ int	operator_error(int c, t_shell *shell)
 {
 	if (c == '|')
 	{
-		printf("minishell: syntax error near unexpected token '|'\n");
+		ft_putstr_fd("minishell: syntax error near unexpected token '|'\n", 2);
 		shell->exit_code = 2;
 		return (1);
 	}

@@ -21,11 +21,9 @@ char *get_heredoc_input(const char *delimiter)
             break;
         }
         temp = ft_strjoin(result, line);
-        free(result);
         free(line);
 
         result = ft_strjoin(temp, "\n");
-        free(temp);
     }
     return (result);
 }

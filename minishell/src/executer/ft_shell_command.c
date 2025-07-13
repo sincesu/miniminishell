@@ -23,8 +23,6 @@ char	*str_arr_join(char **arr, int count)
 	while (i < count)
 		total_len += ft_strlen(arr[i++]);
 	result = ft_alloc(sizeof(char) * (total_len + 1));
-	if (!result)
-		return (NULL);
 	result[0] = '\0';
 	i = 0;
 	while (i < count)
@@ -45,8 +43,6 @@ char	*ft_search_command_path(char *command)
 	if (!path_env)
 		return (NULL);
 	paths = ft_split(path_env, ':');
-	if (!paths)
-		return (NULL);
 	i = 0;
 	while (paths[i])
 	{
@@ -88,6 +84,5 @@ int	ft_shell_command(t_shell *shell, t_exec_unit *parsed)
 		waitpid(pid, &status, 0);
 		shell->exit_code = WEXITSTATUS(status);
 	}
-	free(full_path);
 	return (shell->exit_code);
 }

@@ -1,29 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/13 14:42:22 by saincesu          #+#    #+#             */
+/*   Updated: 2025/07/13 14:42:22 by saincesu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 #include "../Libft/libft.h"
 #include <stdio.h>
 
 int	env_len(char **env)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(env[i])
+	while (env[i])
 		i++;
 	return (i);
 }
 
 char	**copy_env(char **env)
 {
-	int i;
-	int env_line;
-	char **copy_env;
+	int		i;
+	int		env_line;
+	char	**copy_env;
 
 	i = 0;
 	copy_env = NULL;
-
 	env_line = env_len(env);
 	copy_env = ft_alloc(sizeof(char *) * (env_line + 1));
-	while(i < env_line)
+	while (i < env_line)
 	{
 		copy_env[i] = ft_alloc(ft_strlen(env[i]) + 1);
 		ft_strlcpy(copy_env[i], env[i], ft_strlen(env[i]) + 1);

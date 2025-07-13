@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 16:31:49 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/12 14:45:23 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/13 15:08:27 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,54 +16,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-int	red_len_counter(t_token *token)
-{
-	int	red_len_count;
-	
-	red_len_count = 0;
-	while (token && token->type != PIPE)
-	{
-		if (is_operator_type(token->type))
-			red_len_count++;
-		token = token->next;
-	}
-	return (red_len_count);
-}
-
-int	arg_len_counter(t_token *token)
-{
-	int	arg_len_count;
-
-	arg_len_count = 0;
-	while (token && token->type != PIPE)
-	{
-		if (!is_operator_type(token->type))
-			arg_len_count++;
-		token = token->next;
-	}
-	return (arg_len_count);
-}
-
-t_parser	*new_node(t_parser current)
-{
-	t_parser	*new_node;
-	
-	new_node = ft_alloc(sizeof(t_parser));
-	*new_node = current;
-	return (new_node);
-}
-
 t_parser	*ft_init_parser(t_parser *prev, t_token *token)
 {
-	t_parser current;
-	int	red_len_count;
-	int	arg_len_count;
+	t_parser	current;
+	int			red_len_count;
+	int			arg_len_count;
 
 	red_len_count = red_len_counter(token);
 	arg_len_count = arg_len_counter(token);
 	current = (t_parser){
 		.args = ft_alloc(sizeof(char *) * (arg_len_count + 1)),
-		.redirect = ft_alloc(sizeof(t_redirect) * (red_len_count + 1)),
+		.redirect = ft_alloc(sizeof(t_redirect) * red_len_count),
 		.redirect_count = red_len_count,
 		.fd_in = 0,
 		.fd_out = 1,
@@ -88,6 +51,22 @@ void	ft_addback_node(t_parser **head_node, t_parser *current)
 	}
 }
 
+void	set_redirect(t_token **token, t_redirect *redirect)
+{
+	redirect->type = (*token)->type;
+	if (redirect->type == R_HERE)
+		redirect->flags = 1;
+	else
+		redirect->flags = 0;
+	if ((*token)->next)
+	{
+		*token = (*token)->next;
+		redirect->file_name = (*token)->content;
+		redirect->flags = (*token)->type;
+		redirect->document = NULL;
+	}
+}
+
 t_token	*ft_set_parser(t_token *token, t_parser *current)
 {
 	int	i;
@@ -99,18 +78,7 @@ t_token	*ft_set_parser(t_token *token, t_parser *current)
 	{
 		if (is_operator_type(token->type))
 		{
-			current->redirect[i].type = token->type;
-			if (current->redirect[i].type == R_HERE)
-				current->redirect[i].flags = 1;
-			else
-				current->redirect[i].flags = 0;
-			if (token->next)
-			{
-				token = token->next;
-				current->redirect[i].file_name = token->content;
-				current->redirect[i].flags = token->type; //burayı mert özcana bahset.
-				current->redirect[i].document = NULL;
-			}
+			set_redirect(&token, &current->redirect[i]);
 			i++;
 		}
 		else if (!is_operator_type(token->type))

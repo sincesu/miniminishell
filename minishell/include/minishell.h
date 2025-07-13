@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/12 14:38:25 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/13 15:04:31 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,11 @@ void		ft_env(char **env_copy);
 t_parser	*parser(t_token	*token);
 int			env_len(char **env);
 char		**copy_env(char **env);
+int			arg_len_counter(t_token *token);
+int			red_len_counter(t_token *token);
+t_parser	*new_node(t_parser current);
+char		*fill_dolar(char *input, char **env ,int var_len);
+int			is_operator_token(const char *s);
 
 t_token		*ft_lstnew_token(t_token token);
 void		ft_lstadd_back_token(t_token **lst, t_token *new_node);

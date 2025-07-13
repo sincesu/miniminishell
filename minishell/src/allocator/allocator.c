@@ -39,7 +39,6 @@ void	ft_free(void)
 
 void	safe_abort(int exit_code)
 {
-	//ensure that clear read_line history
 	ft_free();
 	exit(exit_code);
 }
