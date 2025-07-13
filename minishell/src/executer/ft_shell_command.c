@@ -16,13 +16,16 @@ char	*str_arr_join(char **arr, int count)
 	char	*result;
 	int		i;
 
+	if (arr == NULL || *arr == NULL || count == 0)
+		return NULL;
 	total_len = 0;
     i = 0; 
 	while (i < count)
 		total_len += ft_strlen(arr[i++]);
-	result = ft_alloc(total_len + 1 * sizeof(char));
+	result = ft_alloc(sizeof(char) * (total_len + 1));
 	if (!result)
 		return (NULL);
+	result[0] = '\0';
 	i = 0;
 	while (i < count)
 		ft_strlcat(result, arr[i++], total_len + 1);
@@ -61,14 +64,12 @@ int	ft_shell_command(t_shell *shell, t_exec_unit *parsed)
 	pid_t	pid;
 	int		status;
 
-	if (!shell->args || !shell->args->content)
-		return (0);
-	full_path = ft_search_command_path(shell->args->content);
+	full_path = ft_search_command_path(parsed->args[0]);
 	if (!full_path)
 	{
 		printf("minishell: %s: command not found\n", parsed->args[0]);
 		shell->exit_code = 127;
-		return (127);
+		return 127;
 	}
 	pid = fork();
 	if (pid == -1)
@@ -87,6 +88,6 @@ int	ft_shell_command(t_shell *shell, t_exec_unit *parsed)
 		waitpid(pid, &status, 0);
 		shell->exit_code = WEXITSTATUS(status);
 	}
-	//free(full_path);
+	free(full_path);
 	return (shell->exit_code);
 }

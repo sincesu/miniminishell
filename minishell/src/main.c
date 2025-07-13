@@ -94,12 +94,12 @@ int main(int ac, char **av, char **env)
 			t_token *tmp = shell.args;
 			while (tmp)
 			{
-				printf("TOKEN: [%s] (type: %d) (flag: %d)\n", tmp->content, tmp->type, tmp->flag);
+				//printf("TOKEN: [%s] (type: %d) (flag: %d)\n", tmp->content, tmp->type, tmp->flag);
 				tmp = tmp->next;
 			}
 
 			parsed = parser(shell.args);
-			mini_parser_debugger(parsed);
+			//mini_parser_debugger(parsed);
 
 			if (!shell.args)
 				return 1;

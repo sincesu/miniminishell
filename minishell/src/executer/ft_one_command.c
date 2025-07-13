@@ -15,16 +15,17 @@ char *get_heredoc_input(const char *delimiter)
     while (1)
     {
         line = readline("> ");
-        if (!line)
-            break;
-
         if (ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
         {
             free(line);
             break;
         }
-        temp = ft_strjoin(result, line); //leak var
+        temp = ft_strjoin(result, line);
+        free(result);
+        free(line);
+
         result = ft_strjoin(temp, "\n");
+        free(temp);
     }
     return (result);
 }
