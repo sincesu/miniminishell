@@ -96,6 +96,7 @@ int			is_operator_type(int type);
 int			tokenize(char *str);
 void		remove_empty_tokens(t_token **head);
 void		merger(t_token	*a);
+char		*find_dollar(char *input, char **env, int flag);
 
 int			r_append_error(t_token *a, t_shell *shell);
 int			r_here_error(t_token *a, t_shell *shell);
@@ -131,13 +132,12 @@ void		ft_handle_sigint(int signum);
 void		ft_handle_sigquit(int signum);
 void		ft_init_signals(void);
 
-void		ft_execute_commands(t_shell shell, t_parser parsed);
+void		ft_execute_commands(t_shell *shell, t_parser parsed);
 int			ft_shell_command(t_shell *shell, t_exec_unit *parsed);
-void		ft_one_command(t_shell shell, t_parser parsed);
-void		ft_multi_command(t_shell shell, t_parser parsed);
+void		ft_one_command(t_shell *shell, t_parser parsed);
+void		ft_multi_command(t_shell *shell, t_parser parsed);
 
 int			ft_apply_redirections(t_redirect *redir);
-t_exec_unit	parse_exec_unit(t_token *tokens);
 int			ft_is_builtin(char *cmd);
 void		ft_execute_builtin(t_shell *shell, t_exec_unit *unit);
 

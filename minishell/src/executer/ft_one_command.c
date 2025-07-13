@@ -15,6 +15,8 @@ char *get_heredoc_input(const char *delimiter, t_shell *shell, t_parser parsed)
     while (1)
     {
         line = readline("> ");
+        if (!line)
+			safe_abort(0);
         if (ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
         {
             free(line);
