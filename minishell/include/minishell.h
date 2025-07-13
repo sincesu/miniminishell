@@ -37,6 +37,7 @@ typedef struct s_token
 	int				type;
 	//int				last;
 	int				flag;
+	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
 
@@ -46,7 +47,14 @@ typedef struct s_redirect
 	int		type;
 	int		flags;
 	char	*document;
+	struct s_redirect	*next;
 }	t_redirect;
+
+typedef struct s_exec_unit
+{
+    char        **args;
+    t_redirect  *redirect;
+}   t_exec_unit;
 
 typedef struct s_parser
 {
@@ -118,10 +126,14 @@ void		ft_handle_sigint(int signum);
 void		ft_handle_sigquit(int signum);
 void		ft_init_signals(void);
 
-void		ft_execute_commands(t_shell shell);
-int			ft_shell_commands(t_shell *shell);
-void		ft_one_command(t_shell shell);
-void		ft_multi_command(t_shell shell);
-char		**token_list_to_argv(t_token *tokens);
+void		ft_execute_commands(t_shell shell, t_parser parsed);
+int			ft_shell_command(t_shell *shell, t_exec_unit *parsed);
+void		ft_one_command(t_shell shell, t_parser parsed);
+void		ft_multi_command(t_shell shell, t_parser parsed);
+
+int			ft_apply_redirections(t_redirect *redir);
+t_exec_unit	parse_exec_unit(t_token *tokens);
+int			ft_is_builtin(char *cmd);
+void		ft_execute_builtin(t_shell *shell, t_exec_unit *unit);
 
 #endif

@@ -62,8 +62,8 @@ t_parser	*ft_init_parser(t_parser *prev, t_token *token)
 	red_len_count = red_len_counter(token);
 	arg_len_count = arg_len_counter(token);
 	current = (t_parser){
-		.args = ft_alloc(sizeof(char *) * arg_len_count),
-		.redirect = ft_alloc(sizeof(t_redirect) * red_len_count),
+		.args = ft_alloc(sizeof(char *) * (arg_len_count + 1)),
+		.redirect = ft_alloc(sizeof(t_redirect) * (red_len_count + 1)),
 		.redirect_count = red_len_count,
 		.fd_in = 0,
 		.fd_out = 1,

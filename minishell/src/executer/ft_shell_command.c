@@ -3,28 +3,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <sys/wait.h>
 
 int	ft_is_direct_path(char *cmd)
 {
 	return (cmd && (ft_strncmp(cmd, "/", 1) == 0 || ft_strncmp(cmd, "./", 2) == 0));
-}
-
-char	*ft_get_env_value(const char *name)
-{
-	extern char **environ;
-	int		i;
-	size_t	len;
-
-	i = 0;
-	len = ft_strlen(name);
-	while (environ[i])
-	{
-		if (ft_strncmp(environ[i], name, len) == 0 && environ[i][len] == '=')
-			return (environ[i] + len + 1);
-		i++;
-	}
-	return (NULL);
 }
 
 char	*str_arr_join(char **arr, int count)
@@ -46,40 +28,6 @@ char	*str_arr_join(char **arr, int count)
 	return (result);
 }
 
-void	ft_free_split(char **arr)
-{
-	int	i;
-
-	if (arr == NULL)
-		return ;
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
-}
-
-char	**ft_get_env_to_array(void)
-{
-	extern char **environ;
-	int		count;
-	int		i;
-	char	**copy;
-
-	count = 0;
-	while (environ[count])
-		count++;
-	copy = ft_calloc(count + 1, sizeof(char *));
-	if (!copy)
-		return (NULL);
-	i = 0;
-	while (i < count)
-	{
-		copy[i] = ft_strdup(environ[i]);
-		i++;
-	}
-	return (copy);
-}
-
 char	*ft_search_command_path(char *command)
 {
 	char	**paths;
@@ -89,7 +37,7 @@ char	*ft_search_command_path(char *command)
 
 	if (ft_is_direct_path(command))
 		return (ft_strdup(command));
-	path_env = ft_get_env_value("PATH");
+	path_env = getenv("PATH");
 	if (!path_env)
 		return (NULL);
 	paths = ft_split(path_env, ':');
@@ -100,21 +48,15 @@ char	*ft_search_command_path(char *command)
 	{
 		full_path = str_arr_join((char *[]){paths[i], "/", command}, 3);
 		if (access(full_path, X_OK) == 0)
-		{
-			ft_free_split(paths);
 			return (full_path);
-		}
 		free(full_path);
 		i++;
 	}
-	ft_free_split(paths);
 	return (NULL);
 }
 
-int	ft_shell_commands(t_shell *shell)
+int	ft_shell_command(t_shell *shell, t_exec_unit *parsed)
 {
-	char	**argv;
-	char	**envp;
 	char	*full_path;
 	pid_t	pid;
 	int		status;
@@ -124,11 +66,10 @@ int	ft_shell_commands(t_shell *shell)
 	full_path = ft_search_command_path(shell->args->content);
 	if (!full_path)
 	{
-		printf("minishell: %s: command not found\n", shell->args->content);
+		printf("minishell: %s: command not found\n", parsed->args[0]);
+		shell->exit_code = 127;
 		return (127);
 	}
-	argv = token_list_to_argv(shell->args);
-	envp = ft_get_env_to_array();
 	pid = fork();
 	if (pid == -1)
 	{
@@ -137,7 +78,7 @@ int	ft_shell_commands(t_shell *shell)
 	}
 	else if (pid == 0)
 	{
-		execve(full_path, argv, envp);
+		execve(full_path, parsed->args, shell->env);
 		perror("execve");
 		exit(126);
 	}
@@ -146,8 +87,6 @@ int	ft_shell_commands(t_shell *shell)
 		waitpid(pid, &status, 0);
 		shell->exit_code = WEXITSTATUS(status);
 	}
-	ft_free_split(argv);
-	ft_free_split(envp);
 	free(full_path);
 	return (shell->exit_code);
 }

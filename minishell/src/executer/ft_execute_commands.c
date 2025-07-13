@@ -19,10 +19,10 @@ int	ft_is_multi_command(t_shell shell)
 	return (0);
 }
 
-void    ft_execute_commands(t_shell shell)
+void    ft_execute_commands(t_shell shell, t_parser parsed)
 {
 	if (ft_is_multi_command(shell))
-		ft_multi_command(shell);
+		ft_multi_command(shell, parsed);
 	else
-		ft_one_command(shell);
+		ft_one_command(shell, parsed);
 }
