@@ -106,7 +106,7 @@ int main(int ac, char **av, char **env)
 			if (!shell.args)
 				return 1;
 			else
-				ft_execute_commands(shell, *parsed);
+				ft_execute_commands(&shell, *parsed);
 		}
 	}
 	safe_abort(0);

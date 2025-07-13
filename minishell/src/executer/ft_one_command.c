@@ -6,7 +6,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-char *get_heredoc_input(const char *delimiter)
+char *get_heredoc_input(const char *delimiter, t_shell *shell, t_parser parsed)
 {
     char *line;
     char *result = ft_strdup("");
@@ -20,9 +20,11 @@ char *get_heredoc_input(const char *delimiter)
             free(line);
             break;
         }
-        temp = ft_strjoin(result, line);
+        if (parsed.redirect->flags == U_WORD)
+            temp = ft_strjoin(result, find_dollar(line, shell->env, 0));
+        else
+            temp = ft_strjoin(result, line);
         free(line);
-
         result = ft_strjoin(temp, "\n");
     }
     return (result);
@@ -86,7 +88,7 @@ int ft_apply_redirections(t_redirect *redir)
     return (0);
 }
 
-t_exec_unit parse_exec_unit(t_token *tokens)
+t_exec_unit parse_exec_unit(t_shell *shell, t_parser parsed)
 {
     t_exec_unit unit;
     int arg_count;
@@ -94,7 +96,7 @@ t_exec_unit parse_exec_unit(t_token *tokens)
     int prev_type;
     
     // Args için yer sayısını hesapla
-    t_token *temp = tokens;
+    t_token *temp = shell->args;
     arg_count = 0;
     i = 0;
     while (temp)
@@ -105,7 +107,7 @@ t_exec_unit parse_exec_unit(t_token *tokens)
             if (temp->prev)
                 prev_type = temp->prev->type;
             // Eğer önceki token redirection operatörü değilse, bu bir argümandır
-            if (temp == tokens || !is_operator_type(prev_type))
+            if (temp == shell->args || !is_operator_type(prev_type))
                 arg_count++;
         }
         temp = temp->next;
@@ -114,7 +116,7 @@ t_exec_unit parse_exec_unit(t_token *tokens)
     unit.redirect = NULL;
     t_redirect *head = NULL;
     t_redirect *tail = NULL;
-    temp = tokens;
+    temp = shell->args;
     while (temp)
     {
         if (is_operator_type(temp->type))
@@ -130,7 +132,7 @@ t_exec_unit parse_exec_unit(t_token *tokens)
             {
                 redir->file_name = ft_strdup(temp->next->content);
                 if (temp->type == R_HERE)
-                    redir->document = get_heredoc_input(temp->next->content);
+                    redir->document = get_heredoc_input(temp->next->content, shell, parsed);
 
                 temp = temp->next; // Dosya adını atla
             }
@@ -143,7 +145,7 @@ t_exec_unit parse_exec_unit(t_token *tokens)
         else if (temp->type == S_WORD || temp->type == D_WORD || temp->type == U_WORD)
         {
             // Eğer önceki token redirection operatörü değilse, bu bir argümandır
-            if (temp == tokens || !is_operator_type(temp->prev ? temp->prev->type : 0))
+            if (temp == shell->args || !is_operator_type(temp->prev ? temp->prev->type : 0))
             {
                 unit.args[i++] = temp->content;
             }
@@ -156,10 +158,10 @@ t_exec_unit parse_exec_unit(t_token *tokens)
     return unit;
 }
 
-void ft_one_command(t_shell shell, t_parser parsed)
+void ft_one_command(t_shell *shell, t_parser parsed)
 {
     (void)parsed;
-    t_exec_unit unit = parse_exec_unit(shell.args);
+    t_exec_unit unit = parse_exec_unit(shell, parsed);
     
     if (!unit.args || !unit.args[0])
         return;
@@ -187,9 +189,9 @@ void ft_one_command(t_shell shell, t_parser parsed)
         }
     }
     if (ft_is_builtin(unit.args[0]))
-        ft_execute_builtin(&shell, &unit);
+        ft_execute_builtin(shell, &unit);
     else
-        ft_shell_command(&shell, &unit);
+        ft_shell_command(shell, &unit);
     if (saved_stdin != -1)
     {
         dup2(saved_stdin, STDIN_FILENO);
