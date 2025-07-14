@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 16:31:49 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/13 15:08:27 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/14 14:19:04 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ t_token	*ft_set_parser(t_token *token, t_parser *current)
 		}
 		token = token->next;
 	}
+	if (token && token->type == PIPE)
+		return (token->next);
 	return (token);
 }
 
