@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/13 19:04:09 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/15 13:52:02 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,50 @@
 char	*find_dollar(char *input, char **env, int flag)
 {
 	int		i;
-	int		var_len;
 	char	*expanded;
-
-	expanded = NULL;
+	int		var_start;
+	char	*str;
+	int		var_len;
+	char	*tmp;
+	
 	i = 0;
-	if (input[0] != '$' || flag == R_HERE)
+	str = NULL;
+	expanded = ft_strdup("");
+	//sadece dolar olma kısmına da bak.
+	if (flag == R_APPEND)
 		return (input);
-	input++;
-	while (ft_isalnum(input[i]) || input[i] == '_')
-		i++;
-	var_len = i;
-	if (var_len == 0)
-		return (input - 1);
-	expanded = fill_dolar(input, env, var_len);
+	while (input[i])
+	{
+		if (input[i] == '$')
+		{
+			var_start = i + 1;
+			var_len = 0;
+			while (ft_isalnum(input[var_start + var_len]) || input[var_start + var_len] == '_')
+				var_len++;
+
+			if (var_len > 0)
+			{
+				str = fill_dolar(&input[var_start], env, var_len);
+				expanded = ft_strjoin(expanded, str);
+				i = var_start + var_len;
+			}
+			else
+			{
+				tmp = ft_strdup("$");
+				expanded = ft_strjoin(expanded, tmp);
+				i++;
+				continue;
+			}
+		}
+		else
+		{
+			tmp = ft_alloc(2);
+			tmp[0] = input[i];
+			tmp[1] = '\0';
+			expanded = ft_strjoin(expanded, tmp);
+			i++;
+		}
+	}
 	return (expanded);
 }
 
