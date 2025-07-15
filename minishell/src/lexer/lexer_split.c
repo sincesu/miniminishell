@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 01:18:00 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/13 15:05:20 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/15 20:33:57 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	get_token_len(const char *s)
 			i++;
 		if (s[i] == quote)
 			i++;
-		return i;
+		return (i);
 	}
 	while (s[i] && !is_quote(s[i]) && s[i] != ' ' && !is_operator(s[i]))
 		i++;
@@ -71,7 +71,7 @@ static int	count_tokens(const char *s)
 		word_len = 0;
 		token_collect(&s[i], &word_len);
 		if (word_len <= 0)
-			break;
+			break ;
 		count++;
 		i += word_len;
 	}
@@ -96,7 +96,7 @@ void	fill_tokens_and_flags(const char *s, char **result, int *flag_array)
 		word_len = 0;
 		result[k] = token_collect(&s[i], &word_len);
 		if (word_len <= 0)
-			break;
+			break ;
 		lookahead = i + word_len;
 		flag_array[k] = (lookahead < (int)ft_strlen(s) && s[lookahead] != ' '
 				&& !is_operator(s[lookahead]));
