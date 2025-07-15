@@ -98,7 +98,7 @@ void	handle_export_arg(t_shell *shell, char *arg)
 	}
 }
 
-void	ft_export(t_shell *shell)
+int	ft_export(t_shell *shell)
 {
 	t_token	*token;
 
@@ -106,7 +106,7 @@ void	ft_export(t_shell *shell)
 	if (!token->next)
 	{
 		export_list_printer(shell);
-		return ;
+		return (500);
 	}
 	token = token->next;
 	while (token)
@@ -114,4 +114,5 @@ void	ft_export(t_shell *shell)
 		handle_export_arg(shell, token->content);
 		token = token->next;
 	}
+	return (0);
 }

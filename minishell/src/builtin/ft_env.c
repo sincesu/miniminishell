@@ -80,11 +80,12 @@ void	append_env_variable(t_shell *shell, char *content)
 	shell->env = new_env;
 }
 
-void	ft_env(char **env_copy)
+int	ft_env(char **env_copy)
 {
 	int	i;
 
 	i = 0;
 	while (env_copy[i])
 		printf("%s\n", env_copy[i++]);
+	return (0);
 }

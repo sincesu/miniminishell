@@ -22,7 +22,7 @@ int	ft_is_multi_command(t_shell shell)
 void    ft_execute_commands(t_shell *shell, t_parser parsed)
 {
 	if (ft_is_multi_command(*shell))
-		ft_multi_command(shell, parsed);
+		shell->exit_code = ft_multi_command(shell, parsed);
 	else
-		ft_one_command(shell, parsed);
+		shell->exit_code = ft_one_command(shell, parsed);
 }

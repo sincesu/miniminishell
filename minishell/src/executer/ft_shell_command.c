@@ -17,7 +17,7 @@ char	*str_arr_join(char **arr, int count)
 	int		i;
 
 	if (arr == NULL || *arr == NULL || count == 0)
-		return NULL;
+		return (NULL);
 	total_len = 0;
     i = 0; 
 	while (i < count)
@@ -64,8 +64,7 @@ int	ft_shell_command(t_shell *shell, t_exec_unit *parsed)
 	if (!full_path)
 	{
 		printf("minishell: %s: command not found\n", parsed->args[0]);
-		shell->exit_code = 127;
-		return 127;
+		return (127);
 	}
 	pid = fork();
 	if (pid == -1)
@@ -77,12 +76,12 @@ int	ft_shell_command(t_shell *shell, t_exec_unit *parsed)
 	{
 		execve(full_path, parsed->args, shell->env);
 		perror("execve");
-		exit(126);
+		return(126);
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
-		shell->exit_code = WEXITSTATUS(status);
+		return (WEXITSTATUS(status));
 	}
 	return (shell->exit_code);
 }

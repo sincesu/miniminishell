@@ -59,15 +59,16 @@ char	**copy_env_without_unset(char **env, t_token *head)
 	return (new_env);
 }
 
-void	ft_unset(t_shell *shell)
+int	ft_unset(t_shell *shell)
 {
 	t_token	*head;
 	char	**new_env;
 
 	head = shell->args;
 	if (!head || !head->next)
-		return ;
+		return (500);
 	head = head->next;
 	new_env = copy_env_without_unset(shell->env, head);
 	shell->env = new_env;
+	return (0);
 }

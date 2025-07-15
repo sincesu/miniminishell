@@ -160,13 +160,13 @@ t_exec_unit parse_exec_unit(t_shell *shell, t_parser parsed)
     return unit;
 }
 
-void ft_one_command(t_shell *shell, t_parser parsed)
+int ft_one_command(t_shell *shell, t_parser parsed)
 {
     (void)parsed;
     t_exec_unit unit = parse_exec_unit(shell, parsed);
     
     if (!unit.args || !unit.args[0])
-        return;
+        return (500);
     int saved_stdin = -1;
     int saved_stdout = -1;
     
@@ -187,13 +187,13 @@ void ft_one_command(t_shell *shell, t_parser parsed)
                 dup2(saved_stdout, STDOUT_FILENO);
                 close(saved_stdout);
             }
-            return;
+            return (500);
         }
     }
     if (ft_is_builtin(unit.args[0]))
-        ft_execute_builtin(shell, &unit);
+        return (ft_execute_builtin(shell, &unit));
     else
-        ft_shell_command(shell, &unit);
+        return (ft_shell_command(shell, &unit));
     if (saved_stdin != -1)
     {
         dup2(saved_stdin, STDIN_FILENO);

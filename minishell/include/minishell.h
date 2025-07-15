@@ -107,21 +107,21 @@ int			syntax_error(t_shell *shell);
 int			operator_error(int c, t_shell *shell);
 int			quote_error(char *input, t_shell *shell);
 
-void		ft_cd(const char *path);
+int			ft_cd(const char *path);
 int			ft_pwd(void);
 int			ft_echo(char **args);
 void		ft_exit(t_shell *shell);
-void		ft_env(char **env_copy);
+int			ft_env(char **env_copy);
+int			ft_unset(t_shell *shell);
+int			ft_export(t_shell *shell);
 
 int		is_remove_env(char *env_var, t_token *head);
 char	**copy_env_without_unset(char **env, t_token *head);
-void	ft_unset(t_shell *shell);
 int		index_searcher(char *s, int c);
 int		export_count(char **str);
 int		arg_counter(t_token *token);
 char	*find_in_env(char **env, char *name);
 int		find_in_env_index(char **env, char *name);
-void	ft_export(t_shell *shell);
 void	export_list_printer(t_shell *shell);
 void	update_env_value(char **env, int idx, char *name, char *eq);
 void	append_env_variable(t_shell *shell, char *content);
@@ -143,17 +143,19 @@ void		ft_lstdelone_token(t_token *lst, void (*del)(void *));
 int			ft_lstsize_token(t_token *lst);
 t_token		*ft_lstlast_token(t_token *lst);
 
+//signal kısmı
 void		ft_handle_sigint(int signum);
 void		ft_handle_sigquit(int signum);
 void		ft_init_signals(void);
 
+//executer kısmı
 void		ft_execute_commands(t_shell *shell, t_parser parsed);
 int			ft_shell_command(t_shell *shell, t_exec_unit *parsed);
-void		ft_one_command(t_shell *shell, t_parser parsed);
-void		ft_multi_command(t_shell *shell, t_parser parsed);
+int			ft_one_command(t_shell *shell, t_parser parsed);
+int			ft_multi_command(t_shell *shell, t_parser parsed);
 
 int			ft_apply_redirections(t_redirect *redir);
 int			ft_is_builtin(char *cmd);
-void		ft_execute_builtin(t_shell *shell, t_exec_unit *unit);
+int			ft_execute_builtin(t_shell *shell, t_exec_unit *unit);
 
 #endif
