@@ -24,9 +24,9 @@ void ft_execute_builtin(t_shell *shell, t_exec_unit *unit)
     else if (ft_strncmp(unit->args[0], "pwd", 4) == 0)
         ft_pwd();
     else if (ft_strncmp(unit->args[0], "export", 7) == 0)
-        printf("export\n");
+        ft_export(shell);
     else if (ft_strncmp(unit->args[0], "unset", 6) == 0)
-        printf("unset\n");
+        ft_unset(shell);
     else if (ft_strncmp(unit->args[0], "env", 4) == 0)
         ft_env(shell->env);
     else if (ft_strncmp(unit->args[0], "exit", 5) == 0)
