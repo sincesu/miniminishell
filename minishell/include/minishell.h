@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/13 15:04:31 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/15 12:06:28 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_shell
 	char	*old_input;
 	t_token	*args;
 	char	**env;
+	char	**export_only_list;
 	int		exit_code;
 }	t_shell;
 
@@ -111,6 +112,20 @@ int			ft_pwd(void);
 int			ft_echo(char **args);
 void		ft_exit(t_shell *shell);
 void		ft_env(char **env_copy);
+
+int		is_remove_env(char *env_var, t_token *head);
+char	**copy_env_without_unset(char **env, t_token *head);
+void	ft_unset(t_shell *shell);
+int		index_searcher(char *s, int c);
+int		export_count(char **str);
+int		arg_counter(t_token *token);
+char	*find_in_env(char **env, char *name);
+int		find_in_env_index(char **env, char *name);
+void	ft_export(t_shell *shell);
+void	export_list_printer(t_shell *shell);
+void	update_env_value(char **env, int idx, char *name, char *eq);
+void	append_env_variable(t_shell *shell, char *content);
+
 
 t_parser	*parser(t_token	*token);
 int			env_len(char **env);
