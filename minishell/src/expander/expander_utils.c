@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:49:06 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/16 11:35:53 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/16 18:20:45 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,39 +38,34 @@ char	*fill_dolar(char *input, char **env, int var_len)
 		i++;
 	}
 	if (env_val)
-		expanded = ft_strdup(env_val);
+		expanded = ft_strjoin(env_val, input + var_len);
 	else
-		expanded = NULL;
+		expanded = ft_strdup(input + var_len);
 	return (expanded);
 }
 
-int	handle_dollar(char *input, char **env, char **expanded)
+int	handle_var_expand(char *s, char **env, char **expanded)
 {
-	int		var_len;
-	char	*str;
+	int		j;
+	int		varlen;
+	char	*varval;
 
-	var_len = 0;
-	while (ft_isalnum(input[var_len]) || input[var_len] == '_')
-		var_len++;
-	if (var_len > 0)
-	{
-		str = fill_dolar(input, env, var_len);
-		*expanded = ft_strjoin(*expanded, str);
-		return (var_len + 1);
-	}
-	else
-	{
-		*expanded = ft_strjoin(*expanded, "$");
-		return (1);
-	}
+	j = 1;
+	while (ft_isalnum(s[j]) || s[j] == '_')
+		j++;
+	varlen = j - 1;
+	varval = fill_dolar(s + 1, env, varlen);
+	*expanded = ft_strjoin(*expanded, varval);
+	return (j);
 }
 
-void	handle_normal_char(char *input, char **expanded, int i)
+int	handle_normal_char(char *s, char **expanded)
 {
 	char	*tmp;
 
 	tmp = ft_alloc(2);
-	tmp[0] = input[i];
+	tmp[0] = s[0];
 	tmp[1] = '\0';
 	*expanded = ft_strjoin(*expanded, tmp);
+	return (1);
 }

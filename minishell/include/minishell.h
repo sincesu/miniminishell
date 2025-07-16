@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/15 20:32:59 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/16 18:21:13 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,6 @@ int			find_in_env_index(char **env, char *name);
 void		export_list_printer(t_shell *shell);
 void		update_env_value(char **env, int idx, char *name, char *eq);
 void		append_env_variable(t_shell *shell, char *content);
-void		handle_normal_char(char *input, char **expanded, int i);
-int			handle_dollar(char *input, char **env, char **expanded);
 t_parser	*parser(t_token	*token);
 int			env_len(char **env);
 char		**copy_env(char **env);
@@ -134,6 +132,8 @@ int			red_len_counter(t_token *token);
 t_parser	*new_node(t_parser current);
 char		*fill_dolar(char *input, char **env, int var_len);
 int			is_operator_token(const char *s);
+int			handle_var_expand(char *s, char **env, char **expanded);
+int			handle_normal_char(char *s, char **expanded);
 
 t_token		*ft_lstnew_token(t_token token);
 void		ft_lstadd_back_token(t_token **lst, t_token *new_node);
