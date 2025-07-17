@@ -65,6 +65,18 @@ char	*ft_handle_oldpwd(void)
 	return (oldpwd);
 }
 
+void	ft_change_oldpwd(t_shell *shell, char *cwd)
+{
+	char	*old_pwd;
+	(void)shell;
+
+	old_pwd = ft_strdup("OLDPWD");
+	old_pwd = ft_strjoin(old_pwd, "=");
+	old_pwd = ft_strjoin(old_pwd, cwd);
+	handle_export_arg(shell, cwd);
+	free(cwd);
+}
+
 char	*ft_get_target_path(const char *path, int *needs_free)
 {
 	if (!path || path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
@@ -98,8 +110,7 @@ int	ft_cd(t_shell *shell, t_parser *parser)
 			free(target);
 		return (500);
 	}
-	setenv("OLDPWD", cwd, 1); // burası değişecek
-	free(cwd);
+	ft_change_oldpwd(shell, cwd);
 	if (chdir(target) == -1)
 	{
 		ft_putstr_fd("cd: ", 2);

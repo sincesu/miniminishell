@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/17 18:56:35 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/16 18:21:13 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ void		register_alloc_mem(void *ptr);
 void		*ft_alloc(unsigned long size);
 int			is_operator_type(int type);
 int			tokenize(char *str);
-char		*ft_handle_oldpwd(void);
 void		remove_empty_tokens(t_token **head);
 void		merger(t_token	*a);
 char		*find_dollar(char *input, char **env, int flag);
@@ -103,12 +102,13 @@ int			operator_error(int c, t_shell *shell);
 int			quote_error(char *input, t_shell *shell);
 
 int			ft_cd(t_shell *shell, t_parser *parser);
-int			ft_pwd(void);
+int			ft_pwd(t_shell *shell);
 int			ft_echo(char **args);
 void		ft_exit(t_shell *shell);
 int			ft_env(char **env_copy);
 int			ft_unset(t_shell *shell);
 int			ft_export(t_shell *shell);
+int			handle_export_arg(t_shell *shell, char *arg);
 
 int			is_remove_env(char *env_var, t_token *head);
 char		**copy_env_without_unset(char **env, t_token *head);

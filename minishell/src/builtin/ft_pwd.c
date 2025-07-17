@@ -14,8 +14,21 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "../../Libft/libft.h"
+#include "../../include/minishell.h"
 
-int	ft_pwd(void)
+void	ft_change_pwd(t_shell *shell, char *cwd)
+{
+	char	*old_pwd;
+	(void)shell;
+
+	old_pwd = ft_strdup("PWD");
+	old_pwd = ft_strjoin(old_pwd, "=");
+	old_pwd = ft_strjoin(old_pwd, cwd);
+	handle_export_arg(shell, cwd);
+	free(cwd);
+}
+
+int	ft_pwd(t_shell *shell)
 {
 	char	*pwd;
 
@@ -26,6 +39,6 @@ int	ft_pwd(void)
 		return (0);
 	}
 	ft_putendl_fd(pwd, STDOUT_FILENO);
-	free(pwd);
+	ft_change_pwd(shell, pwd);
 	return (1);
 }
