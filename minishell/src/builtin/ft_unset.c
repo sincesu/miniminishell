@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:16:57 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/14 20:24:37 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/17 20:39:39 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	ft_unset(t_shell *shell)
 
 	head = shell->args;
 	if (!head || !head->next)
-		return (500);
+		return (0);
 	head = head->next;
 	new_env = copy_env_without_unset(shell->env, head);
 	shell->env = new_env;

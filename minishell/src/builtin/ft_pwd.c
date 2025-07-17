@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:53:26 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/17 20:09:20 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/17 20:39:02 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ int	ft_pwd()
 		return (0);
 	}
 	ft_putendl_fd(pwd, STDOUT_FILENO);
-	return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:53:19 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/17 20:10:26 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/17 20:41:27 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,14 @@ int	ft_cd(t_shell *shell, t_parser *parser)
 	needs_free = 0;
 	target = ft_get_target_path(parser->args[1], &needs_free);
 	if (!target)
-		return (500);
+		return (1);
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
 		perror("getcwd");
 		if (needs_free)
 			free(target);
-		return (500);
+		return (1);
 	}
 	ft_change_oldpwd(shell, cwd);
 	if (chdir(target) == -1)
