@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:53:19 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/29 13:55:35 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/17 20:10:26 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,9 @@ char	*ft_handle_oldpwd(void)
 void	ft_change_oldpwd(t_shell *shell, char *cwd)
 {
 	char	*old_pwd;
-	(void)shell;
 
-	old_pwd = ft_strdup("OLDPWD");
-	old_pwd = ft_strjoin(old_pwd, "=");
-	old_pwd = ft_strjoin(old_pwd, cwd);
-	handle_export_arg(shell, cwd);
+	old_pwd = ft_strjoin("OLDPWD=", cwd);
+	handle_export_arg(shell, old_pwd);
 	free(cwd);
 }
 
@@ -91,12 +88,22 @@ char	*ft_get_target_path(const char *path, int *needs_free)
 	return ((char *)path);
 }
 
+void	ft_change_pwd(t_shell *shell, char *cwd)
+{
+	char	*pwd;
+
+	pwd = ft_strjoin("PWD=", cwd);
+	handle_export_arg(shell, pwd);
+	free(cwd);
+}
+
 int	ft_cd(t_shell *shell, t_parser *parser)
 {
 	char	*target;
 	char	*cwd;
 	int		needs_free;
-
+	char	*new_cwd;
+	
 	(void)shell;
 	needs_free = 0;
 	target = ft_get_target_path(parser->args[1], &needs_free);
@@ -118,6 +125,8 @@ int	ft_cd(t_shell *shell, t_parser *parser)
 		ft_putstr_fd(": ", 2);
 		perror("");
 	}
+	new_cwd = getcwd(NULL, 0);
+	ft_change_pwd(shell, new_cwd);
 	if (needs_free)
 		free(target);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:13:03 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/17 17:18:27 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:37:39 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ int	handle_export_arg(t_shell *shell, char *arg)
 	int		len;
 	int		idx;
 
-	if (check_export_arg(shell, arg))
-		return (1);
 	eq = ft_strchr(arg, '=');
 	if (eq)
 	{
@@ -125,6 +123,8 @@ int	ft_export(t_shell *shell)
 	token = token->next;
 	while (token)
 	{
+		if (check_export_arg(shell, token->content))
+			return (1);
 		if(handle_export_arg(shell, token->content))
 			return (1);
 		token = token->next;

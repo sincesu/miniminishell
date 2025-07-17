@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/16 18:21:13 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/17 20:09:27 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,14 @@ int			operator_error(int c, t_shell *shell);
 int			quote_error(char *input, t_shell *shell);
 
 int			ft_cd(t_shell *shell, t_parser *parser);
-int			ft_pwd(t_shell *shell);
+int			ft_pwd();
 int			ft_echo(char **args);
 void		ft_exit(t_shell *shell);
 int			ft_env(char **env_copy);
 int			ft_unset(t_shell *shell);
 int			ft_export(t_shell *shell);
 int			handle_export_arg(t_shell *shell, char *arg);
-
+char		*ft_handle_oldpwd(void);
 int			is_remove_env(char *env_var, t_token *head);
 char		**copy_env_without_unset(char **env, t_token *head);
 int			index_searcher(char *s, int c);

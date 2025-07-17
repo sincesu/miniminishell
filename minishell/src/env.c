@@ -29,13 +29,16 @@ int	env_len(char **env)
 char	**empty_env()
 {
 	char	**new_env;
-
+	char	*cwd;
+	
+	cwd = getcwd(NULL, 0);
     new_env = ft_alloc(sizeof(char *) * 5);
-	new_env[0] = ft_strdup("PWD=");
+	new_env[0] = ft_strjoin("PWD=", cwd);
 	new_env[1] = ft_strdup("SHLVL=1");
 	new_env[2] = ft_strdup("OLDPWD=");
 	new_env[3] = ft_strdup("_=/usr/bin/env");
 	new_env[4] = NULL;
+	free(cwd);
 	return (new_env);
 }
 
