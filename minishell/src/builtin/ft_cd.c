@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../../Libft/libft.h"
+#include "../../include/minishell.h"
 
 char	*ft_handle_home_path(const char *path)
 {
@@ -78,25 +79,26 @@ char	*ft_get_target_path(const char *path, int *needs_free)
 	return ((char *)path);
 }
 
-void	ft_cd(const char *path)
+int	ft_cd(t_shell *shell, t_parser *parser)
 {
 	char	*target;
 	char	*cwd;
 	int		needs_free;
 
+	(void)shell;
 	needs_free = 0;
-	target = ft_get_target_path(path, &needs_free);
+	target = ft_get_target_path(parser->args[1], &needs_free);
 	if (!target)
-		return ;
+		return (500);
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
 		perror("getcwd");
 		if (needs_free)
 			free(target);
-		return ;
+		return (500);
 	}
-	setenv("OLDPWD", cwd, 1);
+	setenv("OLDPWD", cwd, 1); // burası değişecek
 	free(cwd);
 	if (chdir(target) == -1)
 	{
@@ -107,4 +109,5 @@ void	ft_cd(const char *path)
 	}
 	if (needs_free)
 		free(target);
+	return (0);
 }

@@ -1,70 +1,113 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 12:53:21 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/25 12:53:22 by saincesu         ###   ########.fr       */
+/*   Created: 2025/06/25 12:53:19 by saincesu          #+#    #+#             */
+/*   Updated: 2025/06/29 13:55:35 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "../../Libft/libft.h"
+#include "../../include/minishell.h"
 
-static int	ft_is_n_option(char *arg)
+char	*ft_handle_home_path(const char *path)
 {
-	if (!arg || arg[0] != '-')
-		return (0);
-	arg++;
-	while (*arg)
+	char	*home;
+	char	*target;
+	size_t	len;
+	size_t	i;
+
+	home = getenv("HOME");
+	if (!home)
 	{
-		if (*arg != 'n')
-			return (0);
-		arg++;
+		ft_putstr_fd("cd: HOME not set\n", 2);
+		return (NULL);
 	}
-	return (1);
-}
-
-static void	ft_print_args(char **args, int i, int n_option)
-{
-	int	first;
-
-	if (!args)
-		return ;
-	first = 1;
-	while (args[i])
+	if (!path || path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
+		return (home);
+	len = ft_strlen(home) + ft_strlen(path + 1) + 1;
+	target = malloc(len);
+	if (!target)
 	{
-		if (!first)
-			ft_putchar_fd(' ', STDOUT_FILENO);
-		ft_putstr_fd(args[i], STDOUT_FILENO);
-		first = 0;
+		perror("malloc");
+		return (NULL);
+	}
+	i = 0;
+	while (home[i])
+	{
+		target[i] = home[i];
 		i++;
 	}
-	if (!n_option)
-		ft_putchar_fd('\n', STDOUT_FILENO);
+	while (path[++i - ft_strlen(home)])
+		target[i - 1] = path[i - ft_strlen(home)];
+	target[i - 1] = '\0';
+	return (target);
 }
 
-int	ft_echo(char **args)
+char	*ft_handle_oldpwd(void)
 {
-	int	i;
-	int	n_option;
+	char	*oldpwd;
 
-	if (!args)
-		return (0);
-	if (!args[1])
+	oldpwd = getenv("OLDPWD");
+	if (!oldpwd)
 	{
-		ft_putchar_fd('\n', STDOUT_FILENO);
-		return (1);
+		ft_putstr_fd("cd: OLDPWD not set\n", 2);
+		return (NULL);
 	}
-	i = 1;
-	n_option = 0;
-	while (args[i] && ft_is_n_option(args[i]))
+	ft_putstr_fd(oldpwd, 1);
+	ft_putchar_fd('\n', 1);
+	return (oldpwd);
+}
+
+char	*ft_get_target_path(const char *path, int *needs_free)
+{
+	if (!path || path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
+		return (ft_handle_home_path(path));
+	else if (path[0] == '-' && path[1] == '\0')
+		return (ft_handle_oldpwd());
+	else if (path[0] == '~' && path[1] == '/')
 	{
-		n_option = 1;
-		i++;
+		*needs_free = 1;
+		return (ft_handle_home_path(path));
 	}
-	ft_print_args(args, i, n_option);
-	return (1);
+	return ((char *)path);
+}
+
+int	ft_cd(t_shell *shell, t_parser *parser)
+{
+	char	*target;
+	char	*cwd;
+	int		needs_free;
+
+	(void)shell;
+	needs_free = 0;
+	target = ft_get_target_path(parser->args[1], &needs_free);
+	if (!target)
+		return (500);
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+	{
+		perror("getcwd");
+		if (needs_free)
+			free(target);
+		return (500);
+	}
+	setenv("OLDPWD", cwd, 1); // burası değişecek
+	free(cwd);
+	if (chdir(target) == -1)
+	{
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(target, 2);
+		ft_putstr_fd(": ", 2);
+		perror("");
+	}
+	if (needs_free)
+		free(target);
+	return (0);
 }

@@ -49,12 +49,6 @@ typedef struct s_redirect
 	struct s_redirect	*next;
 }	t_redirect;
 
-typedef struct s_exec_unit
-{
-	char		**args;
-	t_redirect	*redirect;
-}	t_exec_unit;
-
 typedef struct s_parser
 {
 	char			**args;
@@ -106,7 +100,7 @@ int			syntax_error(t_shell *shell);
 int			operator_error(int c, t_shell *shell);
 int			quote_error(char *input, t_shell *shell);
 
-int			ft_cd(const char *path);
+int			ft_cd(t_shell *shell, t_parser *parser);
 int			ft_pwd(void);
 int			ft_echo(char **args);
 void		ft_exit(t_shell *shell);
@@ -124,6 +118,8 @@ int			find_in_env_index(char **env, char *name);
 void		export_list_printer(t_shell *shell);
 void		update_env_value(char **env, int idx, char *name, char *eq);
 void		append_env_variable(t_shell *shell, char *content);
+void		handle_normal_char(char *input, char **expanded, int i);
+int			handle_dollar(char *input, char **env, char **expanded);
 t_parser	*parser(t_token	*token);
 int			env_len(char **env);
 char		**copy_env(char **env);
@@ -132,8 +128,6 @@ int			red_len_counter(t_token *token);
 t_parser	*new_node(t_parser current);
 char		*fill_dolar(char *input, char **env, int var_len);
 int			is_operator_token(const char *s);
-int			handle_var_expand(char *s, char **env, char **expanded);
-int			handle_normal_char(char *s, char **expanded);
 
 t_token		*ft_lstnew_token(t_token token);
 void		ft_lstadd_back_token(t_token **lst, t_token *new_node);
@@ -142,17 +136,29 @@ void		ft_lstdelone_token(t_token *lst, void (*del)(void *));
 int			ft_lstsize_token(t_token *lst);
 t_token		*ft_lstlast_token(t_token *lst);
 
+//signal kısmı
 void		ft_handle_sigint(int signum);
 void		ft_handle_sigquit(int signum);
 void		ft_init_signals(void);
 
-void		ft_execute_commands(t_shell *shell, t_parser parsed);
-int			ft_shell_command(t_shell *shell, t_exec_unit *parsed);
-int			ft_one_command(t_shell *shell, t_parser parsed);
-int			ft_multi_command(t_shell *shell, t_parser parsed);
+//executer kısmı
+void		ft_execute_commands(t_shell *shell, t_parser *parsed);
+int			ft_shell_command(t_shell *shell, t_parser *parsed);
+int			ft_one_command(t_shell *shell, t_parser *parsed);
+int			ft_multi_command(t_shell *shell, t_parser *parsed);
 
 int			ft_apply_redirections(t_redirect *redir);
 int			ft_is_builtin(char *cmd);
-int			ft_execute_builtin(t_shell *shell, t_exec_unit *unit);
+int			ft_execute_builtin(t_shell *shell, t_parser *parsed);
+char		*ft_search_command_path(char *command);
+char		*ft_get_heredoc_input(const char *delimiter, t_shell *shell, t_parser parsed);
+
+// parser
+t_parser	ft_parse_command(t_shell *shell, t_parser parsed);
+t_redirect	*ft_process_redirects(t_shell *shell, t_parser parser);
+void	ft_initialize_parser(t_parser *parser, t_parser parsed);
+void	ft_count_args_redirects(t_token *tokens, int *arg_count, 
+		int *redirect_count);
+void	ft_process_args(t_shell *shell, t_parser *parser);
 
 #endif

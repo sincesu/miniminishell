@@ -15,7 +15,6 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
 
 int	ft_is_multi_command(t_shell shell)
 {
@@ -31,7 +30,7 @@ int	ft_is_multi_command(t_shell shell)
 	return (0);
 }
 
-void	ft_execute_commands(t_shell *shell, t_parser parsed)
+void	ft_execute_commands(t_shell *shell, t_parser *parsed)
 {
 	if (ft_is_multi_command(*shell))
 		shell->exit_code = ft_multi_command(shell, parsed);
