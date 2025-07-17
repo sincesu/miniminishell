@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/16 18:21:13 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:56:35 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,11 @@ void		register_alloc_mem(void *ptr);
 void		*ft_alloc(unsigned long size);
 int			is_operator_type(int type);
 int			tokenize(char *str);
+char		*ft_handle_oldpwd(void);
 void		remove_empty_tokens(t_token **head);
 void		merger(t_token	*a);
 char		*find_dollar(char *input, char **env, int flag);
+char		**update_shell_lvl(char **env);
 
 int			r_append_error(t_token *a, t_shell *shell);
 int			r_here_error(t_token *a, t_shell *shell);

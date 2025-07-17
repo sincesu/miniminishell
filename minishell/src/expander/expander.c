@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/16 18:20:38 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/17 17:19:14 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ void	remove_empty_tokens(t_token **head)
 	prev = NULL;
 	while (curr)
 	{
-		if (!curr->content || curr->content[0] == '\0')
+		if ((!curr->content || curr->content[0] == '\0')
+		&& !(curr->type == D_WORD || curr->type == S_WORD))
 		{
 			if (prev)
 				prev->next = curr->next;

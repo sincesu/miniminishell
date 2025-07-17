@@ -13,6 +13,8 @@
 #include "../include/minishell.h"
 #include "../Libft/libft.h"
 #include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 int	env_len(char **env)
 {
@@ -23,6 +25,48 @@ int	env_len(char **env)
 		i++;
 	return (i);
 }
+
+char	**empty_env()
+{
+	char	**new_env;
+
+    new_env = ft_alloc(sizeof(char *) * 5);
+	new_env[0] = ft_strdup("PWD=");
+	new_env[1] = ft_strdup("SHLVL=1");
+	new_env[2] = ft_strdup("OLDPWD=");
+	new_env[3] = ft_strdup("_=/usr/bin/env");
+	new_env[4] = NULL;
+	return (new_env);
+}
+
+char	**update_shell_lvl(char **env)
+{
+	int 	i;
+	int 	shlvl;
+	char 	*new_shlvl;
+	char	**new_env;
+
+	i = 0;
+	if (!env || !env[0])
+	{
+		new_env = empty_env();
+		return (new_env);
+	}
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
+		{
+			shlvl = ft_atoi(env[i] + 6);
+			shlvl++;
+			new_shlvl = ft_strdup("SHLVL=");
+			new_shlvl = ft_strjoin(new_shlvl, ft_itoa(shlvl));
+			env[i] = new_shlvl;
+		}
+		i++;
+	}
+	return (env);
+}
+
 
 char	**copy_env(char **env)
 {
@@ -36,8 +80,10 @@ char	**copy_env(char **env)
 	copy_env = ft_alloc(sizeof(char *) * (env_line + 1));
 	while (i < env_line)
 	{
-		copy_env[i] = ft_alloc(ft_strlen(env[i]) + 1);
-		ft_strlcpy(copy_env[i], env[i], ft_strlen(env[i]) + 1);
+		if (env[i][0] == '_' && env[i][1] == '=')
+			copy_env[i] = ft_strdup("_=/usr/bin/env");
+		else
+			copy_env[i] = ft_strdup(env[i]);
 		i++;
 	}
 	copy_env[env_line] = NULL;

@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:13:03 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/15 13:01:17 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/17 17:18:27 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,26 @@ void	add_export_only_variable(t_shell *shell, char *content)
 		export_only_variable_append(shell, content);
 }
 
-void	handle_export_arg(t_shell *shell, char *arg)
+int	check_export_arg(t_shell *shell, char *arg)
+{
+	if (!(ft_isalpha(arg[0]) || arg[0] == '_'))
+	{
+		printf("minishell: export: `%s': not a valid identifier\n", arg);
+		shell->exit_code = 1;
+		return (1);
+	}
+	return (0);
+}
+
+int	handle_export_arg(t_shell *shell, char *arg)
 {
 	char	*eq;
 	char	*name;
 	int		len;
 	int		idx;
 
+	if (check_export_arg(shell, arg))
+		return (1);
 	eq = ft_strchr(arg, '=');
 	if (eq)
 	{
@@ -96,6 +109,7 @@ void	handle_export_arg(t_shell *shell, char *arg)
 	{
 		add_export_only_variable(shell, arg);
 	}
+	return (0);
 }
 
 int	ft_export(t_shell *shell)
@@ -106,12 +120,13 @@ int	ft_export(t_shell *shell)
 	if (!token->next)
 	{
 		export_list_printer(shell);
-		return (500);
+		return (0);
 	}
 	token = token->next;
 	while (token)
 	{
-		handle_export_arg(shell, token->content);
+		if(handle_export_arg(shell, token->content))
+			return (1);
 		token = token->next;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 20:35:09 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/15 20:35:50 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/17 17:22:55 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	main(int ac, char **av, char **env)
 	t_parser	*parsed;
 	ft_bzero(&shell, sizeof(t_shell));
 	shell.env = copy_env(env);
+	shell.env = update_shell_lvl(shell.env);
 	shell.exit_code = 0;
 	if (!shell.env)
 		return (1);
