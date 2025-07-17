@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include "../../Libft/libft.h"
 #include <stdlib.h>
 
 t_mem_list	**get_head_mem(void)
@@ -70,7 +71,7 @@ void	*ft_alloc(unsigned long size)
 {
 	void	*ptr;
 
-	ptr = malloc(size);
+	ptr = ft_calloc(size, 1);
 	if (ptr == NULL)
 		safe_abort(1);
 	register_alloc_mem(ptr);
