@@ -34,7 +34,7 @@ int	ft_execute_builtin(t_shell *shell, t_parser *parser)
 	else if (ft_strncmp(parser->args[0], "cd", 3) == 0)
 		return (ft_cd(shell, parser));
 	else if (ft_strncmp(parser->args[0], "pwd", 4) == 0)
-		return (ft_pwd(shell));
+		return (ft_pwd());
 	else if (ft_strncmp(parser->args[0], "export", 7) == 0)
 		return (ft_export(shell));
 	else if (ft_strncmp(parser->args[0], "unset", 6) == 0)

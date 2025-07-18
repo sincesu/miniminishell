@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-static char *ft_get_executable_path(char *command)
+static char	*ft_get_executable_path(char *command)
 {
 	char	*full_path;
 
@@ -18,14 +18,15 @@ static char *ft_get_executable_path(char *command)
 	}
 	return (full_path);
 }
-static void ft_execute_external_command(char *path, char **args, char **env)
+
+static void	ft_execute_external_command(char *path, char **args, char **env)
 {
 	execve(path, args, env);
 	perror("execve");
 	exit(126);
 }
 
-static int ft_wait_child_process(pid_t pid)
+static int	ft_wait_child_process(pid_t pid)
 {
 	int	status;
 
@@ -34,7 +35,7 @@ static int ft_wait_child_process(pid_t pid)
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
 		return (128 + WTERMSIG(status));
-	return (1); // default fallback
+	return (1);
 }
 
 int	ft_shell_command(t_shell *shell, t_parser *parser)

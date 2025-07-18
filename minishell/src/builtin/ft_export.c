@@ -125,7 +125,7 @@ int	ft_export(t_shell *shell)
 	{
 		if (check_export_arg(shell, token->content))
 			return (1);
-		if(handle_export_arg(shell, token->content))
+		if (handle_export_arg(shell, token->content))
 			return (1);
 		token = token->next;
 	}

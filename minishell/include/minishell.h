@@ -102,7 +102,7 @@ int			operator_error(int c, t_shell *shell);
 int			quote_error(char *input, t_shell *shell);
 
 int			ft_cd(t_shell *shell, t_parser *parser);
-int			ft_pwd();
+int			ft_pwd(void);
 int			ft_echo(char **args);
 void		ft_exit(t_shell *shell);
 int			ft_env(char **env_copy);

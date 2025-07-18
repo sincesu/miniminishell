@@ -103,7 +103,7 @@ int	ft_cd(t_shell *shell, t_parser *parser)
 	char	*cwd;
 	int		needs_free;
 	char	*new_cwd;
-	
+
 	(void)shell;
 	needs_free = 0;
 	target = ft_get_target_path(parser->args[1], &needs_free);

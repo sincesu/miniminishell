@@ -5,7 +5,8 @@
 
 static int	ft_is_direct_path(char *cmd)
 {
-	return (cmd && (ft_strncmp(cmd, "/", 1) == 0 || ft_strncmp(cmd, "./", 2) == 0));
+	return (cmd && (ft_strncmp(cmd, "/", 1) == 0
+			|| ft_strncmp(cmd, "./", 2) == 0));
 }
 
 static char	*ft_str_arr_join(char **arr, int count)
@@ -17,7 +18,7 @@ static char	*ft_str_arr_join(char **arr, int count)
 	if (arr == NULL || *arr == NULL || count == 0)
 		return (NULL);
 	total_len = 0;
-    i = 0; 
+	i = 0;
 	while (i < count)
 		total_len += ft_strlen(arr[i++]);
 	result = ft_alloc(sizeof(char) * (total_len + 1));
