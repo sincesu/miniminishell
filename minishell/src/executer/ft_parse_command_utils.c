@@ -78,7 +78,8 @@ t_redirect	*ft_process_redirects(t_shell *shell, t_parser parser)
 				tail->next = redir;
 			tail = redir;
 			if (temp->next && (temp->next->type == S_WORD
-					|| temp->next->type == D_WORD || temp->next->type == U_WORD))
+					|| temp->next->type == D_WORD
+					|| temp->next->type == U_WORD))
 				temp = temp->next;
 		}
 		temp = temp->next;

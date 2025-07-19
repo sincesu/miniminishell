@@ -26,13 +26,13 @@ int	env_len(char **env)
 	return (i);
 }
 
-char	**empty_env()
+char	**empty_env(void)
 {
 	char	**new_env;
 	char	*cwd;
-	
+
 	cwd = getcwd(NULL, 0);
-    new_env = ft_alloc(sizeof(char *) * 5);
+	new_env = ft_alloc(sizeof(char *) * 5);
 	new_env[0] = ft_strjoin("PWD=", cwd);
 	new_env[1] = ft_strdup("SHLVL=1");
 	new_env[2] = ft_strdup("OLDPWD=");
@@ -44,9 +44,9 @@ char	**empty_env()
 
 char	**update_shell_lvl(char **env)
 {
-	int 	i;
-	int 	shlvl;
-	char 	*new_shlvl;
+	int		i;
+	int		shlvl;
+	char	*new_shlvl;
 	char	**new_env;
 
 	i = 0;
@@ -69,7 +69,6 @@ char	**update_shell_lvl(char **env)
 	}
 	return (env);
 }
-
 
 char	**copy_env(char **env)
 {

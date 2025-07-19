@@ -95,7 +95,7 @@ void	remove_empty_tokens(t_token **head)
 	while (curr)
 	{
 		if ((!curr->content || curr->content[0] == '\0')
-		&& !(curr->type == D_WORD || curr->type == S_WORD))
+			&& !(curr->type == D_WORD || curr->type == S_WORD))
 		{
 			if (prev)
 				prev->next = curr->next;

@@ -19,10 +19,11 @@
 
 int	main(int ac, char **av, char **env)
 {
-	(void)ac;
-	(void)av;
 	t_shell		shell;
 	t_parser	*parsed;
+
+	(void)ac;
+	(void)av;
 	ft_bzero(&shell, sizeof(t_shell));
 	shell.env = copy_env(env);
 	shell.env = update_shell_lvl(shell.env);
@@ -36,34 +37,35 @@ int	main(int ac, char **av, char **env)
 		if (!shell.old_input)
 		{
 			safe_abort(0);
-    		break ;
+			break ;
 		}
 		shell.input = ft_strdup(shell.old_input);
 		free(shell.old_input);
 		if (!shell.input)
 		{
-	    	safe_abort(0);
-    		break ;
+			safe_abort(0);
+			break ;
 		}
 		if (*shell.input)
 		{
 			add_history(shell.input);
-			if(quote_error(shell.input, &shell) || operator_error(shell.input[0], &shell))
-				continue;
+			if (quote_error(shell.input, &shell)
+				|| operator_error(shell.input[0], &shell))
+				continue ;
 			shell.args = lexer(shell.input);
 			if (!shell.args)
-				continue;
-			if(syntax_error(&shell))
-				continue;
+				continue ;
+			if (syntax_error(&shell))
+				continue ;
 			expander(&shell);
 			merger(shell.args);
 			parsed = parser(shell.args);
 			if (!shell.args)
-				return 1;
+				return (1);
 			else
 				ft_execute_commands(&shell, parsed);
 		}
 	}
 	safe_abort(0);
-	return 0;
+	return (0);
 }
