@@ -52,19 +52,21 @@ int	ft_one_command(t_shell *shell, t_parser *parsed)
 	int			exit_code;
 	int			saved_stdin;
 	int			saved_stdout;
+	t_parser	new_parsed;
 
 	if (!parsed->args || !parsed->args[0])
 		return (1);
-	ft_prepare_heredocs(shell, parsed);
+	new_parsed = ft_parse_command(shell, *parsed);
+	ft_prepare_heredocs(shell, &new_parsed);
 	saved_stdin = -1;
 	saved_stdout = -1;
-	if (ft_handle_redirections(parsed->redirect,
+	if (ft_handle_redirections(new_parsed.redirect,
 			&saved_stdin, &saved_stdout) == -1)
 		return (1);
-	if (ft_is_builtin(parsed->args[0]))
-		exit_code = ft_execute_builtin(shell, parsed);
+	if (ft_is_builtin(new_parsed.args[0]))
+		exit_code = ft_execute_builtin(shell, &new_parsed);
 	else
-		exit_code = ft_shell_command(shell, parsed);
+		exit_code = ft_shell_command(shell, &new_parsed);
 	ft_restore_std_fds(saved_stdin, saved_stdout);
 	return (exit_code);
 }

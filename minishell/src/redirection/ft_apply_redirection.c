@@ -11,7 +11,10 @@ static int	ft_apply_input_redirection(t_redirect *redir)
 
 	fd = open(redir->file_name, O_RDONLY);
 	if (fd == -1)
-		return (perror("infile"), -1);
+	{
+		perror("infile");
+		return (-1);
+	}
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	return (0);
@@ -46,7 +49,10 @@ static int	ft_apply_heredoc_redirection(t_redirect *redir)
 	int	pipefd[2];
 
 	if (pipe(pipefd) == -1)
-		return (perror("heredoc pipe"), -1);
+	{
+		perror("heredoc pipe");
+		return (-1);
+	}
 	if (redir->document)
 		ft_putstr_fd(redir->document, pipefd[1]);
 	else

@@ -18,21 +18,16 @@ void	ft_count_args_redirects(t_token *tokens, int *arg_count,
 		int *redirect_count)
 {
 	t_token	*temp;
-	int		prev_type;
 
-	temp = tokens;
 	*arg_count = 0;
 	*redirect_count = 0;
+	temp = tokens;
 	while (temp)
 	{
 		if (temp->type == S_WORD || temp->type == D_WORD
 			|| temp->type == U_WORD)
 		{
-			if (temp->prev)
-				prev_type = temp->prev->type;
-			else
-				prev_type = 0;
-			if (temp == tokens || !is_operator_type(prev_type))
+			if (!temp->prev || !is_operator_type(temp->prev->type))
 				(*arg_count)++;
 		}
 		else if (is_operator_type(temp->type))
@@ -95,21 +90,23 @@ void	ft_process_args(t_shell *shell, t_parser *parser)
 {
 	t_token	*temp;
 	int		i;
-	int		prev_type;
 
 	temp = shell->args;
 	i = 0;
 	while (temp)
 	{
-		if (temp->type == S_WORD
-			|| temp->type == D_WORD || temp->type == U_WORD)
+		if (is_operator_type(temp->type))
 		{
-			if (temp->prev)
-				prev_type = temp->prev->type;
-			else
-				prev_type = 0;
-			if (temp == shell->args || !is_operator_type(prev_type))
+			if (temp->next)
+				temp = temp->next;
+		}
+		else if ((temp->type == S_WORD || temp->type == D_WORD
+				|| temp->type == U_WORD))
+		{
+			if (!temp->prev || !is_operator_type(temp->prev->type))
+			{
 				parser->args[i++] = temp->content;
+			}
 		}
 		temp = temp->next;
 	}
