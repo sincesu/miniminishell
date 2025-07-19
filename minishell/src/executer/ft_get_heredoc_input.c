@@ -10,14 +10,12 @@ char	*ft_get_heredoc_input(const char *delimiter,
 	char	*result;
 	char	*temp;
 
-	if (!delimiter || !shell)
-		return (NULL);
 	result = ft_strdup("");
 	ft_init_signals(HEREDOC);
 	while (1)
 	{
 		line = readline("> ");
-		if (!line)
+		if (line == NULL)
 			safe_abort(0);
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
 		{
