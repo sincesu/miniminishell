@@ -12,42 +12,100 @@
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
+#include <stdio.h>
 
-int	index_searcher(char *s, int c)
+void	export_list_printer(t_shell *shell)
 {
-	int	i;
+	int		i;
+	char	*eq;
 
 	i = 0;
-	while (s[i])
+	while (shell->env && shell->env[i])
 	{
-		if (s[i] == c)
-			return (1);
+		eq = ft_strchr(shell->env[i], '=');
+		if (eq)
+			printf("declare -x %.*s=\"%s\"\n", (int)(eq - shell->env[i]),
+				shell->env[i], eq + 1);
+		else
+			printf("declare -x %s\n", shell->env[i]);
 		i++;
+	}
+	i = 0;
+	while (shell->export_only_list && shell->export_only_list[i])
+		printf("declare -x %s\n", shell->export_only_list[i++]);
+}
+
+void	export_only_variable_append(t_shell *shell, char *content)
+{
+	int		i;
+	char	**tmp;
+
+	i = 0;
+	while (shell->export_only_list && shell->export_only_list[i])
+		i++;
+	tmp = ft_alloc(sizeof(char *) * (i + 2));
+	i = 0;
+	while (shell->export_only_list && shell->export_only_list[i])
+	{
+		tmp[i] = shell->export_only_list[i];
+		i++;
+	}
+	tmp[i] = ft_strdup(content);
+	tmp[i + 1] = NULL;
+	shell->export_only_list = tmp;
+}
+
+void	add_export_only_variable(t_shell *shell, char *content)
+{
+	int	i;
+	int	found;
+
+	i = 0;
+	found = 0;
+	while (shell->export_only_list && shell->export_only_list[i])
+	{
+		if (ft_strncmp(shell->export_only_list[i], content,
+				ft_strlen(content) + 1) == 0)
+			found = 1;
+		i++;
+	}
+	if (!found)
+		export_only_variable_append(shell, content);
+}
+
+int	handle_export_arg(t_shell *shell, char *arg)
+{
+	char	*eq;
+	char	*name;
+	int		len;
+	int		idx;
+
+	eq = ft_strchr(arg, '=');
+	if (eq)
+	{
+		len = eq - arg;
+		name = ft_alloc(len + 1);
+		ft_strlcpy(name, arg, len + 1);
+		idx = find_in_env_index(shell->env, name);
+		if (idx != -1)
+			update_env_value(shell->env, idx, name, eq);
+		else
+			append_env_variable(shell, arg);
+	}
+	else
+	{
+		add_export_only_variable(shell, arg);
 	}
 	return (0);
 }
 
-int	export_count(char **str)
+int	check_export_arg(t_shell *shell, char *arg)
 {
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i])
-		i++;
-	return (i);
-}
-
-int	arg_counter(t_token *token)
-{
-	int	count;
-
-	count = 0;
-	while (token)
+	if (!(ft_isalpha(arg[0]) || arg[0] == '_'))
 	{
-		count++;
-		token = token->next;
+		printf("minishell: export: `%s': not a valid identifier\n", arg);
+		shell->exit_code = 1;
+		return (1);
 	}
-	return (count);
+	return (0);
 }
