@@ -11,36 +11,39 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include "../../Libft/libft.h"
 #include <readline/readline.h>
 #include <signal.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-void	ft_handle_sigint(int signum)
+int	g_signal_received = 0;
+
+static int	ft_dummy_event_hook(void)
 {
-	(void)signum;
-	printf("\n");
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
+	return (0);
 }
 
-void	ft_handle_sigquit(int signum)
+void	ft_init_signals(t_signal_type context_type)
 {
-	(void)signum;
-}
-
-void	ft_init_signals(void)
-{
-	struct sigaction	sa_int;
-	struct sigaction	sa_quit;
-
-	sa_int.sa_handler = ft_handle_sigint;
-	sigemptyset(&sa_int.sa_mask);
-	sa_int.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa_int, NULL);
-	sa_quit.sa_handler = ft_handle_sigquit;
-	sigemptyset(&sa_quit.sa_mask);
-	sa_quit.sa_flags = SA_RESTART;
-	sigaction(SIGQUIT, &sa_quit, NULL);
+	g_signal_received = 0;
+	if (context_type == PROMPT)
+	{
+		rl_event_hook = NULL;
+		signal(SIGINT, ft_prompt_handler);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (context_type == EXECUTION)
+	{
+		rl_event_hook = NULL;
+		signal(SIGINT, ft_execute_handler);
+		signal(SIGQUIT, ft_sigquit_handler);
+	}
+	else if (context_type == HEREDOC)
+	{
+		rl_event_hook = ft_dummy_event_hook;
+		signal(SIGINT, ft_heredoc_handler);
+		signal(SIGQUIT, SIG_IGN);
+	}
 }

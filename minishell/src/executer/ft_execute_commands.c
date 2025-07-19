@@ -32,6 +32,7 @@ int	ft_is_multi_command(t_shell shell)
 
 void	ft_execute_commands(t_shell *shell, t_parser *parsed)
 {
+	ft_init_signals(EXECUTION);
 	if (ft_is_multi_command(*shell))
 		shell->exit_code = ft_multi_command(shell, parsed);
 	else

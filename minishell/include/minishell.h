@@ -22,7 +22,7 @@ typedef enum e_token_type
 	R_HERE,
 	S_WORD,
 	D_WORD,
-	U_WORD,
+	U_WORD
 }	t_token_type;
 
 typedef struct s_mem_list
@@ -69,6 +69,15 @@ typedef struct s_shell
 	char	**export_only_list;
 	int		exit_code;
 }	t_shell;
+
+extern			int g_signal_received;
+
+typedef enum e_signal_type
+{
+	PROMPT,
+	EXECUTION,
+	HEREDOC
+}	t_signal_type;
 
 char		**lexer_split(const char *s, int **flag_array);
 t_token		*lexer(char *input);
@@ -140,9 +149,11 @@ int			ft_lstsize_token(t_token *lst);
 t_token		*ft_lstlast_token(t_token *lst);
 
 //signal kısmı
-void		ft_handle_sigint(int signum);
-void		ft_handle_sigquit(int signum);
-void		ft_init_signals(void);
+void		ft_init_signals(t_signal_type signum);
+void		ft_prompt_handler(int signum);
+void		ft_sigquit_handler(int signum);
+void		ft_execute_handler(int signum);
+void		ft_heredoc_handler(int signum);
 
 //executer kısmı
 void		ft_execute_commands(t_shell *shell, t_parser *parsed);

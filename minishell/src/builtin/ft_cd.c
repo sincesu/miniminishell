@@ -65,15 +65,6 @@ char	*ft_handle_oldpwd(void)
 	return (oldpwd);
 }
 
-void	ft_change_oldpwd(t_shell *shell, char *cwd)
-{
-	char	*old_pwd;
-
-	old_pwd = ft_strjoin("OLDPWD=", cwd);
-	handle_export_arg(shell, old_pwd);
-	free(cwd);
-}
-
 char	*ft_get_target_path(const char *path, int *needs_free)
 {
 	if (!path || path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
@@ -88,13 +79,14 @@ char	*ft_get_target_path(const char *path, int *needs_free)
 	return ((char *)path);
 }
 
-void	ft_change_pwd(t_shell *shell, char *cwd)
+void	ft_change_env_var(t_shell *shell, char *cwd, const char *var_name)
 {
-	char	*pwd;
+	char	*env_entry;
 
-	pwd = ft_strjoin("PWD=", cwd);
-	handle_export_arg(shell, pwd);
+	env_entry = ft_strjoin(var_name, cwd);
+	handle_export_arg(shell, env_entry);
 	free(cwd);
+	free(env_entry);
 }
 
 int	ft_cd(t_shell *shell, t_parser *parser)
@@ -102,7 +94,6 @@ int	ft_cd(t_shell *shell, t_parser *parser)
 	char	*target;
 	char	*cwd;
 	int		needs_free;
-	char	*new_cwd;
 
 	(void)shell;
 	needs_free = 0;
@@ -117,7 +108,7 @@ int	ft_cd(t_shell *shell, t_parser *parser)
 			free(target);
 		return (1);
 	}
-	ft_change_oldpwd(shell, cwd);
+	ft_change_env_var(shell, cwd, "OLDPWD=");
 	if (chdir(target) == -1)
 	{
 		ft_putstr_fd("cd: ", 2);
@@ -125,8 +116,7 @@ int	ft_cd(t_shell *shell, t_parser *parser)
 		ft_putstr_fd(": ", 2);
 		perror("");
 	}
-	new_cwd = getcwd(NULL, 0);
-	ft_change_pwd(shell, new_cwd);
+	ft_change_env_var(shell, getcwd(NULL, 0), "PWD=");
 	if (needs_free)
 		free(target);
 	return (0);

@@ -13,6 +13,7 @@ char	*ft_get_heredoc_input(const char *delimiter,
 	if (!delimiter || !shell)
 		return (NULL);
 	result = ft_strdup("");
+	ft_init_signals(HEREDOC);
 	while (1)
 	{
 		line = readline("> ");
@@ -30,5 +31,6 @@ char	*ft_get_heredoc_input(const char *delimiter,
 		free(line);
 		result = ft_strjoin(temp, "\n");
 	}
+	ft_init_signals(PROMPT);
 	return (result);
 }
