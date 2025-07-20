@@ -44,7 +44,7 @@ char	*expand(char *input, t_shell *shell, int flag)
 	exit_code = NULL;
 	result = NULL;
 	if (input[0] == '~' && ft_strlen(input) == 1)
-		ft_strlcpy(input, "$HOME", 6);
+		input = ft_strdup("$HOME");
 	if (input[0] == '$' && input[1] == '?')
 	{
 		exit_code = ft_itoa(shell->exit_code);
