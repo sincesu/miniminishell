@@ -36,57 +36,6 @@ void	ft_count_args_redirects(t_token *tokens, int *arg_count,
 	}
 }
 
-static t_redirect	*ft_create_redirect(t_token *temp, t_shell *shell,
-		t_parser parser)
-{
-	t_redirect	*redir;
-
-	redir = ft_alloc(sizeof(t_redirect));
-	redir->type = temp->type;
-	redir->flags = 0;
-	redir->document = NULL;
-	redir->next = NULL;
-	if (temp->next && (temp->next->type == S_WORD
-			|| temp->next->type == D_WORD || temp->next->type == U_WORD))
-	{
-		redir->file_name = ft_strdup(temp->next->content);
-		if (temp->type == R_HERE)
-			redir->document = ft_get_heredoc_input(temp->next->content,
-					shell, parser);
-	}
-	return (redir);
-}
-
-t_redirect	*ft_process_redirects(t_shell *shell, t_parser parser)
-{
-	t_token		*temp;
-	t_redirect	*head;
-	t_redirect	*tail;
-	t_redirect	*redir;
-
-	head = NULL;
-	tail = NULL;
-	temp = shell->args;
-	while (temp)
-	{
-		if (is_operator_type(temp->type))
-		{
-			redir = ft_create_redirect(temp, shell, parser);
-			if (!head)
-				head = redir;
-			else
-				tail->next = redir;
-			tail = redir;
-			if (temp->next && (temp->next->type == S_WORD
-					|| temp->next->type == D_WORD
-					|| temp->next->type == U_WORD))
-				temp = temp->next;
-		}
-		temp = temp->next;
-	}
-	return (head);
-}
-
 void	ft_process_args(t_shell *shell, t_parser *parser)
 {
 	t_token	*temp;

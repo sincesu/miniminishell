@@ -26,7 +26,7 @@ char	*ft_handle_home_path(const char *path)
 	home = getenv("HOME");
 	if (!home)
 	{
-		ft_putstr_fd("cd: HOME not set\n", 2);
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 		return (NULL);
 	}
 	if (!path || path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
@@ -57,7 +57,7 @@ char	*ft_handle_oldpwd(void)
 	oldpwd = getenv("OLDPWD");
 	if (!oldpwd)
 	{
-		ft_putstr_fd("cd: OLDPWD not set\n", 2);
+		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
 		return (NULL);
 	}
 	ft_putstr_fd(oldpwd, 1);
@@ -86,7 +86,6 @@ void	ft_change_env_var(t_shell *shell, char *cwd, const char *var_name)
 	env_entry = ft_strjoin(var_name, cwd);
 	handle_export_arg(shell, env_entry);
 	free(cwd);
-	free(env_entry);
 }
 
 int	ft_cd(t_shell *shell, t_parser *parser)

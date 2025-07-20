@@ -171,7 +171,6 @@ char		*ft_get_heredoc_input(const char *delimiter,
 
 // parser
 t_parser	ft_parse_command(t_shell *shell, t_parser parsed);
-t_redirect	*ft_process_redirects(t_shell *shell, t_parser parser);
 void		ft_initialize_parser(t_parser *parser, t_parser parsed);
 void		ft_count_args_redirects(t_token *tokens, int *arg_count,
 				int *redirect_count);

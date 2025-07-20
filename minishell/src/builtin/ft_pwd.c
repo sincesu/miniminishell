@@ -27,5 +27,6 @@ int	ft_pwd(void)
 		return (0);
 	}
 	ft_putendl_fd(pwd, STDOUT_FILENO);
+	free(pwd);
 	return (0);
 }
