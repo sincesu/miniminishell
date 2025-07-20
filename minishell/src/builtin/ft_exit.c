@@ -69,28 +69,26 @@ void	ft_exit(t_shell *shell)
 {
 	int	exit_code;
 
+	ft_putendl_fd("exit", 2);
 	if (shell->args == NULL || shell->args->next == NULL)
 	{
-		printf("exit\n");
 		safe_abort(shell->exit_code);
 		return ;
 	}
 	if (ft_check_param(shell->args->next->content))
 	{
-		printf("exit\n");
-		printf("minishell: exit: %s: numeric argument required\n",
-			shell->args->next->content);
-		shell->exit_code = 2;
-		safe_abort(shell->exit_code);
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(shell->args->next->content, 2);
+		ft_putendl_fd(": numeric argument required", 2);
+		safe_abort(2);
 		return ;
 	}
 	if (shell->args->next->next)
 	{
-		printf("exit\n");
-		printf("minishell: exit: too many arguments\n");
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
+		shell->exit_code = 1;
 		return ;
 	}
 	exit_code = exit_atoi(shell->args->next->content);
-	printf("exit\n");
 	safe_abort(exit_code);
 }

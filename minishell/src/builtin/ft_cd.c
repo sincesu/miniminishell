@@ -22,6 +22,7 @@ char	*ft_handle_home_path(const char *path)
 	char	*target;
 	size_t	len;
 	size_t	i;
+	size_t	j;
 
 	home = getenv("HOME");
 	if (!home)
@@ -30,8 +31,8 @@ char	*ft_handle_home_path(const char *path)
 		return (NULL);
 	}
 	if (!path || path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
-		return (home);
-	len = ft_strlen(home) + ft_strlen(path + 1) + 1;
+		return (ft_strdup(home));
+	len = ft_strlen(home) + ft_strlen(path) + 1;
 	target = malloc(len);
 	if (!target)
 	{
@@ -44,9 +45,12 @@ char	*ft_handle_home_path(const char *path)
 		target[i] = home[i];
 		i++;
 	}
-	while (path[++i - ft_strlen(home)])
-		target[i - 1] = path[i - ft_strlen(home)];
-	target[i - 1] = '\0';
+	j = 1; // Skip the '~'
+	while (path[j])
+	{
+		target[i++] = path[j++];
+	}
+	target[i] = '\0';
 	return (target);
 }
 
@@ -116,7 +120,6 @@ int	ft_cd(t_shell *shell, t_parser *parser)
 		perror("");
 	}
 	ft_change_env_var(shell, getcwd(NULL, 0), "PWD=");
-	if (needs_free)
-		free(target);
+	free(target);
 	return (0);
 }
