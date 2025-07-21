@@ -10,80 +10,37 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/minishell.h"
+#include "../../Libft/libft.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "../../Libft/libft.h"
-#include "../../include/minishell.h"
 
-char	*ft_handle_home_path(const char *path)
+static void	ft_print_env_error(char *var)
+{
+	ft_putstr_fd("minishell: cd: ", 2);
+	ft_putstr_fd(var, 2);
+	ft_putstr_fd(" not set\n", 2);
+}
+
+static char	*resolve_home_path(t_shell *shell, char *path)
 {
 	char	*home;
-	char	*target;
-	size_t	len;
-	size_t	i;
-	size_t	j;
+	char	*result;
 
-	home = getenv("HOME");
-	if (!home)
+	home = find_dollar("$HOME", shell->env, 0);
+	if (home == NULL)
 	{
-		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+		ft_print_env_error("HOME");
 		return (NULL);
 	}
-	if (!path || path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
-		return (ft_strdup(home));
-	len = ft_strlen(home) + ft_strlen(path) + 1;
-	target = malloc(len);
-	if (!target)
-	{
-		perror("malloc");
+	result = ft_strjoin(home, path + 1);
+	if (!result)
 		return (NULL);
-	}
-	i = 0;
-	while (home[i])
-	{
-		target[i] = home[i];
-		i++;
-	}
-	j = 1; // Skip the '~'
-	while (path[j])
-	{
-		target[i++] = path[j++];
-	}
-	target[i] = '\0';
-	return (target);
+	return (result);
 }
 
-char	*ft_handle_oldpwd(void)
-{
-	char	*oldpwd;
-
-	oldpwd = getenv("OLDPWD");
-	if (!oldpwd)
-	{
-		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
-		return (NULL);
-	}
-	ft_putstr_fd(oldpwd, 1);
-	ft_putchar_fd('\n', 1);
-	return (oldpwd);
-}
-
-char	*ft_get_target_path(const char *path, int *needs_free)
-{
-	if (!path || path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
-		return (ft_handle_home_path(path));
-	else if (path[0] == '-' && path[1] == '\0')
-		return (ft_handle_oldpwd());
-	else if (path[0] == '~' && path[1] == '/')
-	{
-		*needs_free = 1;
-		return (ft_handle_home_path(path));
-	}
-	return ((char *)path);
-}
-
-void	ft_change_env_var(t_shell *shell, char *cwd, const char *var_name)
+static void	ft_change_env_var(t_shell *shell, char *cwd, char *var_name)
 {
 	char	*env_entry;
 
@@ -92,34 +49,53 @@ void	ft_change_env_var(t_shell *shell, char *cwd, const char *var_name)
 	free(cwd);
 }
 
+static char	*ft_get_target_path(t_shell *shell, char *path)
+{
+	char	*old_pwd;
+
+	if (!path || path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
+		return (resolve_home_path(shell, "~"));
+	else if (path[0] == '~' && path[1] == '/')
+		return (resolve_home_path(shell, path));
+	else if (path[0] == '-' && path[1] == '\0')
+	{
+		old_pwd = find_dollar("$OLDPWD", shell->env, 0);
+		if (old_pwd == NULL)
+		{
+			ft_print_env_error("OLDPWD");
+			return (NULL);
+		}
+		ft_putendl_fd(old_pwd, 1);
+		return (old_pwd);
+	}
+	return (path);
+}
+
 int	ft_cd(t_shell *shell, t_parser *parser)
 {
 	char	*target;
 	char	*cwd;
-	int		needs_free;
+	char	*new_cwd;
 
-	(void)shell;
-	needs_free = 0;
-	target = ft_get_target_path(parser->args[1], &needs_free);
+	target = ft_get_target_path(shell, parser->args[1]);
 	if (!target)
 		return (1);
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		perror("getcwd");
-		if (needs_free)
-			free(target);
+		perror("cd: getcwd");
 		return (1);
 	}
 	ft_change_env_var(shell, cwd, "OLDPWD=");
 	if (chdir(target) == -1)
 	{
-		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(target, 2);
-		ft_putstr_fd(": ", 2);
-		perror("");
+		ft_putendl_fd(": No such file or directory", 2);
+		return (1);
 	}
-	ft_change_env_var(shell, getcwd(NULL, 0), "PWD=");
-	free(target);
+	new_cwd = getcwd(NULL, 0);
+	if (new_cwd)
+		ft_change_env_var(shell, new_cwd, "PWD=");
 	return (0);
 }
