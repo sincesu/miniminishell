@@ -114,7 +114,7 @@ int			ft_cd(t_shell *shell, t_parser *parser);
 int			ft_pwd(void);
 int			ft_echo(char **args);
 void		ft_exit(t_shell *shell);
-int			ft_env(char **env_copy);
+int			ft_env(t_shell *shell);
 int			ft_unset(t_shell *shell);
 int			ft_export(t_shell *shell);
 int			handle_export_arg(t_shell *shell, char *arg);

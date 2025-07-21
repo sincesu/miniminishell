@@ -80,12 +80,29 @@ void	append_env_variable(t_shell *shell, char *content)
 	shell->env = new_env;
 }
 
-int	ft_env(char **env_copy)
+int	ft_env(t_shell *shell)
 {
 	int	i;
 
+	if (shell->args->next && shell->args->next->type == U_WORD)
+	{
+		if (shell->args->next->content[0] == '-')
+		{
+			ft_putstr_fd("env: invalid option -- \'", 2);
+			ft_putchar_fd(shell->args->next->content[1], 2);
+			ft_putendl_fd("\'", 2);
+			return (125);
+		}
+		else
+		{
+			ft_putstr_fd("env: \'", 2);
+			ft_putstr_fd(shell->args->next->content, 2);
+			ft_putendl_fd("\': No such file or directory", 2);
+			return (127);
+		}
+	}
 	i = 0;
-	while (env_copy[i])
-		printf("%s\n", env_copy[i++]);
+	while (shell->env[i])
+		printf("%s\n", shell->env[i++]);
 	return (0);
 }

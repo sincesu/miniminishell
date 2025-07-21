@@ -40,7 +40,7 @@ int	ft_execute_builtin(t_shell *shell, t_parser *parser)
 	else if (ft_strncmp(parser->args[0], "unset", 6) == 0)
 		return (ft_unset(shell));
 	else if (ft_strncmp(parser->args[0], "env", 4) == 0)
-		return (ft_env(shell->env));
+		return (ft_env(shell));
 	else if (ft_strncmp(parser->args[0], "exit", 5) == 0)
 		ft_exit(shell);
 	return (1);
