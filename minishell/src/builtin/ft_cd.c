@@ -23,7 +23,7 @@ static void	ft_print_env_error(char *var)
 	ft_putstr_fd(" not set\n", 2);
 }
 
-static char	*resolve_home_path(t_shell *shell, char *path)
+static char	*ft_resolve_home_path(t_shell *shell, char *path)
 {
 	char	*home;
 	char	*result;
@@ -53,10 +53,8 @@ static char	*ft_get_target_path(t_shell *shell, char *path)
 {
 	char	*old_pwd;
 
-	if (!path || path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
-		return (resolve_home_path(shell, "~"));
-	else if (path[0] == '~' && path[1] == '/')
-		return (resolve_home_path(shell, path));
+	if (path[0] == '~' && path[1] == '/')
+		return (ft_resolve_home_path(shell, path));
 	else if (path[0] == '-' && path[1] == '\0')
 	{
 		old_pwd = find_dollar("$OLDPWD", shell->env, 0);
