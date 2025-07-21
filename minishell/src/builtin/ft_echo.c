@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "../../Libft/libft.h"
 
 static int	ft_is_n_option(char *arg)
@@ -37,13 +36,13 @@ static void	ft_print_args(char **args, int i, int n_option)
 	while (args[i])
 	{
 		if (!first)
-			ft_putchar_fd(' ', STDOUT_FILENO);
-		ft_putstr_fd(args[i], STDOUT_FILENO);
+			ft_putchar_fd(' ', 1);
+		ft_putstr_fd(args[i], 1);
 		first = 0;
 		i++;
 	}
 	if (!n_option)
-		ft_putchar_fd('\n', STDOUT_FILENO);
+		ft_putchar_fd('\n', 1);
 }
 
 int	ft_echo(char **args)
@@ -55,7 +54,7 @@ int	ft_echo(char **args)
 		return (0);
 	if (!args[1])
 	{
-		ft_putchar_fd('\n', STDOUT_FILENO);
+		ft_putchar_fd('\n', 1);
 		return (1);
 	}
 	i = 1;
