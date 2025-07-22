@@ -64,6 +64,16 @@ int	ft_unset(t_shell *shell)
 	t_token	*head;
 	char	**new_env;
 
+	if (shell->args->next && shell->args->next->type == U_WORD)
+	{
+		if (shell->args->next->content[0] == '-')
+		{
+			ft_putstr_fd("minishell: unset: -", 2);
+			ft_putchar_fd(shell->args->next->content[1], 2);
+			ft_putendl_fd(": invalid option", 2);
+			return (125);
+		}
+	}
 	head = shell->args;
 	if (!head || !head->next)
 		return (0);
