@@ -50,8 +50,6 @@ int	ft_echo(char **args)
 	int	i;
 	int	n_option;
 
-	if (!args)
-		return (0);
 	if (!args[1])
 	{
 		ft_putchar_fd('\n', 1);
