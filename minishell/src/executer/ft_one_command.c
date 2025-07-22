@@ -41,7 +41,7 @@ static int	ft_prepare_heredocs(t_shell *shell, t_parser *parsed)
 	{
 		if (redir->type == R_HERE && !redir->document)
 			redir->document = ft_get_heredoc_input(redir->file_name,
-					shell, *parsed);
+					shell);
 		redir = redir->next;
 	}
 	return (0);

@@ -5,8 +5,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-static t_redirect	*ft_create_redirect(t_token *temp, t_shell *shell,
-		t_parser parser)
+static t_redirect	*ft_create_redirect(t_token *temp, t_shell *shell)
 {
 	t_redirect	*redir;
 
@@ -21,7 +20,7 @@ static t_redirect	*ft_create_redirect(t_token *temp, t_shell *shell,
 		redir->file_name = ft_strdup(temp->next->content);
 		if (temp->type == R_HERE)
 			redir->document = ft_get_heredoc_input(temp->next->content,
-					shell, parser);
+					shell);
 	}
 	return (redir);
 }
@@ -34,7 +33,7 @@ static void	skip_redirect_target(t_token **temp)
 		*temp = (*temp)->next;
 }
 
-static t_redirect	*ft_process_redirects(t_shell *shell, t_parser parser)
+static t_redirect	*ft_process_redirects(t_shell *shell)
 {
 	t_token		*temp;
 	t_redirect	*head;
@@ -48,7 +47,7 @@ static t_redirect	*ft_process_redirects(t_shell *shell, t_parser parser)
 	{
 		if (is_operator_type(temp->type))
 		{
-			redir = ft_create_redirect(temp, shell, parser);
+			redir = ft_create_redirect(temp, shell);
 			if (!head)
 				head = redir;
 			else
@@ -71,7 +70,7 @@ t_parser	ft_parse_command(t_shell *shell, t_parser parsed)
 	ft_count_args_redirects(shell->args, &arg_count, &redirect_count);
 	parser.args = ft_alloc(sizeof(char *) * (arg_count + 1));
 	parser.redirect_count = redirect_count;
-	parser.redirect = ft_process_redirects(shell, parser);
+	parser.redirect = ft_process_redirects(shell);
 	ft_process_args(shell, &parser);
 	return (parser);
 }

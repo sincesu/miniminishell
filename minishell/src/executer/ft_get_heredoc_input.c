@@ -3,8 +3,7 @@
 #include <readline/readline.h>
 #include <stdlib.h>
 
-char	*ft_get_heredoc_input(const char *delimiter,
-	t_shell *shell, t_parser parsed)
+char	*ft_get_heredoc_input(const char *delimiter, t_shell *shell)
 {
 	char	*line;
 	char	*result;
@@ -22,10 +21,7 @@ char	*ft_get_heredoc_input(const char *delimiter,
 			free(line);
 			break ;
 		}
-		if (parsed.redirect && parsed.redirect->flags == U_WORD)
-			temp = ft_strjoin(result, find_dollar(line, shell->env, 0));
-		else
-			temp = ft_strjoin(result, line);
+		temp = ft_strjoin(result, find_dollar(line, shell->env, 0));
 		free(line);
 		result = ft_strjoin(temp, "\n");
 	}

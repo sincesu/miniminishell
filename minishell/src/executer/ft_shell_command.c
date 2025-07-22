@@ -10,7 +10,7 @@ static char	*ft_get_executable_path(char *command)
 	char	*full_path;
 
 	full_path = ft_search_command_path(command);
-	if (!full_path)
+	if (full_path == NULL)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(command, 2);
@@ -44,7 +44,7 @@ int	ft_shell_command(t_shell *shell, t_parser *parser)
 	char	*full_path;
 
 	full_path = ft_get_executable_path(parser->args[0]);
-	if (!full_path)
+	if (full_path == NULL)
 		return (127);
 	pid = fork();
 	if (pid == -1)

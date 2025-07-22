@@ -166,8 +166,7 @@ int			ft_apply_redirections(t_redirect *redir);
 int			ft_is_builtin(char *cmd);
 int			ft_execute_builtin(t_shell *shell, t_parser *parsed);
 char		*ft_search_command_path(char *command);
-char		*ft_get_heredoc_input(const char *delimiter,
-				t_shell *shell, t_parser parsed);
+char		*ft_get_heredoc_input(const char *delimiter, t_shell *shell);
 
 // parser
 t_parser	ft_parse_command(t_shell *shell, t_parser parsed);

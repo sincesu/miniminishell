@@ -39,7 +39,7 @@ char	*ft_search_command_path(char *command)
 	if (ft_is_direct_path(command))
 		return (ft_strdup(command));
 	path_env = getenv("PATH");
-	if (!path_env)
+	if (path_env == NULL)
 		return (NULL);
 	paths = ft_split(path_env, ':');
 	i = 0;
