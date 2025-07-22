@@ -49,13 +49,15 @@ static void	ft_change_env_var(t_shell *shell, char *cwd, char *var_name)
 	free(cwd);
 }
 
-static char	*ft_get_target_path(t_shell *shell, char *path)
+static char	*ft_get_target_path(t_shell *shell, t_parser *parsed)
 {
 	char	*old_pwd;
 
-	if (path[0] == '~' && path[1] == '/')
-		return (ft_resolve_home_path(shell, path));
-	else if (path[0] == '-' && path[1] == '\0')
+	if (parsed->args[1] == NULL)
+		return (ft_resolve_home_path(shell, "~"));
+	if (parsed->args[1][0] == '~' && parsed->args[1][1] == '/')
+		return (ft_resolve_home_path(shell, parsed->args[1]));
+	else if (parsed->args[1][0] == '-' && parsed->args[1][1] == '\0')
 	{
 		old_pwd = find_dollar("$OLDPWD", shell->env, 0);
 		if (old_pwd == NULL)
@@ -66,16 +68,16 @@ static char	*ft_get_target_path(t_shell *shell, char *path)
 		ft_putendl_fd(old_pwd, 1);
 		return (old_pwd);
 	}
-	return (path);
+	return (parsed->args[1]);
 }
 
-int	ft_cd(t_shell *shell, t_parser *parser)
+int	ft_cd(t_shell *shell, t_parser *parsed)
 {
 	char	*target;
 	char	*cwd;
 	char	*new_cwd;
 
-	target = ft_get_target_path(shell, parser->args[1]);
+	target = ft_get_target_path(shell, parsed);
 	if (!target)
 		return (1);
 	cwd = getcwd(NULL, 0);
