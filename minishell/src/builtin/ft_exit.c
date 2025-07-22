@@ -15,6 +15,7 @@
 #include "../../Libft/libft.h"
 #include "../../include/minishell.h"
 #include <stdio.h>
+#include <limits.h>
 
 static int	ft_check_param(char *str)
 {
@@ -38,36 +39,38 @@ static int	ft_check_param(char *str)
 	return (0);
 }
 
-int	exit_atoi(const char *str)
+static long long	ft_exit_atoll(char *str, char *original)
 {
-	int	i;
-	int	sign;
-	int	res;
+	long long	result;
+	int			sign;
 
-	i = 0;
+	result = 0;
 	sign = 1;
-	res = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
+		str++;
+	if (*str == '-' || *str == '+')
 	{
-		if (str[i] == '-')
+		if (*str++ == '-')
 			sign = -1;
-		i++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
+	while (*str >= '0' && *str <= '9')
 	{
-		res = (res * 10) + (str[i] - '0');
-		i++;
+		if (result > LLONG_MAX / 10
+			|| (result == LLONG_MAX / 10 && (*str - '0') > LLONG_MAX % 10))
+		{
+			ft_putstr_fd("minishell: exit: ", 2);
+			ft_putstr_fd(original, 2);
+			ft_putendl_fd(": numeric argument required", 2);
+			safe_abort(2);
+		}
+		result = result * 10 + (*str++ - '0');
 	}
-	while (str[i] && is_whitespace(str[i]))
-		i++;
-	return (sign * res);
+	return (result * sign);
 }
 
 void	ft_exit(t_shell *shell)
 {
-	int	exit_code;
+	long long	exit_code;
 
 	ft_putendl_fd("exit", 2);
 	if (shell->args == NULL || shell->args->next == NULL)
@@ -81,14 +84,14 @@ void	ft_exit(t_shell *shell)
 		ft_putstr_fd(shell->args->next->content, 2);
 		ft_putendl_fd(": numeric argument required", 2);
 		safe_abort(2);
-		return ;
 	}
+	exit_code = ft_exit_atoll(shell->args->next->content,
+			shell->args->next->content);
 	if (shell->args->next->next)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		shell->exit_code = 1;
 		return ;
 	}
-	exit_code = exit_atoi(shell->args->next->content);
 	safe_abort(exit_code);
 }
