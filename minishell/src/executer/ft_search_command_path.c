@@ -9,23 +9,16 @@ static int	ft_is_direct_path(char *cmd)
 			|| ft_strncmp(cmd, "./", 2) == 0));
 }
 
-static char	*ft_str_arr_join(char **arr, int count)
+static char	*ft_path_join(char *path, char *command)
 {
-	int		total_len;
+	int		len;
 	char	*result;
-	int		i;
 
-	if (arr == NULL || *arr == NULL || count == 0)
-		return (NULL);
-	total_len = 0;
-	i = 0;
-	while (i < count)
-		total_len += ft_strlen(arr[i++]);
-	result = ft_alloc(sizeof(char) * (total_len + 1));
-	result[0] = '\0';
-	i = 0;
-	while (i < count)
-		ft_strlcat(result, arr[i++], total_len + 1);
+	len = ft_strlen(path) + 1 + ft_strlen(command) + 1;
+	result = ft_alloc(sizeof(char) * len);
+	ft_strlcpy(result, path, len);
+	ft_strlcat(result, "/", len);
+	ft_strlcat(result, command, len);
 	return (result);
 }
 
@@ -45,7 +38,7 @@ char	*ft_search_command_path(char *command)
 	i = 0;
 	while (paths[i])
 	{
-		full_path = ft_str_arr_join((char *[]){paths[i], "/", command}, 3);
+		full_path = ft_path_join(paths[i], command);
 		if (access(full_path, X_OK) == 0)
 			return (full_path);
 		i++;
