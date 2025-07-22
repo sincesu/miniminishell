@@ -16,10 +16,20 @@
 #include "../../Libft/libft.h"
 #include "../../include/minishell.h"
 
-int	ft_pwd(void)
+int	ft_pwd(t_shell *shell)
 {
 	char	*pwd;
 
+	if (shell->args->next && shell->args->next->type == U_WORD)
+	{
+		if (shell->args->next->content[0] == '-')
+		{
+			ft_putstr_fd("minishell: pwd: -", 2);
+			ft_putchar_fd(shell->args->next->content[1], 2);
+			ft_putendl_fd(": invalid option", 2);
+			return (2);
+		}
+	}
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
