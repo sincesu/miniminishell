@@ -55,7 +55,7 @@ int	ft_echo(char **args)
 	if (!args[1])
 	{
 		ft_putchar_fd('\n', 1);
-		return (1);
+		return (0);
 	}
 	i = 1;
 	n_option = 0;
