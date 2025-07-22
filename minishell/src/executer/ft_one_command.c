@@ -54,8 +54,6 @@ int	ft_one_command(t_shell *shell, t_parser *parsed)
 	int			saved_stdout;
 	t_parser	new_parsed;
 
-	if (!parsed->args || !parsed->args[0])
-		return (1);
 	new_parsed = ft_parse_command(shell, *parsed);
 	ft_prepare_heredocs(shell, &new_parsed);
 	saved_stdin = -1;
@@ -63,6 +61,11 @@ int	ft_one_command(t_shell *shell, t_parser *parsed)
 	if (ft_handle_redirections(new_parsed.redirect,
 			&saved_stdin, &saved_stdout) == -1)
 		return (1);
+	if (!new_parsed.args || !new_parsed.args[0])
+	{
+		ft_restore_std_fds(saved_stdin, saved_stdout);
+		return (0);
+	}
 	if (ft_is_builtin(new_parsed.args[0]))
 		exit_code = ft_execute_builtin(shell, &new_parsed);
 	else

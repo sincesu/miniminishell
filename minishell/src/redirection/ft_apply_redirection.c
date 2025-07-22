@@ -12,7 +12,10 @@ static int	ft_apply_input_redirection(t_redirect *redir)
 	fd = open(redir->file_name, O_RDONLY);
 	if (fd == -1)
 	{
-		perror("infile");
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(redir->file_name, 2);
+		ft_putstr_fd(": ", 2);
+		perror("");
 		return (-1);
 	}
 	dup2(fd, STDIN_FILENO);
@@ -34,9 +37,9 @@ static int	ft_apply_output_redirection(t_redirect *redir, int append)
 	if (fd == -1)
 	{
 		if (append)
-			perror("append");
+			perror("");
 		else
-			perror("outfile");
+			perror("");
 		return (-1);
 	}
 	dup2(fd, STDOUT_FILENO);
@@ -50,7 +53,7 @@ static int	ft_apply_heredoc_redirection(t_redirect *redir)
 
 	if (pipe(pipefd) == -1)
 	{
-		perror("heredoc pipe");
+		perror("");
 		return (-1);
 	}
 	if (redir->document)
