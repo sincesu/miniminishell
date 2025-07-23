@@ -66,9 +66,7 @@ void	ft_process_args(t_shell *shell, t_parser *parser)
 				|| temp->type == U_WORD))
 		{
 			if (!temp->prev || !is_operator_type(temp->prev->type))
-			{
 				parser->args[i++] = temp->content;
-			}
 		}
 		temp = temp->next;
 	}

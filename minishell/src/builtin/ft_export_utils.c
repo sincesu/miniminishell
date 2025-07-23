@@ -71,8 +71,6 @@ int	handle_export_arg(t_shell *shell, char *arg)
 			append_env_variable(shell, arg);
 	}
 	else
-	{
 		add_export_only_variable(shell, arg);
-	}
 	return (0);
 }
