@@ -11,12 +11,26 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include "../../Libft/libft.h"
+
+int	ft_export_error(char *err)
+{
+	ft_putstr_fd("minishell: export: -", 2);
+	ft_putchar_fd(err[1], 2);
+	ft_putendl_fd(": invalid option", 2);
+	return (2);
+}
 
 int	ft_export(t_shell *shell)
 {
 	t_token	*token;
 
 	token = shell->args;
+	if (shell->args->next && shell->args->next->type == U_WORD)
+	{
+		if (shell->args->next->content[0] == '-')
+			return (ft_export_error(shell->args->next->content));
+	}
 	if (!token->next)
 	{
 		export_list_printer(shell);
