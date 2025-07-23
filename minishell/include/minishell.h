@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/17 20:09:27 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/23 03:10:28 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int			pipe_error(char *str, t_token *a, t_shell *shell);
 int			syntax_error(t_shell *shell);
 int			operator_error(int c, t_shell *shell);
 int			quote_error(char *input, t_shell *shell);
+void		set_underscore_env(t_token *a, t_shell *shell);
 
 int			ft_cd(t_shell *shell, t_parser *parser);
 int			ft_pwd(t_shell *shell);

@@ -6,27 +6,30 @@
 /*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:34:29 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/17 17:19:34 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/23 03:14:01 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
 
-void	merger(t_token	*a)
+void	merger(t_token *a)
 {
-	t_token	*token;
+	t_token	*curr;
+	t_token	*next;
 
-	token = a;
-	while (token)
+	curr = a;
+	while (curr && curr->next)
 	{
-		while (token->flag == 1 && token->next)
+		if (curr->flag == 1)
 		{
-			token->content = ft_strjoin((char const *)token->content,
-					(char const *)token->next->content);
-			token->next->content = NULL;
-			remove_empty_tokens(&token);
+			next = curr->next;
+			curr->content = ft_strjoin(curr->content, next->content);
+			curr->flag = next->flag;
+			curr->type = next->type;
+			curr->next = next->next;
 		}
-		token = token->next;
+		else
+			curr = curr->next;
 	}
 }
