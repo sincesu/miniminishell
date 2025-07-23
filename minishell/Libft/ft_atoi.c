@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saincesu <saincesu@student.42kocaeli.com.  +#+  +:+       +#+        */
+/*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 13:56:52 by saincesu          #+#    #+#             */
-/*   Updated: 2024/10/26 13:56:53 by saincesu         ###   ########.tr       */
+/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

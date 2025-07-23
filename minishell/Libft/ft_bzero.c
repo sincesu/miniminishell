@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saincesu <saincesu@student.42kocaeli.com.  +#+  +:+       +#+        */
+/*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:10:37 by saincesu          #+#    #+#             */
-/*   Updated: 2024/10/21 14:10:40 by saincesu         ###   ########.tr       */
+/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

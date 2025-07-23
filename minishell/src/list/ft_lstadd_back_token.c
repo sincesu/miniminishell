@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstadd_back_token.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:51:44 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/13 15:06:13 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

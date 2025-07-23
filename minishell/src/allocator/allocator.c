@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   allocator.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 12:51:48 by saincesu          #+#    #+#             */
-/*   Updated: 2025/06/25 12:51:48 by saincesu         ###   ########.fr       */
+/*   Created: 2025/07/23 19:18:01 by saincesu          #+#    #+#             */
+/*   Updated: 2025/07/23 19:18:01 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

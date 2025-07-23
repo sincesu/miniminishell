@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saincesu <saincesu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 20:51:22 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/17 20:38:47 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
