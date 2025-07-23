@@ -124,7 +124,6 @@ int			is_remove_env(char *env_var, t_token *head);
 char		**copy_env_without_unset(char **env, t_token *head);
 void		export_list_printer(t_shell *shell);
 void		export_only_variable_append(t_shell *shell, char *content);
-void		add_export_only_variable(t_shell *shell, char *content);
 int			check_export_arg(t_shell *shell, char *arg);
 char		*find_in_env(char **env, char *name);
 int			find_in_env_index(char **env, char *name);

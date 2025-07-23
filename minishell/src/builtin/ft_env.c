@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "../../Libft/libft.h"
 #include "../../include/minishell.h"
 
@@ -103,6 +102,6 @@ int	ft_env(t_shell *shell)
 	}
 	i = 0;
 	while (shell->env[i])
-		printf("%s\n", shell->env[i++]);
+		ft_putendl_fd(shell->env[i++], 1);
 	return (0);
 }

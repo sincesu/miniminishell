@@ -55,7 +55,7 @@ void	export_only_variable_append(t_shell *shell, char *content)
 	shell->export_only_list = tmp;
 }
 
-void	add_export_only_variable(t_shell *shell, char *content)
+static void	add_export_only_variable(t_shell *shell, char *content)
 {
 	int	i;
 	int	found;
@@ -103,7 +103,9 @@ int	check_export_arg(t_shell *shell, char *arg)
 {
 	if (!(ft_isalpha(arg[0]) || arg[0] == '_'))
 	{
-		printf("minishell: export: `%s': not a valid identifier\n", arg);
+		ft_putstr_fd("minishell: export: \'", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putendl_fd("\': not a valid identifier", 2);
 		shell->exit_code = 1;
 		return (1);
 	}
