@@ -12,30 +12,8 @@
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
-#include <stdio.h>
 
-void	export_list_printer(t_shell *shell)
-{
-	int		i;
-	char	*eq;
-
-	i = 0;
-	while (shell->env && shell->env[i])
-	{
-		eq = ft_strchr(shell->env[i], '=');
-		if (eq)
-			printf("declare -x %.*s=\"%s\"\n", (int)(eq - shell->env[i]),
-				shell->env[i], eq + 1);
-		else
-			printf("declare -x %s\n", shell->env[i]);
-		i++;
-	}
-	i = 0;
-	while (shell->export_only_list && shell->export_only_list[i])
-		printf("declare -x %s\n", shell->export_only_list[i++]);
-}
-
-void	export_only_variable_append(t_shell *shell, char *content)
+static void	export_only_variable_append(t_shell *shell, char *content)
 {
 	int		i;
 	char	**tmp;
@@ -95,19 +73,6 @@ int	handle_export_arg(t_shell *shell, char *arg)
 	else
 	{
 		add_export_only_variable(shell, arg);
-	}
-	return (0);
-}
-
-int	check_export_arg(t_shell *shell, char *arg)
-{
-	if (!(ft_isalpha(arg[0]) || arg[0] == '_'))
-	{
-		ft_putstr_fd("minishell: export: \'", 2);
-		ft_putstr_fd(arg, 2);
-		ft_putendl_fd("\': not a valid identifier", 2);
-		shell->exit_code = 1;
-		return (1);
 	}
 	return (0);
 }
