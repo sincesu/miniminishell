@@ -32,12 +32,11 @@ char	**empty_env(void)
 	char	*cwd;
 
 	cwd = getcwd(NULL, 0);
-	new_env = ft_alloc(sizeof(char *) * 5);
+	new_env = ft_alloc(sizeof(char *) * 4);
 	new_env[0] = ft_strjoin("PWD=", cwd);
 	new_env[1] = ft_strdup("SHLVL=1");
-	new_env[2] = ft_strdup("OLDPWD=");
-	new_env[3] = ft_strdup("_=/usr/bin/env");
-	new_env[4] = NULL;
+	new_env[2] = ft_strdup("_=/usr/bin/env");
+	new_env[3] = NULL;
 	free(cwd);
 	return (new_env);
 }
@@ -70,6 +69,35 @@ char	**update_shell_lvl(char **env)
 	return (env);
 }
 
+void	set_underscore_env(t_token *a, t_shell *shell)
+{
+	t_token	*token;
+	t_token	*prev;
+	int		i;
+
+	i = 0;
+	token = a;
+	while (token)
+	{
+		prev = token;
+		if (token->type == PIPE || (is_operator_type(token->type)
+				&& (!token->next->next || !token->next->next->content)))
+			return ;
+		token = token->next;
+	}
+	while (shell->env[i])
+	{
+		if (shell->env[i][0] == '_' && shell->env[i][1] == '=')
+		{
+			if (!ft_strncmp(prev->content, "env", 3))
+				shell->env[i] = ft_strdup("_=usr/bin/env");
+			else
+				shell->env[i] = ft_strjoin("_=", prev->content);
+		}
+		i++;
+	}
+}
+
 char	**copy_env(char **env)
 {
 	int		i;
@@ -82,10 +110,7 @@ char	**copy_env(char **env)
 	copy_env = ft_alloc(sizeof(char *) * (env_line + 1));
 	while (i < env_line)
 	{
-		if (env[i][0] == '_' && env[i][1] == '=')
-			copy_env[i] = ft_strdup("_=/usr/bin/env");
-		else
-			copy_env[i] = ft_strdup(env[i]);
+		copy_env[i] = ft_strdup(env[i]);
 		i++;
 	}
 	copy_env[env_line] = NULL;
