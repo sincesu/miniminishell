@@ -164,11 +164,8 @@ int			ft_execute_builtin(t_shell *shell, t_parser *parsed);
 char		*ft_search_command_path(char *command);
 char		*ft_get_heredoc_input(const char *delimiter, t_shell *shell);
 
-// parser
-t_parser	ft_parse_command(t_shell *shell, t_parser parsed);
-void		ft_initialize_parser(t_parser *parser, t_parser parsed);
-void		ft_count_args_redirects(t_token *tokens, int *arg_count,
-				int *redirect_count);
-void		ft_process_args(t_shell *shell, t_parser *parser);
+int			ft_count_commands(t_parser *parsed);
+int			ft_create_pipes(int **pipes, int count);
+void		ft_close_all_pipes(int **pipes, int count);
 
 #endif

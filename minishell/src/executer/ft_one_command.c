@@ -44,28 +44,42 @@ static int	ft_handle_redirections(t_redirect *redir,
 	return (0);
 }
 
+static int	ft_prepare_heredocs(t_shell *shell, t_parser *parsed)
+{
+	t_redirect	*redir;
+
+	redir = parsed->redirect;
+	while (redir)
+	{
+		if (redir->type == R_HERE && !redir->document)
+			redir->document = ft_get_heredoc_input(redir->file_name,
+					shell);
+		redir = redir->next;
+	}
+	return (0);
+}
+
 int	ft_one_command(t_shell *shell, t_parser *parsed)
 {
 	int			exit_code;
 	int			saved_stdin;
 	int			saved_stdout;
-	t_parser	new_parsed;
 
-	new_parsed = ft_parse_command(shell, *parsed);
+	ft_prepare_heredocs(shell, parsed);
 	saved_stdin = -1;
 	saved_stdout = -1;
-	if (ft_handle_redirections(new_parsed.redirect,
+	if (ft_handle_redirections(parsed->redirect,
 			&saved_stdin, &saved_stdout) == -1)
 		return (1);
-	if (!new_parsed.args || !new_parsed.args[0])
+	if (!parsed->args || !parsed->args[0])
 	{
 		ft_restore_std_fds(saved_stdin, saved_stdout);
 		return (0);
 	}
-	if (ft_is_builtin(new_parsed.args[0]))
-		exit_code = ft_execute_builtin(shell, &new_parsed);
+	if (ft_is_builtin(parsed->args[0]))
+		exit_code = ft_execute_builtin(shell, parsed);
 	else
-		exit_code = ft_shell_command(shell, &new_parsed);
+		exit_code = ft_shell_command(shell, parsed);
 	ft_restore_std_fds(saved_stdin, saved_stdout);
 	return (exit_code);
 }

@@ -39,15 +39,20 @@ t_parser	*ft_init_parser(t_parser *prev, t_token *token)
 
 void	ft_addback_node(t_parser **head_node, t_parser *current)
 {
+	t_parser	*last;
+
 	if (*head_node == NULL)
 	{
-		(*head_node) = current;
-		(*head_node)->prev = NULL;
+		*head_node = current;
+		current->prev = NULL;
 	}
 	else
 	{
-		(*head_node)->next = current;
-		current->prev = (*head_node);
+		last = *head_node;
+		while (last->next != NULL)
+			last = last->next;
+		last->next = current;
+		current->prev = last;
 	}
 }
 

@@ -7,12 +7,12 @@ LIBFT_LIB   = $(LIBFT_DIR)/libft.a
 
 SRCS		= src/allocator/allocator.c src/builtin/ft_cd.c src/builtin/ft_echo.c src/builtin/ft_env.c src/builtin/ft_exit.c src/builtin/ft_export_utils.c \
 				src/builtin/ft_export.c src/builtin/ft_pwd.c src/builtin/ft_unset.c src/env.c src/executer/ft_builtin_utils.c src/executer/ft_execute_commands.c \
-				src/executer/ft_get_heredoc_input.c src/executer/ft_multi_command.c src/executer/ft_one_command.c src/executer/ft_parse_command_utils.c \
-				src/executer/ft_parse_command.c src/executer/ft_search_command_path.c src/executer/ft_shell_command.c src/expander/expander.c \
-				src/expander/expander_utils.c src/lexer/lexer.c src/lexer/lexer_split.c src/lexer/pattern.c src/list/ft_lstadd_back_token.c \
-				src/list/ft_lstclear_token.c src/list/ft_lstdelone_token.c src/list/ft_lstlast_token.c src/list/ft_lstnew_token.c src/list/ft_lstsize_token.c \
-				src/main.c src/merger/merger.c src/parser/parser.c src/parser/parser_utils.c src/redirection/ft_apply_redirection.c src/signal/ft_init_signals.c \
-				src/signal/signal_handlers.c src/syntax_error/quote_error.c src/syntax_error/syntax_error.c
+				src/executer/ft_get_heredoc_input.c src/executer/ft_multi_command_utils.c src/executer/ft_multi_command.c src/executer/ft_one_command.c \
+				src/executer/ft_search_command_path.c src/executer/ft_shell_command.c src/expander/expander.c src/expander/expander_utils.c src/lexer/lexer.c \
+				src/lexer/lexer_split.c src/lexer/pattern.c src/list/ft_lstadd_back_token.c src/list/ft_lstclear_token.c src/list/ft_lstdelone_token.c \
+				src/list/ft_lstlast_token.c src/list/ft_lstnew_token.c src/list/ft_lstsize_token.c src/main.c src/merger/merger.c src/parser/parser.c \
+				src/parser/parser_utils.c src/redirection/ft_apply_redirection.c src/signal/ft_init_signals.c src/signal/signal_handlers.c src/syntax_error/quote_error.c \
+				src/syntax_error/syntax_error.c
 
 OBJS = $(SRCS:.c=.o)
 
