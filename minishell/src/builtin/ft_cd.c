@@ -15,12 +15,20 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <errno.h>
 
-static void	ft_print_env_error(char *var)
+static void	ft_chdir_error(char *target)
 {
 	ft_putstr_fd("minishell: cd: ", 2);
-	ft_putstr_fd(var, 2);
-	ft_putstr_fd(" not set\n", 2);
+	ft_putstr_fd(target, 2);
+	if (errno == EACCES)
+		ft_putendl_fd(": Permission denied", 2);
+	else if (errno == ENOENT)
+		ft_putendl_fd(": No such file or directory", 2);
+	else if (errno == ENOTDIR)
+		ft_putendl_fd(": Not a directory", 2);
+	else
+		ft_putendl_fd(": Unknown error", 2);
 }
 
 static char	*ft_resolve_home_path(t_shell *shell, char *path)
@@ -31,7 +39,9 @@ static char	*ft_resolve_home_path(t_shell *shell, char *path)
 	home = find_dollar("$HOME", shell->env, 0);
 	if (home == NULL)
 	{
-		ft_print_env_error("HOME");
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd("HOME", 2);
+		ft_putstr_fd(" not set\n", 2);
 		return (NULL);
 	}
 	result = ft_strjoin(home, path + 1);
@@ -62,7 +72,9 @@ static char	*ft_get_target_path(t_shell *shell, t_parser *parsed)
 		old_pwd = find_dollar("$OLDPWD", shell->env, 0);
 		if (old_pwd == NULL)
 		{
-			ft_print_env_error("OLDPWD");
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd("OLDPWD", 2);
+			ft_putstr_fd(" not set\n", 2);
 			return (NULL);
 		}
 		ft_putendl_fd(old_pwd, 1);
@@ -89,9 +101,7 @@ int	ft_cd(t_shell *shell, t_parser *parsed)
 	ft_change_env_var(shell, cwd, "OLDPWD=");
 	if (chdir(target) == -1)
 	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(target, 2);
-		ft_putendl_fd(": No such file or directory", 2);
+		ft_chdir_error(target);
 		return (1);
 	}
 	new_cwd = getcwd(NULL, 0);
