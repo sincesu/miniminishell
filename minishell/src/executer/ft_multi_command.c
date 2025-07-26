@@ -20,11 +20,11 @@
 static void	ft_execute_pipeline_command(t_shell *shell, t_parser *parser,
 	int input_fd, int output_fd)
 {
+	if (parser->redirect && ft_apply_redirections(parser->redirect) == -1)
+		exit(1);
 	if (input_fd != STDIN_FILENO && (dup2(input_fd, STDIN_FILENO) == -1))
 		exit(1);
 	if (output_fd != STDOUT_FILENO && (dup2(output_fd, STDOUT_FILENO) == -1))
-		exit(1);
-	if (parser->redirect && ft_apply_redirections(parser->redirect) == -1)
 		exit(1);
 	if (ft_is_builtin(parser->args[0]))
 		exit(ft_execute_builtin(shell, parser));
