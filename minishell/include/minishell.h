@@ -163,7 +163,9 @@ int			ft_apply_redirections(t_redirect *redir);
 int			ft_is_builtin(char *cmd);
 int			ft_execute_builtin(t_shell *shell, t_parser *parsed);
 char		*ft_search_command_path(char *command);
-char		*ft_get_heredoc_input(const char *delimiter, t_shell *shell);
+char		*ft_get_heredoc_input(const char *delimiter, t_shell *shell,
+				int flag);
+int			ft_prepare_heredocs(t_shell *shell, t_parser *parsed);
 
 int			ft_count_commands(t_parser *parsed);
 int			ft_create_pipes(int **pipes, int count);

@@ -105,6 +105,7 @@ int	ft_multi_command(t_shell *shell, t_parser *parsed)
 	int			**pipes;
 	int			i;
 
+	ft_prepare_heredocs(shell, parsed);
 	cmd_count = ft_count_commands(parsed);
 	pids = ft_alloc(sizeof(pid_t) * cmd_count);
 	pipes = ft_alloc(sizeof(int *) * (cmd_count - 1));

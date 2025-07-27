@@ -44,16 +44,21 @@ static int	ft_handle_redirections(t_redirect *redir,
 	return (0);
 }
 
-static int	ft_prepare_heredocs(t_shell *shell, t_parser *parsed)
+int	ft_prepare_heredocs(t_shell *shell, t_parser *parsed)
 {
 	t_redirect	*redir;
+	int			flag;
 
 	redir = parsed->redirect;
+	flag = 0;
 	while (redir)
 	{
+		if (parsed->redirect->flags == S_WORD
+			|| parsed->redirect->flags == D_WORD)
+			flag = 1;
 		if (redir->type == R_HERE && !redir->document)
 			redir->document = ft_get_heredoc_input(redir->file_name,
-					shell);
+					shell, flag);
 		redir = redir->next;
 	}
 	return (0);

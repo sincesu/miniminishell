@@ -28,14 +28,14 @@ char	*ft_line_func(t_shell *shell, char *result, char *line)
 			result = ft_strjoin(result, ft_itoa(shell->exit_code));
 		else
 			result = ft_strjoin(result, find_dollar(strs[i], shell->env, 0));
+		i++;
 		if (strs[i] != NULL)
 			result = ft_strjoin(result, " ");
-		i++;
 	}
 	return (result);
 }
 
-char	*ft_get_heredoc_input(const char *delimiter, t_shell *shell)
+char	*ft_get_heredoc_input(const char *delimiter, t_shell *shell, int flag)
 {
 	char	*line;
 	char	*result;
@@ -53,7 +53,10 @@ char	*ft_get_heredoc_input(const char *delimiter, t_shell *shell)
 			free(line);
 			break ;
 		}
-		temp = ft_line_func(shell, result, line);
+		if (flag)
+			temp = ft_strjoin(result, line);
+		else
+			temp = ft_line_func(shell, result, line);
 		free(line);
 		result = ft_strjoin(temp, "\n");
 	}
