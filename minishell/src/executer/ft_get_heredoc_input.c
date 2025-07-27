@@ -15,6 +15,26 @@
 #include <readline/readline.h>
 #include <stdlib.h>
 
+char	*ft_line_func(t_shell *shell, char *result, char *line)
+{
+	int		i;
+	char	**strs;
+
+	i = 0;
+	strs = ft_split(line, ' ');
+	while (strs[i])
+	{
+		if (strs[i][0] == '$' && strs[i][1] == '?')
+			result = ft_strjoin(result, ft_itoa(shell->exit_code));
+		else
+			result = ft_strjoin(result, find_dollar(strs[i], shell->env, 0));
+		if (strs[i] != NULL)
+			result = ft_strjoin(result, " ");
+		i++;
+	}
+	return (result);
+}
+
 char	*ft_get_heredoc_input(const char *delimiter, t_shell *shell)
 {
 	char	*line;
@@ -33,7 +53,7 @@ char	*ft_get_heredoc_input(const char *delimiter, t_shell *shell)
 			free(line);
 			break ;
 		}
-		temp = ft_strjoin(result, find_dollar(line, shell->env, 0));
+		temp = ft_line_func(shell, result, line);
 		free(line);
 		result = ft_strjoin(temp, "\n");
 	}

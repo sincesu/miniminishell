@@ -46,4 +46,9 @@ void	ft_init_signals(t_signal_type context_type)
 		signal(SIGINT, ft_heredoc_handler);
 		signal(SIGQUIT, SIG_IGN);
 	}
+	else if (context_type == IGNORE)
+	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, SIG_IGN);
+	}
 }

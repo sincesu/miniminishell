@@ -76,7 +76,8 @@ typedef enum e_signal_type
 {
 	PROMPT,
 	EXECUTION,
-	HEREDOC
+	HEREDOC,
+	IGNORE
 }	t_signal_type;
 
 char		**lexer_split(const char *s, int **flag_array);
