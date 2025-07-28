@@ -71,7 +71,6 @@ static char	*ft_get_target_path(t_shell *shell, t_parser *parsed)
 	return (parsed->args[1]);
 }
 
-
 int	ft_cd(t_shell *shell, t_parser *parsed)
 {
 	char	*target;
