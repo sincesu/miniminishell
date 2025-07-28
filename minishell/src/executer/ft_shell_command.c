@@ -33,6 +33,7 @@ static char	*ft_get_executable_path(char *command)
 
 static void	ft_execute_external_command(char *path, char **args, char **env)
 {
+	ft_init_signals(EXECUTION);
 	execve(path, args, env);
 	perror("execve");
 	exit(126);
@@ -43,6 +44,7 @@ static int	ft_wait_child_process(pid_t pid)
 	int	status;
 
 	waitpid(pid, &status, 0);
+	ft_init_signals(PROMPT);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
@@ -66,5 +68,8 @@ int	ft_shell_command(t_shell *shell, t_parser *parser)
 	}
 	else if (pid == 0)
 		ft_execute_external_command(full_path, parser->args, shell->env);
+	printf("%s\n", parser->args[0]);
+	if (ft_strncmp(parser->args[0], "./minishell", sizeof("./minishell") == 0))
+		ft_init_signals(IGNORE);
 	return (ft_wait_child_process(pid));
 }

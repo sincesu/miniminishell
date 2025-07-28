@@ -64,6 +64,7 @@ static void	ft_child_process(t_shell *shell, t_parser *cmds,
 	int			output_fd;
 	t_parser	*target;
 
+	ft_init_signals(EXECUTION);
 	input_fd = STDIN_FILENO;
 	output_fd = STDOUT_FILENO;
 	if (i > 0)
@@ -95,6 +96,7 @@ static int	ft_wait_for_pipeline(pid_t *pids, int cmd_count)
 		}
 		i++;
 	}
+	ft_init_signals(PROMPT);
 	return (last_exit_code);
 }
 
@@ -123,6 +125,7 @@ int	ft_multi_command(t_shell *shell, t_parser *parsed)
 			ft_child_process(shell, parsed, pipes, i);
 		i++;
 	}
+	ft_init_signals(IGNORE);
 	ft_close_all_pipes(pipes, cmd_count - 1);
 	return (ft_wait_for_pipeline(pids, cmd_count));
 }
