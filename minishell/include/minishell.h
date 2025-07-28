@@ -170,5 +170,5 @@ int			ft_prepare_heredocs(t_shell *shell, t_parser *parsed);
 int			ft_count_commands(t_parser *parsed);
 int			ft_create_pipes(int **pipes, int count);
 void		ft_close_all_pipes(int **pipes, int count);
-
+void	ft_perror(char *pname, char *target, char *err);
 #endif

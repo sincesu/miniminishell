@@ -12,7 +12,7 @@ SRCS		= src/allocator/allocator.c src/builtin/ft_cd.c src/builtin/ft_echo.c src/
 				src/lexer/lexer_split.c src/lexer/pattern.c src/list/ft_lstadd_back_token.c src/list/ft_lstclear_token.c src/list/ft_lstdelone_token.c \
 				src/list/ft_lstlast_token.c src/list/ft_lstnew_token.c src/list/ft_lstsize_token.c src/main.c src/merger/merger.c src/parser/parser.c \
 				src/parser/parser_utils.c src/redirection/ft_apply_redirection.c src/signal/ft_init_signals.c src/signal/signal_handlers.c src/syntax_error/quote_error.c \
-				src/syntax_error/syntax_error.c
+				src/syntax_error/syntax_error.c src/ft_perror.c
 
 OBJS = $(SRCS:.c=.o)
 
