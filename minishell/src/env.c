@@ -35,7 +35,7 @@ char	**empty_env(void)
 	new_env = ft_alloc(sizeof(char *) * 4);
 	new_env[0] = ft_strjoin("PWD=", cwd);
 	new_env[1] = ft_strdup("SHLVL=1");
-	new_env[2] = ft_strdup("_=/usr/bin/env");
+	new_env[2] = ft_strdup("_=./minishell");
 	new_env[3] = NULL;
 	free(cwd);
 	return (new_env);
@@ -77,14 +77,17 @@ void	set_underscore_env(t_token *a, t_shell *shell)
 
 	i = 0;
 	token = a;
+	prev = NULL;
 	while (token)
 	{
-		prev = token;
 		if (token->type == PIPE || (is_operator_type(token->type)
 				&& (!token->next->next || !token->next->next->content)))
 			return ;
+		prev = token;
 		token = token->next;
 	}
+	if (!prev || !prev->content)
+		return ;
 	while (shell->env[i])
 	{
 		if (shell->env[i][0] == '_' && shell->env[i][1] == '=')
