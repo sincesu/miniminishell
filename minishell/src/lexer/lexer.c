@@ -53,32 +53,6 @@ int	tokenize(char *str)
 	return (U_WORD);
 }
 
-char	*normalize_spaces(char *input)
-{
-	char	*cleaned;
-	int		i;
-	int		j;
-
-	cleaned = ft_alloc(ft_strlen(input) + 1);
-	i = 0;
-	j = 0;
-	while (input[i])
-	{
-		if ((unsigned char)input[i] == 0xC2
-			&& (unsigned char)input[i + 1] == 0xA0)
-		{
-			cleaned[j++] = ' ';
-			i += 2;
-		}
-		else if ((unsigned char)input[i] >= 0x20 && input[i] != '\t')
-			cleaned[j++] = input[i++];
-		else
-			i++;
-	}
-	cleaned[j] = '\0';
-	return (cleaned);
-}
-
 t_token	*lexer(char *input)
 {
 	int		i;
@@ -89,7 +63,6 @@ t_token	*lexer(char *input)
 
 	i = 0;
 	head_list = NULL;
-	input = normalize_spaces(input);
 	str = lexer_split(input, &flag_array);
 	if (!str)
 		return (NULL);
