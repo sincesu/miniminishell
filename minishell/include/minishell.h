@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/29 20:31:29 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void		remove_empty_tokens(t_token **head);
 void		merger(t_token	*a);
 char		*find_dollar(char *input, char **env, int flag);
 char		**update_shell_lvl(char **env);
-
+void		bubble_sort(char **arr);
 int			r_append_error(t_token *a, t_shell *shell);
 int			r_here_error(t_token *a, t_shell *shell);
 int			r_in_and_r_out_error(t_token *a, t_shell *shell);
