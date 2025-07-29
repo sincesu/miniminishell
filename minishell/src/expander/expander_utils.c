@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:49:06 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/29 19:18:01 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,11 @@
 char	*fill_dolar(char *input, char **env, int var_len)
 {
 	int		i;
-	char	*expanded;
 	char	*env_val;
 	char	*str;
 
 	env_val = NULL;
 	str = NULL;
-	expanded = NULL;
 	str = ft_substr(input, 0, var_len);
 	i = 0;
 	while (env[i])
@@ -38,10 +36,9 @@ char	*fill_dolar(char *input, char **env, int var_len)
 		i++;
 	}
 	if (env_val)
-		expanded = ft_strjoin(env_val, input + var_len);
+		return (ft_strdup(env_val));
 	else
-		expanded = ft_strdup(input + var_len);
-	return (expanded);
+		return (ft_strdup(""));
 }
 
 int	handle_var_expand(char *s, char **env, char **expanded)
