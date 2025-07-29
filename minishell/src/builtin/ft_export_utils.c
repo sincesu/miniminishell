@@ -6,12 +6,13 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:05:46 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/29 20:34:11 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
+#include <string.h>
 
 static void	export_only_variable_append(t_shell *shell, char *content)
 {
@@ -31,6 +32,43 @@ static void	export_only_variable_append(t_shell *shell, char *content)
 	tmp[i] = ft_strdup(content);
 	tmp[i + 1] = NULL;
 	shell->export_only_list = tmp;
+}
+
+static int	bubble_sort_loop(char **arr, int len)
+{
+	int		i;
+	char	*tmp;
+	int		sorted;
+
+	sorted = 1;
+	i = 0;
+	while (i < len - 1)
+	{
+		if (strcmp(arr[i], arr[i + 1]) > 0)
+		{
+			tmp = arr[i];
+			arr[i] = arr[i + 1];
+			arr[i + 1] = tmp;
+			sorted = 0;
+		}
+		i++;
+	}
+	return (sorted);
+}
+
+void	bubble_sort(char **arr)
+{
+	int		len;
+	int		sorted;
+
+	if (!arr)
+		return ;
+	len = 0;
+	while (arr[len])
+		len++;
+	sorted = 0;
+	while (!sorted)
+		sorted = bubble_sort_loop(arr, len);
 }
 
 static void	add_export_only_variable(t_shell *shell, char *content)
