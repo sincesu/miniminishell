@@ -48,10 +48,10 @@ static int	ft_apply_output_redirection(t_redirect *redir, int append)
 	fd = open(redir->file_name, flags, 0644);
 	if (fd == -1)
 	{
-		if (append)
-			perror("");
-		else
-			perror("");
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(redir->file_name, 2);
+		ft_putstr_fd(": ", 2);
+		perror("");
 		return (-1);
 	}
 	dup2(fd, STDOUT_FILENO);
@@ -65,7 +65,7 @@ static int	ft_apply_heredoc_redirection(t_redirect *redir)
 
 	if (pipe(pipefd) == -1)
 	{
-		perror("");
+		perror("pipe");
 		return (-1);
 	}
 	if (redir->document)
@@ -82,22 +82,22 @@ int	ft_apply_redirections(t_redirect *redir, int redirect_count, int i)
 {
 	while (i < redirect_count)
 	{
-		if (redir->type == R_IN)
+		if (redir[i].type == R_IN)
 		{
 			if (ft_apply_input_redirection(&redir[i]) == -1)
 				return (-1);
 		}
-		else if (redir->type == R_OUT)
+		else if (redir[i].type == R_OUT)
 		{
 			if (ft_apply_output_redirection(&redir[i], 0) == -1)
 				return (-1);
 		}
-		else if (redir->type == R_APPEND)
+		else if (redir[i].type == R_APPEND)
 		{
 			if (ft_apply_output_redirection(&redir[i], 1) == -1)
 				return (-1);
 		}
-		else if (redir->type == R_HERE)
+		else if (redir[i].type == R_HERE)
 		{
 			if (ft_apply_heredoc_redirection(&redir[i]) == -1)
 				return (-1);
