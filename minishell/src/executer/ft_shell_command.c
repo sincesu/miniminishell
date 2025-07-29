@@ -68,7 +68,6 @@ int	ft_shell_command(t_shell *shell, t_parser *parser)
 	}
 	else if (pid == 0)
 		ft_execute_external_command(full_path, parser->args, shell->env);
-	printf("%s\n", parser->args[0]);
 	if (ft_strncmp(parser->args[0], "./minishell", sizeof("./minishell") == 0))
 		ft_init_signals(IGNORE);
 	return (ft_wait_child_process(pid));
