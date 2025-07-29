@@ -46,7 +46,6 @@ typedef struct s_redirect
 	int					type;
 	int					flags;
 	char				*document;
-	struct s_redirect	*next;
 }	t_redirect;
 
 typedef struct s_parser
@@ -159,7 +158,7 @@ int			ft_shell_command(t_shell *shell, t_parser *parsed);
 int			ft_one_command(t_shell *shell, t_parser *parsed);
 int			ft_multi_command(t_shell *shell, t_parser *parsed);
 
-int			ft_apply_redirections(t_redirect *redir);
+int			ft_apply_redirections(t_redirect *redir, int redirect_count, int i);
 int			ft_is_builtin(char *cmd);
 int			ft_execute_builtin(t_shell *shell, t_parser *parsed);
 char		*ft_search_command_path(char *command);

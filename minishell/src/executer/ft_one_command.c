@@ -29,14 +29,13 @@ static void	ft_restore_std_fds(int saved_stdin, int saved_stdout)
 	}
 }
 
-static int	ft_handle_redirections(t_redirect *redir,
+static int	ft_handle_redirections(t_parser *parsed,
 	int *saved_stdin, int *saved_stdout)
 {
-	if (!redir)
-		return (0);
 	*saved_stdin = dup(STDIN_FILENO);
 	*saved_stdout = dup(STDOUT_FILENO);
-	if (ft_apply_redirections(redir) == -1)
+	if (ft_apply_redirections(parsed->redirect,
+			parsed->redirect_count, 0) == -1)
 	{
 		ft_restore_std_fds(*saved_stdin, *saved_stdout);
 		return (-1);
@@ -48,18 +47,21 @@ int	ft_prepare_heredocs(t_shell *shell, t_parser *parsed)
 {
 	t_redirect	*redir;
 	int			flag;
+	int			i;
 
 	redir = parsed->redirect;
-	flag = 0;
-	while (redir)
+	if (!redir)
+		return (0);
+	i = 0;
+	while (i < parsed->redirect_count)
 	{
-		if (parsed->redirect->flags == S_WORD
-			|| parsed->redirect->flags == D_WORD)
+		flag = 0;
+		if (redir[i].flags == S_WORD || redir[i].flags == D_WORD)
 			flag = 1;
-		if (redir->type == R_HERE && !redir->document)
-			redir->document = ft_get_heredoc_input(redir->file_name,
+		if (redir[i].type == R_HERE && !redir[i].document)
+			redir[i].document = ft_get_heredoc_input(redir[i].file_name,
 					shell, flag);
-		redir = redir->next;
+		i++;
 	}
 	return (0);
 }
@@ -73,7 +75,7 @@ int	ft_one_command(t_shell *shell, t_parser *parsed)
 	ft_prepare_heredocs(shell, parsed);
 	saved_stdin = -1;
 	saved_stdout = -1;
-	if (ft_handle_redirections(parsed->redirect,
+	if (ft_handle_redirections(parsed,
 			&saved_stdin, &saved_stdout) == -1)
 		return (1);
 	if (!parsed->args || !parsed->args[0])

@@ -78,31 +78,31 @@ static int	ft_apply_heredoc_redirection(t_redirect *redir)
 	return (0);
 }
 
-int	ft_apply_redirections(t_redirect *redir)
+int	ft_apply_redirections(t_redirect *redir, int redirect_count, int i)
 {
-	while (redir)
+	while (i < redirect_count)
 	{
 		if (redir->type == R_IN)
 		{
-			if (ft_apply_input_redirection(redir) == -1)
+			if (ft_apply_input_redirection(&redir[i]) == -1)
 				return (-1);
 		}
 		else if (redir->type == R_OUT)
 		{
-			if (ft_apply_output_redirection(redir, 0) == -1)
+			if (ft_apply_output_redirection(&redir[i], 0) == -1)
 				return (-1);
 		}
 		else if (redir->type == R_APPEND)
 		{
-			if (ft_apply_output_redirection(redir, 1) == -1)
+			if (ft_apply_output_redirection(&redir[i], 1) == -1)
 				return (-1);
 		}
 		else if (redir->type == R_HERE)
 		{
-			if (ft_apply_heredoc_redirection(redir) == -1)
+			if (ft_apply_heredoc_redirection(&redir[i]) == -1)
 				return (-1);
 		}
-		redir = redir->next;
+		i++;
 	}
 	return (0);
 }
