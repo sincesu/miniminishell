@@ -69,12 +69,10 @@ static void	export_list_printer(t_shell *shell)
 {
 	int		env_len;
 	int		exp_len;
-	int		i;
 	char	**combined;
 
 	env_len = 0;
 	exp_len = 0;
-	i = 0;
 	while (shell->env && shell->env[env_len])
 		env_len++;
 	while (shell->export_only_list && shell->export_only_list[exp_len])

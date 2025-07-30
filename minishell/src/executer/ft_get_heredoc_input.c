@@ -15,25 +15,52 @@
 #include <readline/readline.h>
 #include <stdlib.h>
 
+char	*ft_replace_exit_code(const char *str, int exit_code)
+{
+	char	*result;
+	char	*itoa_exit;
+	int		i;
+
+	result = ft_strdup("");
+	itoa_exit = ft_itoa(exit_code);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$' && str[i + 1] == '?')
+		{
+			result = ft_strjoin(result, itoa_exit);
+			i += 2;
+		}
+		else
+		{
+			char	tmp[2] = {str[i], '\0'};
+			result = ft_strjoin(result, tmp);
+			i++;
+		}
+	}
+	return (result);
+}
+
 char	*ft_line_func(t_shell *shell, char *result, char *line)
 {
 	int		i;
 	char	**strs;
+	char	*processed;
 
 	i = 0;
 	strs = ft_split(line, ' ');
 	while (strs[i])
 	{
-		if (strs[i][0] == '$' && strs[i][1] == '?')
-			result = ft_strjoin(result, ft_itoa(shell->exit_code));
-		else
-			result = ft_strjoin(result, find_dollar(strs[i], shell->env, 0));
+		processed = ft_replace_exit_code(strs[i], shell->exit_code);
+		processed = find_dollar(processed, shell->env, 0);
+		result = ft_strjoin(result, processed);
 		i++;
 		if (strs[i] != NULL)
 			result = ft_strjoin(result, " ");
 	}
 	return (result);
 }
+
 
 char	*ft_get_heredoc_input(const char *delimiter, t_shell *shell, int flag)
 {
