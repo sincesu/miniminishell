@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/07/30 17:39:23 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char	*expand(char *input, t_shell *shell, int flag)
 	{
 		exit_code = ft_itoa(shell->exit_code);
 		result = ft_strjoin(exit_code, input + 2);
+		result = find_dollar(result, shell->env, flag);
 		return (result);
 	}
 	else
