@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:16:40 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/01 10:22:33 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,52 +15,15 @@
 #include <readline/readline.h>
 #include <stdlib.h>
 
-char	*ft_replace_exit_code(const char *str, int exit_code)
-{
-	char	*result;
-	char	*itoa_exit;
-	int		i;
-
-	result = ft_strdup("");
-	itoa_exit = ft_itoa(exit_code);
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$' && str[i + 1] == '?')
-		{
-			result = ft_strjoin(result, itoa_exit);
-			i += 2;
-		}
-		else
-		{
-			char	tmp[2] = {str[i], '\0'};
-			result = ft_strjoin(result, tmp);
-			i++;
-		}
-	}
-	return (result);
-}
-
 char	*ft_line_func(t_shell *shell, char *result, char *line)
 {
-	int		i;
-	char	**strs;
-	char	*processed;
+	char	*expanded;
 
-	i = 0;
-	strs = ft_split(line, ' ');
-	while (strs[i])
-	{
-		processed = ft_replace_exit_code(strs[i], shell->exit_code);
-		processed = find_dollar(processed, shell->env, 0);
-		result = ft_strjoin(result, processed);
-		i++;
-		if (strs[i] != NULL)
-			result = ft_strjoin(result, " ");
-	}
+	expanded = find_dollar(line, shell->env, 0, shell->exit_code);
+	result = ft_strjoin(result, expanded);
+	result = ft_strjoin(result, " ");
 	return (result);
 }
-
 
 char	*ft_get_heredoc_input(const char *delimiter, t_shell *shell, int flag)
 {

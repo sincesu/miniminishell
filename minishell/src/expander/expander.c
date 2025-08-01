@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/30 17:39:23 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/01 10:22:44 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-char	*find_dollar(char *input, char **env, int flag)
+char	*find_dollar(char *input, char **env, int flag, int exit_code)
 {
 	int		i;
 	char	*expanded;
+	char	*exit;
 
 	i = 0;
 	expanded = ft_strdup("");
@@ -27,33 +28,51 @@ char	*find_dollar(char *input, char **env, int flag)
 		return (input);
 	while (input[i])
 	{
-		if (input[i] == '$' && (ft_isalnum(input[i + 1])
-				|| input[i + 1] == '_'))
-			i += handle_var_expand(input + i, env, &expanded);
+		if (input[i] == '$')
+		{
+			if (input[i + 1] == '?')
+			{
+				exit = ft_itoa(exit_code);
+				expanded = ft_strjoin(expanded, exit);
+				i += 2;
+			}
+			else if (ft_isalnum(input[i + 1]) || input[i + 1] == '_')
+				i += handle_var_expand(input + i, env, &expanded);
+			else
+				i += handle_normal_char(input + i, &expanded);
+		}
 		else
 			i += handle_normal_char(input + i, &expanded);
 	}
 	return (expanded);
 }
 
+// char	*expand(char *input, t_shell *shell, int flag)
+// {
+// 	char	*exit_code;
+// 	char	*result;
+
+// 	exit_code = NULL;
+// 	result = NULL;
+// 	if (input[0] == '~' && ft_strlen(input) == 1)
+// 		input = ft_strdup("$HOME");
+// 	if (input[0] == '$' && input[1] == '?')
+// 	{
+// 		exit_code = ft_itoa(shell->exit_code);
+// 		result = ft_strjoin(exit_code, input + 2);
+// 		result = find_dollar(result, shell->env, flag);
+// 		return (result);
+// 	}
+// 	else
+// 		input = find_dollar(input, shell->env, flag);
+// 	return (input);
+// }
+
 char	*expand(char *input, t_shell *shell, int flag)
 {
-	char	*exit_code;
-	char	*result;
-
-	exit_code = NULL;
-	result = NULL;
 	if (input[0] == '~' && ft_strlen(input) == 1)
 		input = ft_strdup("$HOME");
-	if (input[0] == '$' && input[1] == '?')
-	{
-		exit_code = ft_itoa(shell->exit_code);
-		result = ft_strjoin(exit_code, input + 2);
-		result = find_dollar(result, shell->env, flag);
-		return (result);
-	}
-	else
-		input = find_dollar(input, shell->env, flag);
+	input = find_dollar(input, shell->env, flag, shell->exit_code);
 	return (input);
 }
 
