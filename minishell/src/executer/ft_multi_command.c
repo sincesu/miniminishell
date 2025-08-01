@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 20:53:23 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/01 11:46:02 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,45 @@
 #include <stdio.h>
 
 static void	ft_execute_pipeline_command(t_shell *shell, t_parser *parser,
-	int input_fd, int output_fd)
+	int input_fd, int output_fd, int **pipes)
 {
+	int	cmd_count;
+
+	cmd_count = ft_count_commands(parser);
 	if (parser->redirect && ft_apply_redirections(parser->redirect,
 			parser->redirect_count, 0) == -1)
-		exit(1);
+	{
+		ft_close_all_pipes(pipes, cmd_count - 1);
+		safe_abort(1);
+	}
 	if (input_fd != STDIN_FILENO && (dup2(input_fd, STDIN_FILENO) == -1))
-		exit(1);
+	{
+		ft_close_all_pipes(pipes, cmd_count - 1);
+		close(input_fd);
+		safe_abort(1);
+	}
 	if (output_fd != STDOUT_FILENO && (dup2(output_fd, STDOUT_FILENO) == -1))
-		exit(1);
+	{
+		ft_close_all_pipes(pipes, cmd_count - 1);
+		close(output_fd);
+		safe_abort(1);
+	}
+
+	if (input_fd != STDIN_FILENO)
+		close(input_fd);
+	if (output_fd != STDOUT_FILENO)
+		close(output_fd);
+	
 	if (ft_is_builtin(parser->args[0]))
-		exit(ft_execute_builtin(shell, parser));
+	{
+		ft_close_all_pipes(pipes, cmd_count - 1);
+		safe_abort(ft_execute_builtin(shell, parser));
+	}
 	else
-		exit(ft_shell_command(shell, parser));
+	{
+		ft_close_all_pipes(pipes, cmd_count - 1);
+		safe_abort((ft_shell_command(shell, parser)));
+	}
 }
 
 t_parser	*ft_func(t_parser *cmds, int i, int **pipes, int cmd_count)
@@ -64,7 +90,9 @@ static void	ft_child_process(t_shell *shell, t_parser *cmds,
 	int			input_fd;
 	int			output_fd;
 	t_parser	*target;
+	int			cmd_count;
 
+	cmd_count = ft_count_commands(cmds);
 	ft_init_signals(EXECUTION);
 	input_fd = STDIN_FILENO;
 	output_fd = STDOUT_FILENO;
@@ -74,9 +102,12 @@ static void	ft_child_process(t_shell *shell, t_parser *cmds,
 		output_fd = pipes[i][1];
 	target = ft_func(cmds, i, pipes, ft_count_commands(cmds));
 	if (target)
-		ft_execute_pipeline_command(shell, target, input_fd, output_fd);
+		ft_execute_pipeline_command(shell, target, input_fd, output_fd, pipes);
 	else
-		exit(1);
+	{
+		ft_close_all_pipes(pipes, cmd_count - 1);
+		safe_abort(1);
+	}
 }
 
 static int	ft_wait_for_pipeline(pid_t *pids, int cmd_count)
