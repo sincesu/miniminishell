@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/29 20:31:29 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/01 10:37:44 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int			is_operator_type(int type);
 int			tokenize(char *str);
 void		remove_empty_tokens(t_token **head);
 void		merger(t_token	*a);
-char		*find_dollar(char *input, char **env, int flag);
+char		*find_dollar(char *input, char **env, int flag, int exit_code);
 char		**update_shell_lvl(char **env);
 void		bubble_sort(char **arr);
 int			r_append_error(t_token *a, t_shell *shell);
@@ -130,13 +130,16 @@ int			handle_var_expand(char *s, char **env, char **expanded);
 int			handle_normal_char(char *input, char **expanded);
 int			handle_dollar(char *input, char **env, char **expanded);
 t_parser	*parser(t_token	*token);
-int			env_len(char **env);
 char		**copy_env(char **env);
 int			arg_len_counter(t_token *token);
 int			red_len_counter(t_token *token);
 t_parser	*new_node(t_parser current);
 char		*fill_dolar(char *input, char **env, int var_len);
 int			is_operator_token(const char *s);
+char		**update_shell_lvl(char **env);
+void		underscore_value_changer(t_shell *shell, t_token *prev);
+void		set_underscore_env(t_token *a, t_shell *shell);
+char		**empty_env(void);
 
 t_token		*ft_lstnew_token(t_token token);
 void		ft_lstadd_back_token(t_token **lst, t_token *new_node);
