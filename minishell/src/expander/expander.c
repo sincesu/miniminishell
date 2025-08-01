@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/01 10:22:44 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/01 14:43:04 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,27 +46,6 @@ char	*find_dollar(char *input, char **env, int flag, int exit_code)
 	}
 	return (expanded);
 }
-
-// char	*expand(char *input, t_shell *shell, int flag)
-// {
-// 	char	*exit_code;
-// 	char	*result;
-
-// 	exit_code = NULL;
-// 	result = NULL;
-// 	if (input[0] == '~' && ft_strlen(input) == 1)
-// 		input = ft_strdup("$HOME");
-// 	if (input[0] == '$' && input[1] == '?')
-// 	{
-// 		exit_code = ft_itoa(shell->exit_code);
-// 		result = ft_strjoin(exit_code, input + 2);
-// 		result = find_dollar(result, shell->env, flag);
-// 		return (result);
-// 	}
-// 	else
-// 		input = find_dollar(input, shell->env, flag);
-// 	return (input);
-// }
 
 char	*expand(char *input, t_shell *shell, int flag)
 {
@@ -143,8 +122,7 @@ void	expander(t_shell *shell)
 	args = shell->args;
 	while (args)
 	{
-		if (args->type == D_WORD || args->type == S_WORD)
-			args->content = remove_outer_quote_all(args->content);
+		args->content = remove_outer_quote_all(args->content);
 		if (args->type != S_WORD)
 			args->content = expand(args->content, shell, x);
 		x = args->type;
