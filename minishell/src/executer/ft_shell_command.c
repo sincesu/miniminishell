@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:17:11 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/01 19:27:08 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 static char	*ft_get_executable_path(char *command)
 {
@@ -31,12 +32,42 @@ static char	*ft_get_executable_path(char *command)
 	return (full_path);
 }
 
+int	is_directory(char *path)
+{
+	struct stat	path_stat;
+
+	if (stat(path, &path_stat) == -1)
+		return (0);
+	return (S_ISDIR(path_stat.st_mode));
+}
+
+#include <sys/stat.h> // stat için
+#include <unistd.h>   // access
+#include <errno.h>    // errno
+
 static void	ft_execute_external_command(char *path, char **args, char **env)
 {
+	struct stat	st;
+
 	ft_init_signals(EXECUTION);
+	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(args[0], 2);
+		ft_putendl_fd(": Is a directory", 2);
+		safe_abort(126);
+	}
+	if ((args[0][0] == '/' || (args[0][0] == '.' && args[0][1] == '/'))
+		&& access(path, F_OK) != 0)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(args[0], 2);
+		ft_putendl_fd(": No such file or directory", 2);
+		safe_abort(127);
+	}
 	execve(path, args, env);
 	perror("execve");
-	exit(126);
+	safe_abort(126);
 }
 
 static int	ft_wait_child_process(pid_t pid)
