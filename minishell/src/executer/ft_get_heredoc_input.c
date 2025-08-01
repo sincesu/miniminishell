@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:16:40 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/01 10:22:33 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/01 19:14:20 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ char	*ft_line_func(t_shell *shell, char *result, char *line)
 
 	expanded = find_dollar(line, shell->env, 0, shell->exit_code);
 	result = ft_strjoin(result, expanded);
-	result = ft_strjoin(result, " ");
 	return (result);
 }
 
