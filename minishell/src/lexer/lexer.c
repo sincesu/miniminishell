@@ -16,6 +16,18 @@
 #include <stdio.h>
 #include <string.h>
 
+char	**lexer_split(const char *s, int **flag_array)
+{
+	int		count;
+	char	**result;
+
+	count = count_tokens(s);
+	result = ft_alloc(sizeof(char *) * (count + 1));
+	*flag_array = ft_alloc(sizeof(int) * count);
+	fill_tokens_and_flags(s, result, *flag_array);
+	return (result);
+}
+
 int	is_operator_token(const char *s)
 {
 	if (s[0] == '>' && s[1] == '>')
