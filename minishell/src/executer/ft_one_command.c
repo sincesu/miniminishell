@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:16:44 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:16:40 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,25 @@ int	ft_prepare_heredocs(t_shell *shell, t_parser *parsed)
 		if (redir[i].type == R_HERE && !redir[i].document)
 			redir[i].document = ft_get_heredoc_input(redir[i].file_name,
 					shell, flag);
+		if (g_signal_received != 0)
+				return (1);
 		i++;
 	}
 	return (0);
 }
+
+int	handle_heredoc(t_shell *shell, t_parser *parsed)
+{
+	
+	while (parsed != NULL)
+	{
+		if (ft_prepare_heredocs(shell, parsed))
+			return (1);
+		parsed = parsed->next;
+	}
+	return (0);
+}
+
 
 int	ft_one_command(t_shell *shell, t_parser *parsed)
 {
@@ -72,7 +87,6 @@ int	ft_one_command(t_shell *shell, t_parser *parsed)
 	int			saved_stdin;
 	int			saved_stdout;
 
-	ft_prepare_heredocs(shell, parsed);
 	saved_stdin = -1;
 	saved_stdout = -1;
 	if (ft_handle_redirections(parsed,
