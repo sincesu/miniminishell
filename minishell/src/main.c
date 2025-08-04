@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 20:35:09 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/29 20:29:40 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:18:13 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	ft_process_shell_input(t_shell *shell)
 		set_underscore_env(shell->args, shell);
 		parsed = parser(shell->args);
 		if (!shell->args)
+			return ;
+		if (handle_heredoc(shell, parsed))
 			return ;
 		ft_execute_commands(shell, parsed);
 	}
