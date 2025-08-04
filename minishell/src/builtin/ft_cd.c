@@ -22,11 +22,9 @@ static char	*ft_resolve_home_path(t_shell *shell, char *path)
 	char	*result;
 
 	home = find_dollar("$HOME", shell->env, 0, shell->exit_code);
-	if (home == NULL)
+	if (!home[0])
 	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd("HOME", 2);
-		ft_putstr_fd(" not set\n", 2);
+		ft_perror("cd", "HOME", " not set");
 		return (NULL);
 	}
 	result = ft_strjoin(home, path + 1);
@@ -60,9 +58,9 @@ static char	*ft_get_target_path(t_shell *shell, t_parser *parsed)
 	else if (parsed->args[1][0] == '-' && parsed->args[1][1] == '\0')
 	{
 		old_pwd = find_dollar("$OLDPWD", shell->env, 0, shell->exit_code);
-		if (old_pwd == NULL)
+		if (!old_pwd[0])
 		{
-			ft_perror("cd", "OLDPWD", "not set");
+			ft_perror("cd", "OLDPWD", " not set");
 			return (NULL);
 		}
 		ft_putendl_fd(old_pwd, 1);
