@@ -23,6 +23,7 @@ int	ft_get_shell_input(t_shell *shell)
 	shell->old_input = readline("minishell> ");
 	if (!shell->old_input)
 	{
+		ft_putendl_fd("exit", 1);
 		safe_abort(0);
 		return (0);
 	}
