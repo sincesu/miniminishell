@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:17:11 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/01 19:27:08 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:16:49 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*ft_get_executable_path(char *command)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(command, 2);
-		ft_putstr_fd(": command not found\n", 2);
+		ft_putstr_fd(": command not found\n", 2); //burası düzeltilecek. ("")
 	}
 	return (full_path);
 }
@@ -99,7 +99,6 @@ int	ft_shell_command(t_shell *shell, t_parser *parser)
 	}
 	else if (pid == 0)
 		ft_execute_external_command(full_path, parser->args, shell->env);
-	if (ft_strncmp(parser->args[0], "./minishell", sizeof("./minishell") == 0))
-		ft_init_signals(IGNORE);
+	ft_init_signals(IGNORE);
 	return (ft_wait_child_process(pid));
 }
