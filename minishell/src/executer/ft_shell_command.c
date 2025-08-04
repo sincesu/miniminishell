@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <errno.h>
 
 static char	*ft_get_executable_path(char *command)
 {
@@ -26,8 +27,11 @@ static char	*ft_get_executable_path(char *command)
 	if (full_path == NULL)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(command, 2);
-		ft_putstr_fd(": command not found\n", 2); //burası düzeltilecek. ("")
+		if (command[0])
+			ft_putstr_fd(command, 2);
+		else
+			ft_putstr_fd("\"\"", 2);
+		ft_putstr_fd(": command not found\n", 2);
 	}
 	return (full_path);
 }
@@ -40,10 +44,6 @@ int	is_directory(char *path)
 		return (0);
 	return (S_ISDIR(path_stat.st_mode));
 }
-
-#include <sys/stat.h> // stat için
-#include <unistd.h>   // access
-#include <errno.h>    // errno
 
 static void	ft_execute_external_command(char *path, char **args, char **env)
 {
