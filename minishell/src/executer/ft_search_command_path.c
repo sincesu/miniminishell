@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:17:08 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:16:45 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ char	*ft_search_command_path(char *command)
 	char	*full_path;
 	int		i;
 
+	if (!command[0])
+		return (NULL);
 	if (ft_is_direct_path(command))
 		return (ft_strdup(command));
 	path_env = getenv("PATH");
