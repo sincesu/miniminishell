@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 20:53:23 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/01 11:46:02 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:16:29 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,6 @@ static void	ft_execute_pipeline_command(t_shell *shell, t_parser *parser,
 	int	cmd_count;
 
 	cmd_count = ft_count_commands(parser);
-	if (parser->redirect && ft_apply_redirections(parser->redirect,
-			parser->redirect_count, 0) == -1)
-	{
-		ft_close_all_pipes(pipes, cmd_count - 1);
-		safe_abort(1);
-	}
 	if (input_fd != STDIN_FILENO && (dup2(input_fd, STDIN_FILENO) == -1))
 	{
 		ft_close_all_pipes(pipes, cmd_count - 1);
@@ -41,20 +35,29 @@ static void	ft_execute_pipeline_command(t_shell *shell, t_parser *parser,
 		close(output_fd);
 		safe_abort(1);
 	}
+	if (parser->redirect && ft_apply_redirections(parser->redirect,
+			parser->redirect_count, 0) == -1)
+	{
+		ft_close_all_pipes(pipes, cmd_count - 1);
+		safe_abort(1);
+	}
 
-	if (input_fd != STDIN_FILENO)
-		close(input_fd);
-	if (output_fd != STDOUT_FILENO)
-		close(output_fd);
-	
 	if (ft_is_builtin(parser->args[0]))
 	{
 		ft_close_all_pipes(pipes, cmd_count - 1);
+		if (input_fd != STDIN_FILENO)
+			close(input_fd);
+		if (output_fd != STDOUT_FILENO)
+			close(output_fd);
 		safe_abort(ft_execute_builtin(shell, parser));
 	}
 	else
 	{
 		ft_close_all_pipes(pipes, cmd_count - 1);
+		if (input_fd != STDIN_FILENO)
+			close(input_fd);
+		if (output_fd != STDOUT_FILENO)
+			close(output_fd);
 		safe_abort((ft_shell_command(shell, parser)));
 	}
 }
@@ -139,7 +142,6 @@ int	ft_multi_command(t_shell *shell, t_parser *parsed)
 	int			**pipes;
 	int			i;
 
-	ft_prepare_heredocs(shell, parsed);
 	cmd_count = ft_count_commands(parsed);
 	pids = ft_alloc(sizeof(pid_t) * cmd_count);
 	pipes = ft_alloc(sizeof(int *) * (cmd_count - 1));
