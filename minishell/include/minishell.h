@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/01 18:58:08 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/04 17:22:30 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int			quote_error(char *input, t_shell *shell);
 void		set_underscore_env(t_token *a, t_shell *shell);
 void		fill_tokens_and_flags(const char *s, char **res, int *flags);
 int			count_tokens(const char *s);
+int			handle_heredoc(t_shell *shell, t_parser *parsed);
 
 int			ft_cd(t_shell *shell, t_parser *parser);
 int			ft_pwd(t_shell *shell);
