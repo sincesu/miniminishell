@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:12:28 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/04 17:21:06 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,16 @@ int	ft_env(t_shell *shell)
 	{
 		if (shell->args->next->content[0] == '-')
 		{
-			ft_putstr_fd("env: invalid option -- \'", 2);
+			ft_putstr_fd("minishell: env: invalid option -- \'", 2);
 			ft_putchar_fd(shell->args->next->content[1], 2);
 			ft_putendl_fd("\'", 2);
 			return (125);
 		}
 		else
 		{
-			ft_putstr_fd("env: \'", 2);
+			ft_putstr_fd("minishell: env: \'", 2);
 			ft_putstr_fd(shell->args->next->content, 2);
-			ft_putendl_fd("\': No such file or directory", 2);
+			ft_putendl_fd("\': invalid argument", 2);
 			return (127);
 		}
 	}
