@@ -45,7 +45,8 @@ int	is_directory(char *path)
 	return (S_ISDIR(path_stat.st_mode));
 }
 
-static void	ft_execute_external_command(char *path, char **args, char **env)
+static void	ft_execute_external_command(char *path, t_parser *parsed,
+	char **env)
 {
 	struct stat	st;
 
@@ -53,19 +54,20 @@ static void	ft_execute_external_command(char *path, char **args, char **env)
 	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
 	{
 		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(args[0], 2);
+		ft_putstr_fd(parsed->args[0], 2);
 		ft_putendl_fd(": Is a directory", 2);
 		safe_abort(126);
 	}
-	if ((args[0][0] == '/' || (args[0][0] == '.' && args[0][1] == '/'))
+	if ((parsed->args[0][0] == '/'
+		|| (parsed->args[0][0] == '.' && parsed->args[0][1] == '/'))
 		&& access(path, F_OK) != 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(args[0], 2);
+		ft_putstr_fd(parsed->args[0], 2);
 		ft_putendl_fd(": No such file or directory", 2);
 		safe_abort(127);
 	}
-	execve(path, args, env);
+	execve(path, parsed->args, env);
 	perror("execve");
 	safe_abort(126);
 }
@@ -83,12 +85,12 @@ static int	ft_wait_child_process(pid_t pid)
 	return (1);
 }
 
-int	ft_shell_command(t_shell *shell, t_parser *parser)
+int	ft_shell_command(t_shell *shell, t_parser *parsed)
 {
 	pid_t	pid;
 	char	*full_path;
 
-	full_path = ft_get_executable_path(parser->args[0]);
+	full_path = ft_get_executable_path(parsed->args[0]);
 	if (full_path == NULL)
 		return (127);
 	pid = fork();
@@ -98,7 +100,7 @@ int	ft_shell_command(t_shell *shell, t_parser *parser)
 		return (1);
 	}
 	else if (pid == 0)
-		ft_execute_external_command(full_path, parser->args, shell->env);
+		ft_execute_external_command(full_path, parsed, shell->env);
 	ft_init_signals(IGNORE);
 	return (ft_wait_child_process(pid));
 }

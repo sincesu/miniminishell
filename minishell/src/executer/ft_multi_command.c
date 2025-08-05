@@ -17,48 +17,47 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static void	ft_execute_pipeline_command(t_shell *shell, t_parser *parser,
-	int input_fd, int output_fd, int **pipes)
+static void	ft_execute_pipeline_command(t_shell *shell, t_parser *parsed,
+	int **pipes)
 {
 	int	cmd_count;
 
-	cmd_count = ft_count_commands(parser);
-	if (input_fd != STDIN_FILENO && (dup2(input_fd, STDIN_FILENO) == -1))
+	cmd_count = ft_count_commands(parsed);
+	if (parsed->fd_in != STDIN_FILENO && (dup2(parsed->fd_in, STDIN_FILENO) == -1))
 	{
 		ft_close_all_pipes(pipes, cmd_count - 1);
-		close(input_fd);
+		close(parsed->fd_in);
 		safe_abort(1);
 	}
-	if (output_fd != STDOUT_FILENO && (dup2(output_fd, STDOUT_FILENO) == -1))
+	if (parsed->fd_out != STDOUT_FILENO && (dup2(parsed->fd_out, STDOUT_FILENO) == -1))
 	{
 		ft_close_all_pipes(pipes, cmd_count - 1);
-		close(output_fd);
+		close(parsed->fd_out);
 		safe_abort(1);
 	}
-	if (parser->redirect && ft_apply_redirections(parser->redirect,
-			parser->redirect_count, 0) == -1)
+	if (parsed->redirect && ft_apply_redirections(parsed->redirect,
+			parsed->redirect_count, 0) == -1)
 	{
 		ft_close_all_pipes(pipes, cmd_count - 1);
 		safe_abort(1);
 	}
-
-	if (ft_is_builtin(parser->args[0]))
+	if (ft_is_builtin(parsed->args[0]))
 	{
 		ft_close_all_pipes(pipes, cmd_count - 1);
-		if (input_fd != STDIN_FILENO)
-			close(input_fd);
-		if (output_fd != STDOUT_FILENO)
-			close(output_fd);
-		safe_abort(ft_execute_builtin(shell, parser));
+		if (parsed->fd_in != STDIN_FILENO)
+			close(parsed->fd_in);
+		if (parsed->fd_out != STDOUT_FILENO)
+			close(parsed->fd_out);
+		safe_abort(ft_execute_builtin(shell, parsed));
 	}
 	else
 	{
 		ft_close_all_pipes(pipes, cmd_count - 1);
-		if (input_fd != STDIN_FILENO)
-			close(input_fd);
-		if (output_fd != STDOUT_FILENO)
-			close(output_fd);
-		safe_abort((ft_shell_command(shell, parser)));
+		if (parsed->fd_in != STDIN_FILENO)
+			close(parsed->fd_in);
+		if (parsed->fd_out != STDOUT_FILENO)
+			close(parsed->fd_out);
+		safe_abort((ft_shell_command(shell, parsed)));
 	}
 }
 
@@ -87,30 +86,27 @@ t_parser	*ft_func(t_parser *cmds, int i, int **pipes, int cmd_count)
 	return (target);
 }
 
-static void	ft_child_process(t_shell *shell, t_parser *cmds,
+static void	ft_child_process(t_shell *shell, t_parser *parsed,
 	int **pipes, int i)
 {
-	int			input_fd;
-	int			output_fd;
 	t_parser	*target;
 	int			cmd_count;
 
-	cmd_count = ft_count_commands(cmds);
+	cmd_count = ft_count_commands(parsed);
 	ft_init_signals(EXECUTION);
-	input_fd = STDIN_FILENO;
-	output_fd = STDOUT_FILENO;
-	if (i > 0)
-		input_fd = pipes[i - 1][0];
-	if (i < ft_count_commands(cmds) - 1)
-		output_fd = pipes[i][1];
-	target = ft_func(cmds, i, pipes, ft_count_commands(cmds));
-	if (target)
-		ft_execute_pipeline_command(shell, target, input_fd, output_fd, pipes);
-	else
+	target = ft_func(parsed, i, pipes, cmd_count);
+	if (!target)
 	{
 		ft_close_all_pipes(pipes, cmd_count - 1);
 		safe_abort(1);
 	}
+	target->fd_in = STDIN_FILENO;
+	target->fd_out = STDOUT_FILENO;
+	if (i > 0)
+		target->fd_in = pipes[i - 1][0];
+	if (i < cmd_count - 1)
+		target->fd_out = pipes[i][1];
+	ft_execute_pipeline_command(shell, target, pipes);
 }
 
 static int	ft_wait_for_pipeline(pid_t *pids, int cmd_count)
