@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:13:03 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/01 17:29:24 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/06 20:59:57 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,39 +19,19 @@ static int	check_export_arg(t_shell *shell, char *arg)
 	int	i;
 	int	str_len;
 
-	i = 0;
 	str_len = ft_strlen(arg);
-	while(arg[i])
+	i = 0;
+	while (arg[i])
 	{
 		if (arg[i] == '=')
 		{
 			str_len = i;
-			break;
+			break ;
 		}
 		i++;
 	}
-	i = 0;
-	if (!(ft_isalpha(arg[0]) || arg[0] == '_'))
-	{
-		ft_putstr_fd("minishell: export: `", 2);
-		ft_putstr_fd(arg, 2);
-		ft_putendl_fd("\': not a valid identifier", 2);
-		shell->exit_code = 1;
+	if (!is_valid_identifier(shell, arg, str_len))
 		return (1);
-	}
-	while(arg[i] && i < str_len)
-	{
-		if (arg[i] == '-')
-		{
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(arg, 2);
-			ft_putendl_fd("\': not a valid identifier", 2);
-			shell->exit_code = 1;
-			return (1);
-		}
-		else
-			i++;
-	}
 	return (0);
 }
 

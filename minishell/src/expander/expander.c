@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/01 14:43:04 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/06 21:01:17 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ char	*find_dollar(char *input, char **env, int flag, int exit_code)
 {
 	int		i;
 	char	*expanded;
-	char	*exit;
 
 	i = 0;
 	expanded = ft_strdup("");
@@ -29,18 +28,7 @@ char	*find_dollar(char *input, char **env, int flag, int exit_code)
 	while (input[i])
 	{
 		if (input[i] == '$')
-		{
-			if (input[i + 1] == '?')
-			{
-				exit = ft_itoa(exit_code);
-				expanded = ft_strjoin(expanded, exit);
-				i += 2;
-			}
-			else if (ft_isalnum(input[i + 1]) || input[i + 1] == '_')
-				i += handle_var_expand(input + i, env, &expanded);
-			else
-				i += handle_normal_char(input + i, &expanded);
-		}
+			i += handle_dollar_sequence(input + i, &expanded, env, exit_code);
 		else
 			i += handle_normal_char(input + i, &expanded);
 	}

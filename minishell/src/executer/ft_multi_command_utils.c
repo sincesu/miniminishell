@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 20:53:23 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/06 21:12:34 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,35 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <stdio.h>
+
+void	init_command_redirections(t_parser *parsed, int **pipes,
+		int cmd_count)
+{
+	if (parsed->fd_in != STDIN_FILENO
+		&& dup2(parsed->fd_in, STDIN_FILENO) == -1)
+	{
+		ft_close_all_pipes(pipes, cmd_count - 1);
+		close(parsed->fd_in);
+		safe_abort(1);
+	}
+	if (parsed->fd_out != STDOUT_FILENO
+		&& dup2(parsed->fd_out, STDOUT_FILENO) == -1)
+	{
+		ft_close_all_pipes(pipes, cmd_count - 1);
+		close(parsed->fd_out);
+		safe_abort(1);
+	}
+	if (parsed->redirect && ft_apply_redirections(parsed->redirect,
+			parsed->redirect_count, 0) == -1)
+	{
+		ft_close_all_pipes(pipes, cmd_count - 1);
+		if (parsed->fd_in != STDIN_FILENO)
+			close(parsed->fd_in);
+		if (parsed->fd_out != STDOUT_FILENO)
+			close(parsed->fd_out);
+		safe_abort(1);
+	}
+}
 
 int	ft_count_commands(t_parser *parsed)
 {

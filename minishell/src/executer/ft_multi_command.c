@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 20:53:23 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/05 13:57:01 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/06 21:13:48 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,46 +23,16 @@ static void	ft_execute_pipeline_command(t_shell *shell, t_parser *parsed,
 	int	cmd_count;
 
 	cmd_count = ft_count_commands(parsed);
-	if (parsed->fd_in != STDIN_FILENO && (dup2(parsed->fd_in, STDIN_FILENO) == -1))
-	{
-		ft_close_all_pipes(pipes, cmd_count - 1);
+	init_command_redirections(parsed, pipes, cmd_count);
+	ft_close_all_pipes(pipes, cmd_count - 1);
+	if (parsed->fd_in != STDIN_FILENO)
 		close(parsed->fd_in);
-		safe_abort(1);
-	}
-	if (parsed->fd_out != STDOUT_FILENO && (dup2(parsed->fd_out, STDOUT_FILENO) == -1))
-	{
-		ft_close_all_pipes(pipes, cmd_count - 1);
+	if (parsed->fd_out != STDOUT_FILENO)
 		close(parsed->fd_out);
-		safe_abort(1);
-	}
-	if (parsed->redirect && ft_apply_redirections(parsed->redirect,
-			parsed->redirect_count, 0) == -1)
-	{
-		ft_close_all_pipes(pipes, cmd_count - 1);
-		if (parsed->fd_in != STDIN_FILENO)
-			close(parsed->fd_in);
-		if (parsed->fd_out != STDOUT_FILENO)
-			close(parsed->fd_out);
-		safe_abort(1);
-	}
 	if (ft_is_builtin(parsed->args[0]))
-	{
-		ft_close_all_pipes(pipes, cmd_count - 1);
-		if (parsed->fd_in != STDIN_FILENO)
-			close(parsed->fd_in);
-		if (parsed->fd_out != STDOUT_FILENO)
-			close(parsed->fd_out);
 		safe_abort(ft_execute_builtin(shell, parsed));
-	}
 	else
-	{
-		ft_close_all_pipes(pipes, cmd_count - 1);
-		if (parsed->fd_in != STDIN_FILENO)
-			close(parsed->fd_in);
-		if (parsed->fd_out != STDOUT_FILENO)
-			close(parsed->fd_out);
-		safe_abort((ft_shell_command(shell, parsed)));
-	}
+		safe_abort(ft_shell_command(shell, parsed));
 }
 
 t_parser	*ft_func(t_parser *cmds, int i, int **pipes, int cmd_count)

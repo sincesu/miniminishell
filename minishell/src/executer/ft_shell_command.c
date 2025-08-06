@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:17:11 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/06 14:07:23 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/06 21:14:05 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ int	is_directory(char *path)
 	return (S_ISDIR(path_stat.st_mode));
 }
 
-static void	ft_execute_external_command(char *path, t_parser *parsed,
-	char **env)
+void	check_command_errors(char *path, t_parser *parsed)
 {
 	struct stat	st;
 
@@ -74,9 +73,6 @@ static void	ft_execute_external_command(char *path, t_parser *parsed,
 			close(parsed->fd_out);
 		safe_abort(127);
 	}
-	execve(path, parsed->args, env);
-	perror("execve");
-	safe_abort(126);
 }
 
 static int	ft_wait_child_process(pid_t pid)
@@ -109,7 +105,8 @@ int	ft_shell_command(t_shell *shell, t_parser *parsed)
 	}
 	else if (pid == 0)
 		ft_execute_external_command(full_path, parsed, shell->env);
-	if (ft_strncmp("./minishell", parsed->args[0], ft_strlen("./minishell") + 1) == 0)
+	if (ft_strncmp("./minishell", parsed->args[0],
+			ft_strlen("./minishell") + 1) == 0)
 		ft_init_signals(IGNORE);
 	return (ft_wait_child_process(pid));
 }

@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:17:08 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/04 16:16:45 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/06 21:14:32 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 #include "../../Libft/libft.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
+
+void	ft_execute_external_command(char *path, t_parser *parsed,
+	char **env)
+{
+	check_command_errors(path, parsed);
+	execve(path, parsed->args, env);
+	perror("execve");
+	safe_abort(126);
+}
 
 static int	ft_is_direct_path(char *cmd)
 {
