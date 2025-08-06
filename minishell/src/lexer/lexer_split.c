@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 01:18:00 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/05 13:58:19 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/06 21:02:41 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,20 @@
 #include <stdio.h>
 #include <string.h>
 
+static int	get_quoted_len(const char *s)
+{
+	int		i;
+	char	quote;
+
+	quote = s[0];
+	i = 1;
+	while (s[i] && s[i] != quote)
+		i++;
+	if (s[i] == quote)
+		i++;
+	return (i);
+}
+
 static int	get_token_len(const char *s)
 {
 	int		i;
@@ -25,15 +39,7 @@ static int	get_token_len(const char *s)
 	if (is_operator_token(s))
 		return (is_operator_token(s));
 	if (is_quote(s[0]))
-	{
-		quote = s[0];
-		i = 1;
-		while (s[i] && s[i] != quote)
-			i++;
-		if (s[i] == quote)
-			i++;
-		return (i);
-	}
+		return (get_quoted_len(s));
 	i = 0;
 	while (s[i])
 	{
@@ -74,21 +80,21 @@ int	count_tokens(const char *s)
 	return (count);
 }
 
-static int	set_flag_and_token(const char *s, char **res, int *flags, int i, int k)
+static int	set_flag_and_token(const char *s, char **res, int *flags)
 {
-	int		len;
-	int		lookahead;
+	int	len;
+	int	lookahead;
 
-	len = get_token_len(&s[i]);
-	res[k] = ft_alloc(len + 1);
-	ft_strlcpy(res[k], &s[i], len + 1);
+	len = get_token_len(s);
 	if (len <= 0)
 		return (-1);
-	lookahead = i + len;
-	if (is_operator_token(res[k]))
-		flags[k] = 0;
+	*res = ft_alloc(len + 1);
+	ft_strlcpy(*res, s, len + 1);
+	lookahead = len;
+	if (is_operator_token(*res))
+		*flags = 0;
 	else
-		flags[k] = (s[lookahead] && s[lookahead] != ' '
+		*flags = (s[lookahead] && s[lookahead] != ' '
 				&& !is_operator(s[lookahead]));
 	return (len);
 }
@@ -107,8 +113,8 @@ void	fill_tokens_and_flags(const char *s, char **res, int *flags)
 			i++;
 		if (!s[i])
 			break ;
-		len = set_flag_and_token(s, res, flags, i, k);
-		if (len <= 0)
+		len = set_flag_and_token(&s[i], &res[k], &flags[k]);
+		if (len == 0)
 			break ;
 		i += len;
 		k++;
