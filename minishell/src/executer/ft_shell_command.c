@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:17:11 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/04 16:16:49 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/06 14:07:23 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 static char	*ft_get_executable_path(char *command)
 {
 	char	*full_path;
+
+	if (ft_strchr(command, '/'))
+		return (ft_strdup(command));
 
 	full_path = ft_search_command_path(command);
 	if (full_path == NULL)
@@ -56,15 +59,21 @@ static void	ft_execute_external_command(char *path, t_parser *parsed,
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(parsed->args[0], 2);
 		ft_putendl_fd(": Is a directory", 2);
+		if (parsed->fd_in != STDIN_FILENO)
+			close(parsed->fd_in);
+		if (parsed->fd_out != STDOUT_FILENO)
+			close(parsed->fd_out);
 		safe_abort(126);
 	}
-	if ((parsed->args[0][0] == '/'
-		|| (parsed->args[0][0] == '.' && parsed->args[0][1] == '/'))
-		&& access(path, F_OK) != 0)
+	if (ft_strchr(parsed->args[0], '/') && access(path, F_OK) != 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(parsed->args[0], 2);
 		ft_putendl_fd(": No such file or directory", 2);
+		if (parsed->fd_in != STDIN_FILENO)
+			close(parsed->fd_in);
+		if (parsed->fd_out != STDOUT_FILENO)
+			close(parsed->fd_out);
 		safe_abort(127);
 	}
 	execve(path, parsed->args, env);

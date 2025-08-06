@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 20:53:23 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/04 16:16:29 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:57:01 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@ static void	ft_execute_pipeline_command(t_shell *shell, t_parser *parsed,
 			parsed->redirect_count, 0) == -1)
 	{
 		ft_close_all_pipes(pipes, cmd_count - 1);
+		if (parsed->fd_in != STDIN_FILENO)
+			close(parsed->fd_in);
+		if (parsed->fd_out != STDOUT_FILENO)
+			close(parsed->fd_out);
 		safe_abort(1);
 	}
 	if (ft_is_builtin(parsed->args[0]))
