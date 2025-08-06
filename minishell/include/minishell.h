@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/06 15:34:23 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/06 21:15:01 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,18 @@ void		set_underscore_env(t_token *a, t_shell *shell);
 void		fill_tokens_and_flags(const char *s, char **res, int *flags);
 int			count_tokens(const char *s);
 int			handle_heredoc(t_shell *shell, t_parser *parsed);
-
+int			handle_dollar_sequence(char *input, char **expanded,
+				char **env, int exit_code);
+void		init_command_redirections(t_parser *parsed, int **pipes,
+				int cmd_count);
+void		check_command_errors(char *path, t_parser *parsed);
+void		ft_execute_external_command(char *path, t_parser *parsed,
+				char **env);
+int			is_valid_identifier(t_shell *shell, char *arg, int str_len);
 int			ft_cd(t_shell *shell, t_parser *parser);
 int			ft_pwd(t_shell *shell);
 int			ft_echo(char **args);
-void		ft_exit(t_shell *shell);
+void		ft_exit(t_shell *shell, t_parser *parsed);
 int			ft_env(t_shell *shell);
 int			ft_unset(t_shell *shell);
 int			ft_export(t_shell *shell);
