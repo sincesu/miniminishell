@@ -13,6 +13,7 @@
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
 #include <stdlib.h>
+#include <readline/readline.h>
 
 t_mem_list	**get_head_mem(void)
 {
@@ -41,6 +42,7 @@ void	ft_free(void)
 void	safe_abort(int exit_code)
 {
 	ft_free();
+	rl_clear_history();
 	exit(exit_code);
 }
 
