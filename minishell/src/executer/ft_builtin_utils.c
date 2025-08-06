@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 20:51:22 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/06 15:32:25 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/06 21:00:36 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_execute_builtin(t_shell *shell, t_parser *parser)
 			close(parser->fd_in);
 		if (parser->fd_out != STDOUT_FILENO)
 			close(parser->fd_out);
-		ft_exit(shell);
+		ft_exit(shell, parser);
 	}
 	return (1);
 }
