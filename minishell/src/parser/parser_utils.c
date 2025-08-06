@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 14:30:08 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:58:58 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	red_len_counter(t_token *token)
 	red_len_count = 0;
 	while (token && token->type != PIPE)
 	{
-		if (is_operator_type(token->type))
+		if (is_redirection_type(token->type))
 			red_len_count++;
 		token = token->next;
 	}
@@ -37,7 +37,7 @@ int	arg_len_counter(t_token *token)
 	arg_len_count = 0;
 	while (token && token->type != PIPE)
 	{
-		if (!is_operator_type(token->type))
+		if (!is_redirection_type(token->type))
 			arg_len_count++;
 		token = token->next;
 	}

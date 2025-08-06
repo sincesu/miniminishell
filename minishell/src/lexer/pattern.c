@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 04:00:39 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:58:36 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	is_operator(char c)
 	return (c == '>' || c == '<' || c == '|');
 }
 
-int	is_operator_type(int type)
+int	is_redirection_type(int type)
 {
 	return (type == R_OUT || type == R_APPEND
 		|| type == R_IN || type == R_HERE);

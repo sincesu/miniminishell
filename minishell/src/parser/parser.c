@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 16:31:49 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:34 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:59:07 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ t_token	*ft_set_parser(t_token *token, t_parser *current)
 	j = 0;
 	while (token && token->type != PIPE)
 	{
-		if (is_operator_type(token->type))
+		if (is_redirection_type(token->type))
 		{
 			set_redirect(&token, &current->redirect[i]);
 			i++;
 		}
-		else if (!is_operator_type(token->type))
+		else if (!is_redirection_type(token->type))
 		{
 			current->args[j++] = token->content;
 		}
