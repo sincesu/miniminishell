@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:53:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/06 20:59:31 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,30 +68,55 @@ static long long	ft_exit_atoll(char *str, char *original)
 	return (result * sign);
 }
 
-void	ft_exit(t_shell *shell)
+int	operator_control(t_token *args)
 {
-	long long	exit_code;
+	int		flag;
+	t_token	*tmp;
 
-	ft_putendl_fd("exit", 2);
+	flag = 0;
+	tmp = args;
+	while (tmp)
+	{
+		if (is_operator(tmp->content[0]))
+			flag = 1;
+		tmp = tmp->next;
+	}
+	return (flag);
+}
+
+static int	exit_checks(t_shell *shell, t_parser *parsed)
+{
 	if (shell->args == NULL || shell->args->next == NULL)
 	{
+		ft_putendl_fd("exit", 2);
 		safe_abort(shell->exit_code);
-		return ;
+		return (1);
 	}
-	if (ft_check_param(shell->args->next->content))
+	if (is_operator(parsed->args[1][0]))
+		return (1);
+	if (!operator_control(shell->args))
+		ft_putendl_fd("exit", 2);
+	if (ft_check_param(parsed->args[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(shell->args->next->content, 2);
 		ft_putendl_fd(": numeric argument required", 2);
 		safe_abort(2);
 	}
-	exit_code = ft_exit_atoll(shell->args->next->content,
-			shell->args->next->content);
-	if (shell->args->next->next)
+	if (parsed->args[2])
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		shell->exit_code = 1;
-		return ;
+		return (1);
 	}
-	safe_abort(exit_code);
+	return (0);
+}
+
+void	ft_exit(t_shell *shell, t_parser *parsed)
+{
+	if (exit_checks(shell, parsed))
+		safe_abort(shell->exit_code);
+	shell->exit_code = ft_exit_atoll(parsed->args[1],
+			parsed->args[1]);
+	safe_abort(shell->exit_code);
 }
