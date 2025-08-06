@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/04 17:22:30 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/06 15:34:23 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void		ft_free(void);
 void		safe_abort(int exit_code);
 void		register_alloc_mem(void *ptr);
 void		*ft_alloc(unsigned long size);
-int			is_operator_type(int type);
+int			is_redirection_type(int type);
 int			tokenize(char *str);
 void		remove_empty_tokens(t_token **head);
 void		merger(t_token	*a);
