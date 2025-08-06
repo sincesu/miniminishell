@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 01:18:00 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/01 17:43:14 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:58:19 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,6 @@ static int	get_token_len(const char *s)
 	return (i);
 }
 
-static char	*token_collect(const char *s, int *word_len)
-{
-	int		len;
-	char	*tmp;
-
-	len = get_token_len(s);
-	tmp = ft_alloc(len + 1);
-	ft_strlcpy(tmp, s, len + 1);
-	*word_len = len;
-	return (tmp);
-}
-
 int	count_tokens(const char *s)
 {
 	int		count;
@@ -79,10 +67,7 @@ int	count_tokens(const char *s)
 			i++;
 		if (!s[i])
 			break ;
-		word_len = 0;
-		token_collect(&s[i], &word_len);
-		if (word_len <= 0)
-			break ;
+		word_len = get_token_len(&s[i]);
 		count++;
 		i += word_len;
 	}

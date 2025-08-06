@@ -75,6 +75,7 @@ t_token	*lexer(char *input)
 
 	i = 0;
 	head_list = NULL;
+	flag_array = NULL;
 	str = lexer_split(input, &flag_array);
 	if (!str)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 10:28:39 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/01 13:16:36 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:56:05 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ char	**update_shell_lvl(char **env)
 			new_shlvl = ft_strdup("SHLVL=");
 			new_shlvl = ft_strjoin(new_shlvl, ft_itoa(shlvl));
 			env[i] = new_shlvl;
+			break ;
 		}
 		i++;
 	}
@@ -70,7 +71,7 @@ void	set_underscore_env(t_token *a, t_shell *shell)
 	prev = NULL;
 	while (token)
 	{
-		if (token->type == PIPE || (is_operator_type(token->type)
+		if (token->type == PIPE || (is_redirection_type(token->type)
 				&& (!token->next->next || !token->next->next->content)))
 			return ;
 		prev = token;
