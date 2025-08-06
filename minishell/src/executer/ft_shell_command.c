@@ -25,7 +25,6 @@ static char	*ft_get_executable_path(char *command)
 
 	if (ft_strchr(command, '/'))
 		return (ft_strdup(command));
-
 	full_path = ft_search_command_path(command);
 	if (full_path == NULL)
 	{
@@ -53,7 +52,6 @@ static void	ft_execute_external_command(char *path, t_parser *parsed,
 {
 	struct stat	st;
 
-	ft_init_signals(EXECUTION);
 	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -102,6 +100,7 @@ int	ft_shell_command(t_shell *shell, t_parser *parsed)
 	full_path = ft_get_executable_path(parsed->args[0]);
 	if (full_path == NULL)
 		return (127);
+	ft_init_signals(EXECUTION);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -110,6 +109,7 @@ int	ft_shell_command(t_shell *shell, t_parser *parsed)
 	}
 	else if (pid == 0)
 		ft_execute_external_command(full_path, parsed, shell->env);
-	ft_init_signals(IGNORE);
+	if (ft_strncmp("./minishell", parsed->args[0], ft_strlen("./minishell") + 1) == 0)
+		ft_init_signals(IGNORE);
 	return (ft_wait_child_process(pid));
 }
