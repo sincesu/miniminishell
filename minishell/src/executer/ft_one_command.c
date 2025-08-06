@@ -14,6 +14,7 @@
 #include "../../Libft/libft.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
 
 static void	ft_restore_std_fds(t_parser *parsed)
 {
@@ -47,6 +48,7 @@ int	ft_prepare_heredocs(t_shell *shell, t_parser *parsed)
 	t_redirect	*redir;
 	int			flag;
 	int			i;
+	char		*heredoc_content;
 
 	redir = parsed->redirect;
 	if (!redir)
@@ -58,8 +60,15 @@ int	ft_prepare_heredocs(t_shell *shell, t_parser *parsed)
 		if (redir[i].flags == S_WORD || redir[i].flags == D_WORD)
 			flag = 1;
 		if (redir[i].type == R_HERE && !redir[i].document)
-			redir[i].document = ft_get_heredoc_input(redir[i].file_name,
-					shell, flag);
+		{
+			heredoc_content = ft_get_heredoc_input(redir[i].file_name, shell, flag);
+			if (heredoc_content == NULL && g_signal_received == SIGINT)
+			{
+				shell->exit_code = 130;
+				return (1);
+			}
+			redir[i].document = heredoc_content;
+		}
 		if (g_signal_received != 0)
 			return (1);
 		i++;

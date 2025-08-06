@@ -49,6 +49,5 @@ void	ft_heredoc_handler(int signum)
 {
 	g_signal_received = signum;
 	rl_done = 1;
-	ft_putendl_fd("", 1);
 	*ft_exit_status() = 130;
 }
