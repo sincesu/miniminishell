@@ -49,7 +49,7 @@ void	ft_process_shell_input(t_shell *shell)
 	parsed = parser(shell->args);
 	if (!shell->args)
 		return ;
-	if (handle_heredoc(shell, parsed))
+	if (ft_handle_heredoc(shell, parsed))
 		return ;
 	ft_execute_commands(shell, parsed);
 }

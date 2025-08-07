@@ -25,29 +25,20 @@ static int	ft_error_pwd(char c)
 	return (2);
 }
 
-int	ft_pwd(t_shell *shell)
+int	ft_pwd(char **parsed)
 {
 	char	*pwd;
 
-	if (shell->args->next && shell->args->next->type == U_WORD)
-	{
-		if (shell->args->next->content[0] == '-')
-			return (ft_error_pwd(shell->args->next->content[1]));
-	}
+	if (parsed[1] && parsed[1][0] == '-')
+		return (ft_error_pwd(parsed[1][1]));
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
 		ft_perror("pwd", NULL, NULL);
 		return (0);
 	}
-	if (g_signal_received == SIGPIPE)
-	{
-		free(pwd);
-		g_signal_received = 0;
-		return (0);
-	}	
-	else
-		ft_putendl_fd(pwd, STDOUT_FILENO);
+	signal(SIGPIPE, SIG_IGN);
+	ft_putendl_fd(pwd, STDOUT_FILENO);
 	free(pwd);
 	return (0);
 }

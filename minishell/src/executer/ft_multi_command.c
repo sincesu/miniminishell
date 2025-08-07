@@ -35,7 +35,8 @@ static void	ft_execute_pipeline_command(t_shell *shell, t_parser *parsed,
 		safe_abort(ft_shell_command(shell, parsed));
 }
 
-t_parser	*ft_func(t_parser *cmds, int i, int **pipes, int cmd_count)
+static t_parser	*ft_prepare_child_command(t_parser *cmds, int i,
+	int **pipes, int cmd_count)
 {
 	t_parser	*target;
 	int			j;
@@ -68,7 +69,7 @@ static void	ft_child_process(t_shell *shell, t_parser *parsed,
 
 	cmd_count = ft_count_commands(parsed);
 	ft_init_signals(EXECUTION);
-	target = ft_func(parsed, i, pipes, cmd_count);
+	target = ft_prepare_child_command(parsed, i, pipes, cmd_count);
 	if (!target)
 	{
 		ft_close_all_pipes(pipes, cmd_count - 1);

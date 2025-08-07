@@ -88,7 +88,7 @@ int			handle_normal_char(char *input, char **expanded);
 
 //builtins
 int			ft_cd(t_shell *shell, t_parser *parser);
-int			ft_pwd(t_shell *shell);
+int			ft_pwd(char **args);
 int			ft_echo(char **args);
 void		ft_exit(t_shell *shell, t_parser *parsed);
 int			ft_unset(t_shell *shell, t_parser *parsed);
@@ -159,7 +159,7 @@ void		ft_execute_commands(t_shell *shell, t_parser *parsed);
 int			ft_shell_command(t_shell *shell, t_parser *parsed);
 int			ft_one_command(t_shell *shell, t_parser *parsed);
 int			ft_multi_command(t_shell *shell, t_parser *parsed);
-int			handle_heredoc(t_shell *shell, t_parser *parsed);
+int			ft_handle_heredoc(t_shell *shell, t_parser *parsed);
 void		ft_execute_external_command(char *path, t_parser *parsed,
 				char **env);
 void		check_command_errors(char *path, t_parser *parsed);

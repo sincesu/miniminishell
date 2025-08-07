@@ -13,6 +13,7 @@
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
 #include <stdio.h>
+#include <signal.h>
 
 static int	check_export_arg(t_shell *shell, char *arg)
 {
@@ -101,6 +102,7 @@ int	ft_export(t_shell *shell, t_parser *parsed)
 
 	i = 1;
 	str = parsed->args;
+	signal(SIGPIPE, SIG_IGN);
 	if (!str[1] || (str[1] && is_operator_token(str[1])))
 	{
 		export_list_printer(shell);

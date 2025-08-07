@@ -68,7 +68,7 @@ int	ft_unset(t_shell *shell, t_parser *parsed)
 		if (parsed->args[1][0] == '-')
 		{
 			ft_putstr_fd("minishell: unset: -", 2);
-			ft_putchar_fd(shell->args->next->content[1], 2);
+			ft_putchar_fd(parsed->args[1][1], 2);
 			ft_putendl_fd(": invalid option", 2);
 			return (2);
 		}
