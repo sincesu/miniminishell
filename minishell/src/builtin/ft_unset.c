@@ -12,7 +12,6 @@
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
-#include <stdlib.h>
 
 static int	is_remove_env(char *env_var, char **str)
 {

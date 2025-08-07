@@ -10,11 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include "../../Libft/libft.h"
 #include "../../include/minishell.h"
+#include <unistd.h>
+#include <stdlib.h>
 #include <signal.h>
 
 static int	ft_error_pwd(char c)

@@ -11,10 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../Libft/libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 int	red_len_counter(t_token *token)
 {

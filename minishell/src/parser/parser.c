@@ -11,10 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../Libft/libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stddef.h>
 
 static t_parser	*ft_init_parser(t_parser *prev, t_token *token)
 {

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stddef.h>
 
 void	ft_lstadd_back_token(t_token **lst, t_token *new_node)
 {

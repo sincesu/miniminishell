@@ -11,9 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../Libft/libft.h"
 #include <unistd.h>
-#include <sys/time.h>
 #include <stdio.h>
 
 void	init_command_redirections(t_parser *parsed, int **pipes,

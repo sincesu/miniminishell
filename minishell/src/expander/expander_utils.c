@@ -12,9 +12,6 @@
 
 #include "../../Libft/libft.h"
 #include "../../include/minishell.h"
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 static char	*fill_dolar(char *input, char **env, int var_len)
 {

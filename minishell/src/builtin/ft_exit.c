@@ -10,11 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
 #include "../../Libft/libft.h"
 #include "../../include/minishell.h"
-#include <stdio.h>
 #include <limits.h>
 
 static int	ft_check_param(char *str)

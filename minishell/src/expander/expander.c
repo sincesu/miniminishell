@@ -12,9 +12,6 @@
 
 #include "../../Libft/libft.h"
 #include "../../include/minishell.h"
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 char	*find_dollar(char *input, char **env, int flag, int exit_code)
 {

@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_handle_heredoc.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: merozcan <merozcan@student.42kocaeli.      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/08 01:03:18 by merozcan          #+#    #+#             */
+/*   Updated: 2025/08/08 01:03:19 by merozcan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
-#include "../../Libft/libft.h"
+#include <stddef.h>
 #include <signal.h>
 
 static int	ft_process_single_heredoc(t_shell *shell, t_redirect *redir)

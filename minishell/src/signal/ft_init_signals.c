@@ -11,12 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../Libft/libft.h"
 #include <readline/readline.h>
 #include <signal.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 int	g_signal_received = 0;
 

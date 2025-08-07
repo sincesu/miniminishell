@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
+#include <stddef.h>
 
 void	ft_lstclear_token(t_token **lst, void (*del)(void *))
 {

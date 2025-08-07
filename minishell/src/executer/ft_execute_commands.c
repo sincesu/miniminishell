@@ -11,10 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../Libft/libft.h"
-#include <stddef.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 static int	ft_is_multi_command(t_shell shell)
 {

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stddef.h>
 
 int	ft_lstsize_token(t_token *lst)
 {

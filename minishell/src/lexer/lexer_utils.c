@@ -12,10 +12,6 @@
 
 #include "../../Libft/libft.h"
 #include "../../include/minishell.h"
-#include <stdlib.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <string.h>
 
 static int	get_quoted_len(const char *s)
 {

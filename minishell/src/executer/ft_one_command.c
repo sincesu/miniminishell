@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../Libft/libft.h"
-#include <stdlib.h>
 #include <unistd.h>
 
 static void	ft_restore_std_fds(t_parser *parsed)

@@ -12,9 +12,7 @@
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
-#include <readline/readline.h>
 #include <unistd.h>
-#include <stdlib.h>
 #include <fcntl.h>
 
 static int	ft_apply_input_redirection(t_redirect *redir)

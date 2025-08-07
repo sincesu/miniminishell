@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
+#include <stddef.h>
 
 t_token	*ft_lstnew_token(t_token token)
 {

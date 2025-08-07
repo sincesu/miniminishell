@@ -12,9 +12,6 @@
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 
 static char	**lexer_split(const char *s, int **flag_array)
 {
@@ -47,15 +44,15 @@ static int	tokenize(char *str)
 {
 	int	len;
 
-	if (strcmp(str, ">") == 0)
+	if (ft_strncmp(str, ">", 2) == 0)
 		return (R_OUT);
-	if (strcmp(str, ">>") == 0)
+	if (ft_strncmp(str, ">>", 3) == 0)
 		return (R_APPEND);
-	if (strcmp(str, "|") == 0)
+	if (ft_strncmp(str, "|", 2) == 0)
 		return (PIPE);
-	if (strcmp(str, "<") == 0)
+	if (ft_strncmp(str, "<", 2) == 0)
 		return (R_IN);
-	if (strcmp(str, "<<") == 0)
+	if (ft_strncmp(str, "<<", 3) == 0)
 		return (R_HERE);
 	len = ft_strlen(str);
 	if (len >= 2 && str[0] == '\'' && str[len - 1] == '\'')

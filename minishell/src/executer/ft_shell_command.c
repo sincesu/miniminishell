@@ -12,12 +12,10 @@
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
-#include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
-#include <errno.h>
 
 static char	*ft_get_executable_path(char *command)
 {

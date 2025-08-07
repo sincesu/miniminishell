@@ -14,7 +14,6 @@
 #include "../../Libft/libft.h"
 #include <unistd.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 static char	*ft_resolve_home_path(t_shell *shell, char *path)
 {

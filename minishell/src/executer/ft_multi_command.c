@@ -11,11 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../Libft/libft.h"
 #include <sys/wait.h>
 #include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 static void	ft_execute_pipeline_command(t_shell *shell, t_parser *parsed,
 	int **pipes)

@@ -12,7 +12,6 @@
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
-#include <stdio.h>
 
 static int	r_append_error(t_token *token, t_shell *shell)
 {

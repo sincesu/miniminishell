@@ -12,7 +12,6 @@
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
-#include <string.h>
 
 static void	export_only_variable_append(t_shell *shell, char *content)
 {
@@ -44,7 +43,7 @@ static int	bubble_sort_loop(char **arr, int len)
 	i = 0;
 	while (i < len - 1)
 	{
-		if (strcmp(arr[i], arr[i + 1]) > 0)
+		if (ft_strncmp(arr[i], arr[i + 1], ft_strlen(arr[i]) + 1) > 0)
 		{
 			tmp = arr[i];
 			arr[i] = arr[i + 1];
