@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 10:28:39 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/05 13:56:05 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/07 18:55:16 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,22 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-char	**update_shell_lvl(char **env)
+static char	**empty_env(void)
+{
+	char	**new_env;
+	char	*cwd;
+
+	cwd = getcwd(NULL, 0);
+	new_env = ft_alloc(sizeof(char *) * 4);
+	new_env[0] = ft_strjoin("PWD=", cwd);
+	new_env[1] = ft_strdup("SHLVL=1");
+	new_env[2] = ft_strdup("_=./minishell");
+	new_env[3] = NULL;
+	free(cwd);
+	return (new_env);
+}
+
+static char	**update_shell_lvl(char **env)
 {
 	int		i;
 	int		shlvl;
@@ -44,7 +59,7 @@ char	**update_shell_lvl(char **env)
 	return (env);
 }
 
-void	underscore_value_changer(t_shell *shell, t_token *prev)
+static void	underscore_value_changer(t_shell *shell, t_token *prev)
 {
 	int	i;
 
@@ -62,12 +77,12 @@ void	underscore_value_changer(t_shell *shell, t_token *prev)
 	}
 }
 
-void	set_underscore_env(t_token *a, t_shell *shell)
+void	set_underscore_env(t_token *args, t_shell *shell)
 {
 	t_token	*token;
 	t_token	*prev;
 
-	token = a;
+	token = args;
 	prev = NULL;
 	while (token)
 	{
@@ -80,21 +95,6 @@ void	set_underscore_env(t_token *a, t_shell *shell)
 	if (!prev || !prev->content)
 		return ;
 	underscore_value_changer(shell, prev);
-}
-
-char	**empty_env(void)
-{
-	char	**new_env;
-	char	*cwd;
-
-	cwd = getcwd(NULL, 0);
-	new_env = ft_alloc(sizeof(char *) * 4);
-	new_env[0] = ft_strjoin("PWD=", cwd);
-	new_env[1] = ft_strdup("SHLVL=1");
-	new_env[2] = ft_strdup("_=./minishell");
-	new_env[3] = NULL;
-	free(cwd);
-	return (new_env);
 }
 
 char	**copy_env(char **env)
@@ -115,5 +115,6 @@ char	**copy_env(char **env)
 		i++;
 	}
 	copy_env[env_len] = NULL;
+	update_shell_lvl(copy_env);
 	return (copy_env);
 }

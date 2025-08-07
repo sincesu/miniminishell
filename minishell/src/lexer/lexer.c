@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <string.h>
 
-char	**lexer_split(const char *s, int **flag_array)
+static char	**lexer_split(const char *s, int **flag_array)
 {
 	int		count;
 	char	**result;
@@ -43,7 +43,7 @@ int	is_operator_token(const char *s)
 	return (0);
 }
 
-int	tokenize(char *str)
+static int	tokenize(char *str)
 {
 	int	len;
 

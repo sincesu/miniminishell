@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 08:49:50 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/06 21:01:17 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/07 18:58:29 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*find_dollar(char *input, char **env, int flag, int exit_code)
 	return (expanded);
 }
 
-char	*expand(char *input, t_shell *shell, int flag)
+static char	*expand(char *input, t_shell *shell, int flag)
 {
 	if (input[0] == '~' && ft_strlen(input) == 1)
 		input = ft_strdup("$HOME");
@@ -43,7 +43,7 @@ char	*expand(char *input, t_shell *shell, int flag)
 	return (input);
 }
 
-char	*remove_outer_quote_all(char *s)
+static char	*remove_outer_quote_all(char *s)
 {
 	int		i;
 	int		j;
@@ -72,7 +72,7 @@ char	*remove_outer_quote_all(char *s)
 	return (result);
 }
 
-void	remove_empty_tokens(t_token **head)
+static void	remove_empty_tokens(t_token **head)
 {
 	t_token	*curr;
 	t_token	*prev;

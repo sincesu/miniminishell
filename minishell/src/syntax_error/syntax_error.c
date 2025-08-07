@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 19:41:09 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/23 19:22:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/07 19:00:29 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,7 @@
 #include "../../Libft/libft.h"
 #include <stdio.h>
 
-int	syntax_error(t_shell *shell)
-{
-	t_token	*a;
-	char	*str;
-
-	a = shell->args;
-	while (a && a->content)
-	{
-		if (is_operator(a->content[0]))
-		{
-			if (a->type == R_APPEND)
-				if (r_append_error(a, shell))
-					return (1);
-			if (a->type == R_HERE)
-				if (r_here_error(a, shell))
-					return (1);
-			if (a->type == R_OUT || a->type == R_IN)
-				if (r_in_and_r_out_error(a, shell))
-					return (1);
-			if (a->type == PIPE)
-				if (pipe_error(str, a, shell))
-					return (1);
-		}
-		str = a->content;
-		a = a->next;
-	}
-	return (0);
-}
-
-int	r_append_error(t_token *a, t_shell *shell)
+static int	r_append_error(t_token *a, t_shell *shell)
 {
 	if (a->type == R_APPEND)
 	{
@@ -65,7 +36,7 @@ int	r_append_error(t_token *a, t_shell *shell)
 	return (0);
 }
 
-int	r_here_error(t_token *a, t_shell *shell)
+static int	r_here_error(t_token *a, t_shell *shell)
 {
 	if (!a->next)
 	{
@@ -83,7 +54,7 @@ int	r_here_error(t_token *a, t_shell *shell)
 	return (0);
 }
 
-int	r_in_and_r_out_error(t_token *a, t_shell *shell)
+static int	r_in_and_r_out_error(t_token *a, t_shell *shell)
 {
 	if (!a->next)
 	{
@@ -95,7 +66,7 @@ int	r_in_and_r_out_error(t_token *a, t_shell *shell)
 	return (0);
 }
 
-int	pipe_error(char *str, t_token *a, t_shell *shell)
+static int	pipe_error(char *str, t_token *a, t_shell *shell)
 {
 	if (!a->next)
 	{
@@ -114,6 +85,35 @@ int	pipe_error(char *str, t_token *a, t_shell *shell)
 		ft_putstr_fd("minishell: syntax error near unexpected token '|'\n", 2);
 		shell->exit_code = 2;
 		return (1);
+	}
+	return (0);
+}
+
+int	syntax_error(t_shell *shell)
+{
+	t_token	*token;
+	char	*str;
+
+	token = shell->args;
+	while (token && token->content)
+	{
+		if (is_operator(token->content[0]))
+		{
+			if (token->type == R_APPEND)
+				if (r_append_error(token, shell))
+					return (1);
+			if (token->type == R_HERE)
+				if (r_here_error(token, shell))
+					return (1);
+			if (token->type == R_OUT || token->type == R_IN)
+				if (r_in_and_r_out_error(token, shell))
+					return (1);
+			if (token->type == PIPE)
+				if (pipe_error(str, token, shell))
+					return (1);
+		}
+		str = token->content;
+		token = token->next;
 	}
 	return (0);
 }

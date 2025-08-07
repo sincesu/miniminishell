@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 16:31:49 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/05 13:59:07 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/07 18:59:48 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-t_parser	*ft_init_parser(t_parser *prev, t_token *token)
+static t_parser	*ft_init_parser(t_parser *prev, t_token *token)
 {
 	t_parser	current;
 	int			red_len_count;
@@ -37,7 +37,7 @@ t_parser	*ft_init_parser(t_parser *prev, t_token *token)
 	return (new_node(current));
 }
 
-void	ft_addback_node(t_parser **head_node, t_parser *current)
+static void	ft_addback_node(t_parser **head_node, t_parser *current)
 {
 	t_parser	*last;
 
@@ -56,7 +56,7 @@ void	ft_addback_node(t_parser **head_node, t_parser *current)
 	}
 }
 
-void	set_redirect(t_token **token, t_redirect *redirect)
+static void	set_redirect(t_token **token, t_redirect *redirect)
 {
 	redirect->type = (*token)->type;
 	if (redirect->type == R_HERE)
@@ -72,7 +72,7 @@ void	set_redirect(t_token **token, t_redirect *redirect)
 	}
 }
 
-t_token	*ft_set_parser(t_token *token, t_parser *current)
+static t_token	*ft_set_parser(t_token *token, t_parser *current)
 {
 	int	i;
 	int	j;

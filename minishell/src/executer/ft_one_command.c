@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:16:44 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/04 16:16:40 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/07 18:57:30 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	ft_handle_redirections(t_parser *parsed)
 	return (0);
 }
 
-int	ft_prepare_heredocs(t_shell *shell, t_parser *parsed)
+static int	ft_prepare_heredocs(t_shell *shell, t_parser *parsed)
 {
 	t_redirect	*redir;
 	int			flag;

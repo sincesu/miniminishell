@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:16:57 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/06 21:00:14 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/07 18:56:39 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,7 @@
 #include "../../Libft/libft.h"
 #include <stdlib.h>
 
-int	is_valid_identifier(t_shell *shell, char *arg, int str_len)
-{
-	int	i;
-
-	if (!(ft_isalpha(arg[0]) || arg[0] == '_'))
-	{
-		ft_putstr_fd("minishell: export: `", 2);
-		ft_putstr_fd(arg, 2);
-		ft_putendl_fd("': not a valid identifier", 2);
-		shell->exit_code = 1;
-		return (0);
-	}
-	i = 0;
-	while (arg[i] && i < str_len)
-	{
-		if (arg[i] == '-')
-		{
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(arg, 2);
-			ft_putendl_fd("': not a valid identifier", 2);
-			shell->exit_code = 1;
-			return (0);
-		}
-		i++;
-	}
-	return (1);
-}
-
-int	is_remove_env(char *env_var, t_token *head)
+static int	is_remove_env(char *env_var, t_token *head)
 {
 	int		name_len;
 	t_token	*token;
@@ -60,7 +32,7 @@ int	is_remove_env(char *env_var, t_token *head)
 	return (0);
 }
 
-char	**copy_env_without_unset(char **env, t_token *head)
+static char	**copy_env_without_unset(char **env, t_token *head)
 {
 	int		i;
 	int		j;
