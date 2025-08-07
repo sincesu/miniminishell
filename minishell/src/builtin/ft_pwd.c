@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include "../../Libft/libft.h"
 #include "../../include/minishell.h"
+#include <signal.h>
 
 int	ft_pwd(t_shell *shell)
 {
@@ -33,10 +34,17 @@ int	ft_pwd(t_shell *shell)
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
-		perror("PWD: ERROR");
+		ft_perror("pwd", NULL, NULL);
 		return (0);
 	}
-	ft_putendl_fd(pwd, STDOUT_FILENO);
+	if (g_signal_received == SIGPIPE)
+	{
+		free(pwd);
+		g_signal_received = 0;
+		return (0);
+	}	
+	else
+		ft_putendl_fd(pwd, STDOUT_FILENO);
 	free(pwd);
 	return (0);
 }
