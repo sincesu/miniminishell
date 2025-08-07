@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/07 19:01:24 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/07 22:12:06 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,22 +91,22 @@ int			ft_cd(t_shell *shell, t_parser *parser);
 int			ft_pwd(t_shell *shell);
 int			ft_echo(char **args);
 void		ft_exit(t_shell *shell, t_parser *parsed);
-int			ft_unset(t_shell *shell);
+int			ft_unset(t_shell *shell, t_parser *parsed);
 
 //env
-int			ft_env(t_shell *shell);
+int			ft_env(t_shell *shell, t_parser *parsed);
 char		**copy_env(char **env);
 void		set_underscore_env(t_token *args, t_shell *shell);
 char		*find_in_env(char **env, char *name);
 int			find_in_env_index(char **env, char *name);
 
 //export
+int			ft_export(t_shell *shell, t_parser *parsed);
 int			is_valid_identifier(t_shell *shell, char *arg, int str_len);
 void		bubble_sort(char **arr);
 void		update_env_value(char **env, int idx, char *name, char *eq);
-int			ft_export(t_shell *shell);
 void		append_env_variable(t_shell *shell, char *content);
-int			handle_export_arg(t_shell *shell, char *arg);
+void		handle_export_arg(t_shell *shell, char *arg);
 
 //pattern.c
 int			is_whitespace(char c);

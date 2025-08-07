@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:16:57 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/07 18:56:39 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/07 22:54:55 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,25 @@
 #include "../../Libft/libft.h"
 #include <stdlib.h>
 
-static int	is_remove_env(char *env_var, t_token *head)
+static int	is_remove_env(char *env_var, char **str)
 {
 	int		name_len;
-	t_token	*token;
+	int		x;
 
+	x = 0;
 	name_len = 0;
-	token = head;
-	while (token)
+	while (str[x])
 	{
-		name_len = ft_strlen(token->content);
-		if (ft_strncmp(env_var, token->content, name_len) == 0
+		name_len = ft_strlen(str[x]);
+		if (ft_strncmp(env_var, str[x], name_len) == 0
 			&& env_var[name_len] == '=')
 			return (1);
-		token = token->next;
+		x++;
 	}
 	return (0);
 }
 
-static char	**copy_env_without_unset(char **env, t_token *head)
+static char	**copy_env_without_unset(char **env, char **str)
 {
 	int		i;
 	int		j;
@@ -48,7 +48,7 @@ static char	**copy_env_without_unset(char **env, t_token *head)
 	i = 0;
 	while (env && env[i])
 	{
-		if (!is_remove_env(env[i], head))
+		if (!is_remove_env(env[i], str))
 		{
 			new_env[j] = env[i];
 			j++;
@@ -59,14 +59,13 @@ static char	**copy_env_without_unset(char **env, t_token *head)
 	return (new_env);
 }
 
-int	ft_unset(t_shell *shell)
+int	ft_unset(t_shell *shell, t_parser *parsed)
 {
-	t_token	*head;
-	char	**new_env;
+	char		**new_env;
 
-	if (shell->args->next && shell->args->next->type == U_WORD)
+	if (parsed->args[1])
 	{
-		if (shell->args->next->content[0] == '-')
+		if (parsed->args[1][0] == '-')
 		{
 			ft_putstr_fd("minishell: unset: -", 2);
 			ft_putchar_fd(shell->args->next->content[1], 2);
@@ -74,11 +73,9 @@ int	ft_unset(t_shell *shell)
 			return (2);
 		}
 	}
-	head = shell->args;
-	if (!head || !head->next)
+	if (!parsed->args[0] || !parsed->args[1])
 		return (0);
-	head = head->next;
-	new_env = copy_env_without_unset(shell->env, head);
+	new_env = copy_env_without_unset(shell->env, parsed->args);
 	shell->env = new_env;
 	return (0);
 }

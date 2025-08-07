@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 20:51:22 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/06 21:00:36 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/07 22:54:32 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ int	ft_execute_builtin(t_shell *shell, t_parser *parser)
 	else if (ft_strncmp(parser->args[0], "pwd", 4) == 0)
 		return (ft_pwd(shell));
 	else if (ft_strncmp(parser->args[0], "export", 7) == 0)
-		return (ft_export(shell));
+		return (ft_export(shell, parser));
 	else if (ft_strncmp(parser->args[0], "unset", 6) == 0)
-		return (ft_unset(shell));
+		return (ft_unset(shell, parser));
 	else if (ft_strncmp(parser->args[0], "env", 4) == 0)
-		return (ft_env(shell));
+		return (ft_env(shell, parser));
 	else if (ft_strncmp(parser->args[0], "exit", 5) == 0)
 	{
 		if (parser->fd_in != STDIN_FILENO)

@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:05:46 by saincesu          #+#    #+#             */
-/*   Updated: 2025/07/29 20:34:11 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/07 19:28:15 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void	add_export_only_variable(t_shell *shell, char *content)
 		export_only_variable_append(shell, content);
 }
 
-int	handle_export_arg(t_shell *shell, char *arg)
+void	handle_export_arg(t_shell *shell, char *arg)
 {
 	char	*eq;
 	char	*name;
@@ -110,5 +110,4 @@ int	handle_export_arg(t_shell *shell, char *arg)
 	}
 	else
 		add_export_only_variable(shell, arg);
-	return (0);
 }

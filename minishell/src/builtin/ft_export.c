@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:13:03 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/06 20:59:57 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/07 22:55:42 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static int	check_export_arg(t_shell *shell, char *arg)
 {
 	int	i;
 	int	str_len;
+	int	x;
 
 	str_len = ft_strlen(arg);
 	i = 0;
@@ -30,8 +31,9 @@ static int	check_export_arg(t_shell *shell, char *arg)
 		}
 		i++;
 	}
-	if (!is_valid_identifier(shell, arg, str_len))
-		return (1);
+	x = is_valid_identifier(shell, arg, str_len);
+	if (x != 0)
+		return (x);
 	return (0);
 }
 
@@ -91,27 +93,28 @@ static void	export_list_printer(t_shell *shell)
 	print_sorted_list(combined);
 }
 
-int	ft_export(t_shell *shell)
+int	ft_export(t_shell *shell, t_parser *parsed)
 {
-	t_token	*token;
+	char	**str;
+	int		i;
+	int		x;
 
-	token = shell->args;
-	if (!token->next || (token->next
-			&& is_operator_token(token->next->content)))
+	i = 1;
+	str = parsed->args;
+	if (!str[1] || (str[1] && is_operator_token(str[1])))
 	{
 		export_list_printer(shell);
 		return (0);
 	}
-	token = token->next;
-	while (token)
+	while (str[i])
 	{
-		if (is_operator_token(token->content))
+		if (is_operator_token(str[i]))
 			break ;
-		if (check_export_arg(shell, token->content))
-			return (1);
-		if (handle_export_arg(shell, token->content))
-			return (1);
-		token = token->next;
+		x = check_export_arg(shell, str[i]);
+		if (x != 0)
+			return (x);
+		handle_export_arg(shell, str[i]);
+		i++;
 	}
 	return (0);
 }

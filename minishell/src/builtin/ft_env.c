@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:12:28 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/07 18:54:34 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/07 22:56:05 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,28 @@ int	is_valid_identifier(t_shell *shell, char *arg, int str_len)
 {
 	int	i;
 
-	if (!(ft_isalpha(arg[0]) || arg[0] == '_'))
+	if (!(ft_isalnum(arg[0]) || arg[0] == '_' || arg[0] == '='))
 	{
 		ft_putstr_fd("minishell: export: `", 2);
-		ft_putstr_fd(arg, 2);
-		ft_putendl_fd("': not a valid identifier", 2);
-		shell->exit_code = 1;
-		return (0);
+		ft_putchar_fd(arg[1], 2);
+		ft_putendl_fd("': invalid option", 2);
+		shell->exit_code = 2;
+		return (2);
 	}
 	i = 0;
-	while (arg[i] && i < str_len)
+	while ((arg[i] && i < str_len) || arg[0] == '=')
 	{
-		if (arg[i] == '-')
+		if (arg[i] == '-' || !ft_isalpha(arg[i]) || arg[0] == '=')
 		{
 			ft_putstr_fd("minishell: export: `", 2);
 			ft_putstr_fd(arg, 2);
 			ft_putendl_fd("': not a valid identifier", 2);
-			shell->exit_code = 2;
-			return (0);
+			shell->exit_code = 1;
+			return (1);
 		}
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 int	find_in_env_index(char **env, char *name)
@@ -92,23 +92,23 @@ void	append_env_variable(t_shell *shell, char *content)
 	shell->env = new_env;
 }
 
-int	ft_env(t_shell *shell)
+int	ft_env(t_shell *shell, t_parser *parsed)
 {
 	int	i;
 
-	if (shell->args->next)
+	if (parsed->args[1])
 	{
-		if (shell->args->next->content[0] == '-')
+		if (parsed->args[1][0] == '-')
 		{
 			ft_putstr_fd("minishell: env: invalid option -- \'", 2);
-			ft_putchar_fd(shell->args->next->content[1], 2);
+			ft_putchar_fd(parsed->args[1][1], 2);
 			ft_putendl_fd("\'", 2);
 			return (125);
 		}
 		else
 		{
 			ft_putstr_fd("minishell: env: \'", 2);
-			ft_putstr_fd(shell->args->next->content, 2);
+			ft_putstr_fd(parsed->args[1], 2);
 			ft_putendl_fd("\': invalid argument", 2);
 			return (127);
 		}
