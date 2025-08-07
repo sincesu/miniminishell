@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../Libft/libft.h"
+#include <signal.h>
 
 static int	ft_is_n_option(char *arg)
 {
@@ -50,6 +51,7 @@ int	ft_echo(char **args)
 	int	i;
 	int	n_option;
 
+	signal(SIGPIPE, SIG_IGN);
 	if (!args[1])
 	{
 		ft_putchar_fd('\n', 1);
