@@ -69,12 +69,26 @@ static char	*ft_get_target_path(t_shell *shell, t_parser *parsed)
 	return (parsed->args[1]);
 }
 
+static int	ft_error_cd(char *str)
+{
+	if (str[0] == '-' && str[1])
+	{
+		ft_putstr_fd("minishell: cd: -", 2);
+		ft_putchar_fd(str[1], 2);
+		ft_putendl_fd(": invalid option", 2);
+		return (1);
+	}
+	return (0);
+}
+
 int	ft_cd(t_shell *shell, t_parser *parsed)
 {
 	char	*target;
 	char	*cwd;
 	char	*new_cwd;
 
+	if (ft_error_cd(shell->args->next->content))
+		return (2);
 	target = ft_get_target_path(shell, parsed);
 	if (!target)
 		return (1);
