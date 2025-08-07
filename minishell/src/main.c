@@ -15,6 +15,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdlib.h>
+#include <signal.h>
 
 static void	ft_get_shell_input(t_shell *shell)
 {
@@ -66,6 +67,8 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		ft_get_shell_input(&shell);
+		if (g_signal_received == SIGINT)
+			shell.exit_code = 130;
 		ft_process_shell_input(&shell);
 	}
 	safe_abort(0);
