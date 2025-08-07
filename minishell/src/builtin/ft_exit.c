@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:53:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/06 20:59:31 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/07 14:21:42 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,7 @@ static long long	ft_exit_atoll(char *str, char *original)
 		if (result > LLONG_MAX / 10
 			|| (result == LLONG_MAX / 10 && (*str - '0') > LLONG_MAX % 10))
 		{
-			ft_putstr_fd("minishell: exit: ", 2);
-			ft_putstr_fd(original, 2);
-			ft_putendl_fd(": numeric argument required", 2);
+			ft_perror("exit", original, "numeric argument required");
 			safe_abort(2);
 		}
 		result = result * 10 + (*str++ - '0');
@@ -68,54 +66,36 @@ static long long	ft_exit_atoll(char *str, char *original)
 	return (result * sign);
 }
 
-int	operator_control(t_token *args)
+static void	exit_checks(t_shell *shell, t_parser *parsed)
 {
-	int		flag;
-	t_token	*tmp;
-
-	flag = 0;
-	tmp = args;
-	while (tmp)
+	if (parsed->args[1] == NULL)
 	{
-		if (is_operator(tmp->content[0]))
-			flag = 1;
-		tmp = tmp->next;
-	}
-	return (flag);
-}
-
-static int	exit_checks(t_shell *shell, t_parser *parsed)
-{
-	if (shell->args == NULL || shell->args->next == NULL)
-	{
-		ft_putendl_fd("exit", 2);
+		if (parsed->prev == NULL && parsed->next == NULL)
+			ft_putendl_fd("exit", 2);
 		safe_abort(shell->exit_code);
-		return (1);
 	}
-	if (is_operator(parsed->args[1][0]))
-		return (1);
-	if (!operator_control(shell->args))
+	if (parsed->args[1] && is_operator(parsed->args[1][0]))
+		safe_abort(shell->exit_code);
+	if (parsed->prev == NULL && parsed->next == NULL)
 		ft_putendl_fd("exit", 2);
-	if (ft_check_param(parsed->args[1]))
+	if (parsed->args[1] && ft_check_param(parsed->args[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(shell->args->next->content, 2);
-		ft_putendl_fd(": numeric argument required", 2);
+		ft_putendl_fd(": mert argument required", 2);
 		safe_abort(2);
 	}
-	if (parsed->args[2])
-	{
-		ft_putendl_fd("minishell: exit: too many arguments", 2);
-		shell->exit_code = 1;
-		return (1);
-	}
-	return (0);
 }
 
 void	ft_exit(t_shell *shell, t_parser *parsed)
 {
-	if (exit_checks(shell, parsed))
-		safe_abort(shell->exit_code);
+	exit_checks(shell, parsed);
+	if (parsed->args[2])
+	{
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
+		shell->exit_code = 1;
+		return ;
+	}
 	shell->exit_code = ft_exit_atoll(parsed->args[1],
 			parsed->args[1]);
 	safe_abort(shell->exit_code);
