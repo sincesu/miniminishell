@@ -80,9 +80,8 @@ static void	exit_checks(t_shell *shell, t_parser *parsed)
 		ft_putendl_fd("exit", 2);
 	if (parsed->args[1] && ft_check_param(parsed->args[1]))
 	{
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(shell->args->next->content, 2);
-		ft_putendl_fd(": mert argument required", 2);
+		ft_perror("exit", shell->args->next->content,
+			"numeric argument required");
 		safe_abort(2);
 	}
 }
@@ -92,7 +91,7 @@ void	ft_exit(t_shell *shell, t_parser *parsed)
 	exit_checks(shell, parsed);
 	if (parsed->args[2])
 	{
-		ft_putendl_fd("minishell: exit: too many arguments", 2);
+		ft_perror("exit", NULL, "too many arguments");
 		shell->exit_code = 1;
 		return ;
 	}
