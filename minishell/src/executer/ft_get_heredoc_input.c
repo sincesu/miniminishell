@@ -49,7 +49,6 @@ static char	*ft_process_line(t_shell *shell, char *result, char *line, int flag)
 static char	*ft_handle_signal_interrupt(char *line)
 {
 	free(line);
-	ft_init_signals(PROMPT);
 	return (NULL);
 }
 

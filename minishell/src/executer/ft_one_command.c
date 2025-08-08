@@ -44,10 +44,6 @@ int	ft_one_command(t_shell *shell, t_parser *parsed)
 {
 	int			exit_code;
 
-	parsed->fd_in = -1;
-	parsed->fd_out = -1;
-	if (!parsed->args || !parsed->args[0])
-		return (0);
 	if (ft_handle_redirections(parsed) == -1)
 		return (1);
 	if (ft_is_builtin(parsed->args[0]))

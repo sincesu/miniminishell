@@ -22,10 +22,7 @@ static void	ft_execute_pipeline_command(t_shell *shell, t_parser *parsed,
 	cmd_count = ft_count_commands(parsed);
 	init_command_redirections(parsed, pipes, cmd_count);
 	ft_close_all_pipes(pipes, cmd_count - 1);
-	if (parsed->fd_in != STDIN_FILENO)
-		close(parsed->fd_in);
-	if (parsed->fd_out != STDOUT_FILENO)
-		close(parsed->fd_out);
+	ft_safe_close_fds(parsed);
 	if (ft_is_builtin(parsed->args[0]))
 		safe_abort(ft_execute_builtin(shell, parsed));
 	else
@@ -113,11 +110,9 @@ int	ft_multi_command(t_shell *shell, t_parser *parsed)
 	cmd_count = ft_count_commands(parsed);
 	pids = ft_alloc(sizeof(pid_t) * cmd_count);
 	pipes = ft_alloc(sizeof(int *) * (cmd_count - 1));
-	i = 0;
-	if (cmd_count <= 0)
-		return (1);
 	if (ft_create_pipes(pipes, cmd_count - 1))
 		return (1);
+	i = 0;
 	while (i < cmd_count)
 	{
 		pids[i] = fork();

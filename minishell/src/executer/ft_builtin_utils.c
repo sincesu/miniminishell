@@ -43,10 +43,7 @@ int	ft_execute_builtin(t_shell *shell, t_parser *parser)
 		return (ft_env(shell, parser));
 	else if (ft_strncmp(parser->args[0], "exit", 5) == 0)
 	{
-		if (parser->fd_in != STDIN_FILENO)
-			close(parser->fd_in);
-		if (parser->fd_out != STDOUT_FILENO)
-			close(parser->fd_out);
+		ft_safe_close_fds(parser);
 		ft_exit(shell, parser);
 	}
 	return (1);

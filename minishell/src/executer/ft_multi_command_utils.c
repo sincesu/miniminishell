@@ -35,10 +35,7 @@ void	init_command_redirections(t_parser *parsed, int **pipes,
 			parsed->redirect_count, 0) == -1)
 	{
 		ft_close_all_pipes(pipes, cmd_count - 1);
-		if (parsed->fd_in != STDIN_FILENO)
-			close(parsed->fd_in);
-		if (parsed->fd_out != STDOUT_FILENO)
-			close(parsed->fd_out);
+		ft_safe_close_fds(parsed);
 		safe_abort(1);
 	}
 }
@@ -66,7 +63,7 @@ int	ft_create_pipes(int **pipes, int count)
 		pipes[i] = ft_alloc(sizeof(int) * 2);
 		if (pipe(pipes[i]) == -1)
 		{
-			perror("pipe");
+			ft_perror("pipe", NULL, NULL);
 			return (1);
 		}
 		i++;
@@ -85,4 +82,12 @@ void	ft_close_all_pipes(int **pipes, int count)
 		close(pipes[i][1]);
 		i++;
 	}
+}
+
+void	ft_safe_close_fds(t_parser *parsed)
+{
+	if (parsed->fd_in != STDIN_FILENO)
+		close(parsed->fd_in);
+	if (parsed->fd_out != STDOUT_FILENO)
+		close(parsed->fd_out);
 }

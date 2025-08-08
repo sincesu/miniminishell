@@ -21,7 +21,7 @@ void	ft_execute_external_command(char *path, t_parser *parsed,
 {
 	check_command_errors(path, parsed);
 	execve(path, parsed->args, env);
-	perror("execve");
+	ft_perror(path, NULL, NULL);
 	safe_abort(126);
 }
 
@@ -51,8 +51,6 @@ char	*ft_search_command_path(char *command)
 	char	*full_path;
 	int		i;
 
-	if (!command[0])
-		return (NULL);
 	if (ft_is_direct_path(command))
 		return (ft_strdup(command));
 	path_env = getenv("PATH");

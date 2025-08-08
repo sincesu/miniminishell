@@ -22,12 +22,13 @@ static int	ft_process_single_heredoc(t_shell *shell, t_redirect *redir)
 	flag = 0;
 	if (redir->flags == S_WORD || redir->flags == D_WORD)
 		flag = 1;
-	if (redir->type == R_HERE && !redir->document)
+	if (redir->type == R_HERE) //&& !redir->document)
 	{
 		heredoc_content = ft_get_heredoc_input(redir->file_name, shell, flag);
 		if (heredoc_content == NULL && g_signal_received == SIGINT)
 		{
 			shell->exit_code = 130;
+			ft_init_signals(PROMPT);
 			return (1);
 		}
 		redir->document = heredoc_content;

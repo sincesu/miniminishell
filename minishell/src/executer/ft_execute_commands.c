@@ -11,24 +11,11 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static int	ft_is_multi_command(t_shell shell)
-{
-	t_token	*token;
-
-	token = shell.args;
-	while (token)
-	{
-		if (token->type == PIPE)
-			return (1);
-		token = token->next;
-	}
-	return (0);
-}
+#include <stddef.h>
 
 void	ft_execute_commands(t_shell *shell, t_parser *parsed)
 {
-	if (ft_is_multi_command(*shell))
+	if (parsed->next != NULL)
 		shell->exit_code = ft_multi_command(shell, parsed);
 	else
 		shell->exit_code = ft_one_command(shell, parsed);

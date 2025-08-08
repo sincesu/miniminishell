@@ -57,7 +57,7 @@ static int	ft_apply_heredoc_redirection(t_redirect *redir)
 
 	if (pipe(pipefd) == -1)
 	{
-		ft_perror("pipe", NULL, "function error");
+		ft_perror("pipe", NULL, NULL);
 		return (-1);
 	}
 	if (redir->document)

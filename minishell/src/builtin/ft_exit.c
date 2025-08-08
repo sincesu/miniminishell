@@ -43,7 +43,7 @@ static long long	ft_exit_atoll(char *str, char *original)
 
 	result = 0;
 	sign = 1;
-	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
+	while (*str == ' ')
 		str++;
 	if (*str == '-' || *str == '+')
 	{
