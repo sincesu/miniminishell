@@ -83,7 +83,7 @@ static int	set_flag_and_token(const char *s, char **res, int *flags)
 
 	len = get_token_len(s);
 	if (len <= 0)
-		return (-1);
+		return (0);
 	*res = ft_alloc(len + 1);
 	ft_strlcpy(*res, s, len + 1);
 	lookahead = len;
