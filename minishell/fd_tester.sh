@@ -7,7 +7,7 @@ OUTFILE="fd_tester_output.txt"
 echo -e "\e[1;32m🔥 FD TESTER STARTED 🔥\e[0m"
 echo "==== FD TEST RESULTS ====" > "$OUTFILE"
 
-run_case() {
+function run_case() {
 	echo -e "\n\e[1;36m[CASE]: $1\e[0m"
 	echo -e "\n==== TEST CASE ====\n$1" >> "$OUTFILE"
 	echo "$1" | $VALGRIND $MINISHELL >> "$OUTFILE" 2>&1
