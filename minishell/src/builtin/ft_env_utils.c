@@ -115,6 +115,6 @@ char	**copy_env(char **env)
 		i++;
 	}
 	copy_env[env_len] = NULL;
-	update_shell_lvl(copy_env);
+	copy_env = update_shell_lvl(copy_env);
 	return (copy_env);
 }

@@ -13,6 +13,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <sys/types.h>
+
 typedef enum e_token_type
 {
 	R_OUT = 1,
@@ -178,5 +180,7 @@ int			ft_create_pipes(int **pipes, int count);
 void		ft_close_all_pipes(int **pipes, int count);
 void		ft_perror(char *pname, char *target, char *err);
 void		ft_safe_close_fds(t_parser *parsed);
+int			ft_cleanup_failed_fork(pid_t *pids, int created_count,
+				int **pipes, int pipe_count);
 
 #endif

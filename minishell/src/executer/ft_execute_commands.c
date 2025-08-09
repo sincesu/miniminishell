@@ -11,7 +11,15 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stddef.h>
+#include <unistd.h>
+
+void	ft_safe_close_fds(t_parser *parsed)
+{
+	if (parsed->fd_in != STDIN_FILENO)
+		close(parsed->fd_in);
+	if (parsed->fd_out != STDOUT_FILENO)
+		close(parsed->fd_out);
+}
 
 void	ft_execute_commands(t_shell *shell, t_parser *parsed)
 {

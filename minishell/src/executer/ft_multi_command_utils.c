@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <sys/wait.h>
 #include <unistd.h>
 #include <stdio.h>
 
@@ -84,10 +85,19 @@ void	ft_close_all_pipes(int **pipes, int count)
 	}
 }
 
-void	ft_safe_close_fds(t_parser *parsed)
+int	ft_cleanup_failed_fork(pid_t *pids, int created_count,
+	int **pipes, int pipe_count)
 {
-	if (parsed->fd_in != STDIN_FILENO)
-		close(parsed->fd_in);
-	if (parsed->fd_out != STDOUT_FILENO)
-		close(parsed->fd_out);
+	int	j;
+
+	j = 0;
+	ft_close_all_pipes(pipes, pipe_count);
+	while (j < created_count)
+	{
+		if (pids[j] > 0)
+			waitpid(pids[j], NULL, 0);
+		j++;
+	}
+	ft_init_signals(PROMPT);
+	return (1);
 }

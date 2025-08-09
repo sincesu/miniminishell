@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 20:53:23 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/06 21:13:48 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/09 01:51:33 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,8 @@ int	ft_multi_command(t_shell *shell, t_parser *parsed)
 	{
 		pids[i] = fork();
 		if (pids[i] == -1)
-			return (1);
+			return (ft_cleanup_failed_fork(pids, i,
+					pipes, cmd_count - 1));
 		if (pids[i] == 0)
 			ft_child_process(shell, parsed, pipes, i);
 		i++;
