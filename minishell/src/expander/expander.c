@@ -40,7 +40,7 @@ static char	*expand(char *input, t_shell *shell, int flag)
 	return (input);
 }
 
-static char	*remove_outer_quote_all(char *s)
+static char	*remove_all_quotes(char *s)
 {
 	int		i;
 	int		j;
@@ -107,7 +107,7 @@ void	expander(t_shell *shell)
 	args = shell->args;
 	while (args)
 	{
-		args->content = remove_outer_quote_all(args->content);
+		args->content = remove_all_quotes(args->content);
 		if (args->type != S_WORD)
 			args->content = expand(args->content, shell, x);
 		x = args->type;
