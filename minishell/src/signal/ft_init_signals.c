@@ -16,7 +16,7 @@
 
 int	g_signal_received = 0;
 
-static int	ft_dummy_event_hook(void)
+static int	ft_event_hook(void)
 {
 	return (0);
 }
@@ -38,7 +38,7 @@ void	ft_init_signals(t_signal_type context_type)
 	}
 	else if (context_type == HEREDOC)
 	{
-		rl_event_hook = ft_dummy_event_hook;
+		rl_event_hook = ft_event_hook;
 		signal(SIGINT, ft_heredoc_handler);
 		signal(SIGQUIT, SIG_IGN);
 	}
