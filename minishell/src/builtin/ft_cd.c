@@ -86,7 +86,7 @@ int	ft_cd(t_shell *shell, t_parser *parsed)
 	char	*cwd;
 	char	*new_cwd;
 
-	if (ft_error_cd(shell->args->next->content))
+	if (shell->args->next && ft_error_cd(shell->args->next->content))
 		return (2);
 	target = ft_get_target_path(shell, parsed);
 	if (!target)
