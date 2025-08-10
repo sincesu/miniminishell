@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:16:57 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/07 22:54:55 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:33:13 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ static int	is_remove_env(char *env_var, char **str)
 
 	x = 0;
 	name_len = 0;
+	while (env_var[name_len] && env_var[name_len] != '=')
+		name_len++;
 	while (str[x])
 	{
-		name_len = ft_strlen(str[x]);
-		if (ft_strncmp(env_var, str[x], name_len) == 0
-			&& env_var[name_len] == '=')
+		if (((int)ft_strlen(str[x]) == name_len)
+			&& ft_strncmp(env_var, str[x], name_len) == 0)
 			return (1);
 		x++;
 	}
@@ -60,8 +61,6 @@ static char	**copy_env_without_unset(char **env, char **str)
 
 int	ft_unset(t_shell *shell, t_parser *parsed)
 {
-	char		**new_env;
-
 	if (parsed->args[1])
 	{
 		if (parsed->args[1][0] == '-')
@@ -74,7 +73,8 @@ int	ft_unset(t_shell *shell, t_parser *parsed)
 	}
 	if (!parsed->args[0] || !parsed->args[1])
 		return (0);
-	new_env = copy_env_without_unset(shell->env, parsed->args);
-	shell->env = new_env;
+	shell->env = copy_env_without_unset(shell->env, parsed->args);
+	shell->export_only_list = copy_env_without_unset
+		(shell->export_only_list, parsed->args);
 	return (0);
 }
