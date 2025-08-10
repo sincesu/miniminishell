@@ -1,58 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_split.c                                      :+:      :+:    :+:   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 01:18:00 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/06 21:02:41 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 21:09:52 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Libft/libft.h"
 #include "../../include/minishell.h"
 
-static int	get_quoted_len(const char *s)
+static int	get_token_len(const char *s)
 {
 	int		i;
+	int		op_len;
 	char	quote;
 
-	quote = s[0];
-	i = 1;
-	while (s[i] && s[i] != quote)
+	op_len = is_operator_token(s);
+	if (op_len)
+		return (op_len);
+	i = 0;
+	if (is_quote(s[0]))
+	{
+		quote = s[0];
 		i++;
-	if (s[i] == quote)
+		while (s[i] && s[i] != quote)
+			i++;
+		if (s[i] == quote)
+			i++;
+		return (i);
+	}
+	while (s[i] && !is_quote(s[i]) && s[i] != ' ' && !is_operator(s[i]))
 		i++;
 	return (i);
 }
 
-static int	get_token_len(const char *s)
+static char	*token_collect(const char *s, int *word_len)
 {
-	int		i;
-	char	quote;
+	int		len;
+	char	*tmp;
 
-	if (is_operator_token(s))
-		return (is_operator_token(s));
-	if (is_quote(s[0]))
-		return (get_quoted_len(s));
-	i = 0;
-	while (s[i])
-	{
-		if (is_quote(s[i]))
-		{
-			quote = s[i++];
-			while (s[i] && s[i] != quote)
-				i++;
-			if (s[i] == quote)
-				i++;
-		}
-		else if (is_whitespace(s[i]) || is_operator(s[i]))
-			break ;
-		else
-			i++;
-	}
-	return (i);
+	len = get_token_len(s);
+	tmp = ft_alloc(len + 1);
+	ft_strlcpy(tmp, s, len + 1);
+	*word_len = len;
+	return (tmp);
 }
 
 int	count_tokens(const char *s)
@@ -69,37 +64,20 @@ int	count_tokens(const char *s)
 			i++;
 		if (!s[i])
 			break ;
-		word_len = get_token_len(&s[i]);
+		word_len = 0;
+		token_collect(&s[i], &word_len);
 		count++;
 		i += word_len;
 	}
 	return (count);
 }
 
-static int	set_flag_and_token(const char *s, char **res, int *flags)
-{
-	int	len;
-	int	lookahead;
-
-	len = get_token_len(s);
-	if (len <= 0)
-		return (0);
-	*res = ft_alloc(len + 1);
-	ft_strlcpy(*res, s, len + 1);
-	lookahead = len;
-	if (is_operator_token(*res))
-		*flags = 0;
-	else
-		*flags = (s[lookahead] && s[lookahead] != ' '
-				&& !is_operator(s[lookahead]));
-	return (len);
-}
-
-void	fill_tokens_and_flags(const char *s, char **res, int *flags)
+void	fill_tokens_and_flags(const char *s, char **result, int *flag_array)
 {
 	int	i;
 	int	k;
-	int	len;
+	int	word_len;
+	int	lookahead;
 
 	i = 0;
 	k = 0;
@@ -109,11 +87,27 @@ void	fill_tokens_and_flags(const char *s, char **res, int *flags)
 			i++;
 		if (!s[i])
 			break ;
-		len = set_flag_and_token(&s[i], &res[k], &flags[k]);
-		if (len == 0)
-			break ;
-		i += len;
+		word_len = 0;
+		result[k] = token_collect(&s[i], &word_len);
+		lookahead = i + word_len;
+		flag_array[k] = (lookahead < (int)ft_strlen(s) && s[lookahead] != ' '
+				&& (!is_operator(s[lookahead])));
+		if (is_operator(s[lookahead - 1]) && !is_operator(s[lookahead]))
+			flag_array[k] = 0;
+		i += word_len;
 		k++;
 	}
-	res[k] = NULL;
+	result[k] = (NULL);
+}
+
+char	**lexer_split(const char *s, int **flag_array)
+{
+	int		count;
+	char	**result;
+
+	count = count_tokens(s);
+	result = ft_alloc(sizeof(char *) * (count + 1));
+	*flag_array = ft_alloc(sizeof(int) * count);
+	fill_tokens_and_flags(s, result, *flag_array);
+	return (result);
 }
