@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:53:19 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/01 19:23:23 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 21:38:19 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ static char	*ft_resolve_home_path(t_shell *shell, char *path)
 		return (NULL);
 	}
 	result = ft_strjoin(home, path + 1);
-	if (!result)
-		return (NULL);
 	return (result);
 }
 
