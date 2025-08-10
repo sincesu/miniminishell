@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/07 22:12:06 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:35:51 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,9 +144,6 @@ int			red_len_counter(t_token *token);
 //listeler
 t_token		*ft_lstnew_token(t_token token);
 void		ft_lstadd_back_token(t_token **lst, t_token *new_node);
-void		ft_lstclear_token(t_token **lst, void (*del)(void *));
-void		ft_lstdelone_token(t_token *lst, void (*del)(void *));
-int			ft_lstsize_token(t_token *lst);
 t_token		*ft_lstlast_token(t_token *lst);
 
 //signal kısmı
