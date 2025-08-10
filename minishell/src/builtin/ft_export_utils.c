@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:05:46 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/07 19:28:15 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 21:04:59 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	handle_export_arg(t_shell *shell, char *arg)
 		len = eq - arg;
 		name = ft_alloc(len + 1);
 		ft_strlcpy(name, arg, len + 1);
+		remove_export_only_variable(shell, name);
 		idx = find_in_env_index(shell->env, name);
 		if (idx != -1)
 			update_env_value(shell->env, idx, name, eq);
