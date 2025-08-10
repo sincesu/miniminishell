@@ -12,7 +12,6 @@
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
-#include <unistd.h>
 
 int	ft_is_builtin(char *cmd)
 {

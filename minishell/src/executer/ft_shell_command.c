@@ -12,7 +12,6 @@
 
 #include "../../include/minishell.h"
 #include "../../Libft/libft.h"
-#include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/stat.h>

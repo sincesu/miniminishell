@@ -69,7 +69,7 @@ void	register_alloc_mem(void *ptr)
 	}
 }
 
-void	*ft_alloc(unsigned long size)
+void	*ft_alloc(size_t size)
 {
 	void	*ptr;
 

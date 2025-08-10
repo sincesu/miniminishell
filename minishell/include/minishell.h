@@ -129,7 +129,7 @@ t_mem_list	**get_head_mem(void);
 void		ft_free(void);
 void		safe_abort(int exit_code);
 void		register_alloc_mem(void *ptr);
-void		*ft_alloc(unsigned long size);
+void		*ft_alloc(size_t size);
 
 //merger
 void		merger(t_token *args);

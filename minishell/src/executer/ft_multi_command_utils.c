@@ -13,7 +13,6 @@
 #include "../../include/minishell.h"
 #include <sys/wait.h>
 #include <unistd.h>
-#include <stdio.h>
 
 void	init_command_redirections(t_parser *parsed, int **pipes,
 		int cmd_count)
