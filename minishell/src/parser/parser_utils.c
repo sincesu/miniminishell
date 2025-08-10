@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 14:30:08 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/05 13:58:58 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 20:48:22 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,4 @@ int	arg_len_counter(t_token *token)
 		token = token->next;
 	}
 	return (arg_len_count);
-}
-
-t_parser	*new_node(t_parser current)
-{
-	t_parser	*new_node;
-
-	new_node = ft_alloc(sizeof(t_parser));
-	*new_node = current;
-	return (new_node);
 }

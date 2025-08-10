@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 16:31:49 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/07 18:59:48 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 21:05:44 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,22 @@
 
 static t_parser	*ft_init_parser(t_parser *prev, t_token *token)
 {
-	t_parser	current;
+	t_parser	*current;
 	int			red_len_count;
 	int			arg_len_count;
 
 	red_len_count = red_len_counter(token);
 	arg_len_count = arg_len_counter(token);
-	current = (t_parser){
-		.args = ft_alloc(sizeof(char *) * (arg_len_count + 1)),
-		.redirect = ft_alloc(sizeof(t_redirect) * (red_len_count + 1)),
-		.redirect_count = red_len_count,
-		.fd_in = 0,
-		.fd_out = 1,
-		.prev = prev,
-		.next = NULL,
-	};
-	current.args[arg_len_count] = NULL;
-	return (new_node(current));
+	current = ft_alloc(sizeof(t_parser));
+	current->args = ft_alloc(sizeof(char *) * (arg_len_count + 1));
+	current->redirect = ft_alloc(sizeof(t_redirect) * (red_len_count + 1));
+	current->redirect_count = red_len_count;
+	current->fd_in = 0;
+	current->fd_out = 1;
+	current->prev = prev;
+	current->next = NULL;
+	current->args[arg_len_count] = NULL;
+	return (current);
 }
 
 static void	ft_addback_node(t_parser **head_node, t_parser *current)
@@ -56,10 +55,6 @@ static void	ft_addback_node(t_parser **head_node, t_parser *current)
 static void	set_redirect(t_token **token, t_redirect *redirect)
 {
 	redirect->type = (*token)->type;
-	if (redirect->type == R_HERE)
-		redirect->flags = 1;
-	else
-		redirect->flags = 0;
 	if ((*token)->next)
 	{
 		*token = (*token)->next;

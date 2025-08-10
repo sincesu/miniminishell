@@ -67,21 +67,22 @@ t_token	*lexer(char *input)
 	int		i;
 	char	**str;
 	int		*flag_array;
-	int		tmp_token;
 	t_token	*head_list;
+	t_token	tmp;
 
 	i = 0;
 	head_list = NULL;
 	flag_array = NULL;
+	tmp.next = NULL;
 	str = lexer_split(input, &flag_array);
 	if (!str)
 		return (NULL);
 	while (str[i])
 	{
-		tmp_token = tokenize(str[i]);
-		ft_lstadd_back_token(&head_list, ft_lstnew_token((t_token){
-				.content = ft_strdup(str[i]), .type = tmp_token,
-				.flag = flag_array[i], .next = NULL}));
+		tmp.type = tokenize(str[i]);
+		tmp.content = ft_strdup(str[i]);
+		tmp.flag = flag_array[i];
+		ft_lstadd_back_token(&head_list, ft_lstnew_token(tmp));
 		i++;
 	}
 	return (head_list);
