@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 20:35:09 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/07 18:52:50 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 21:02:06 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	ft_process_shell_input(t_shell *shell)
 		return ;
 	expander(shell);
 	merger(shell->args);
-	set_underscore_env(shell->args, shell);
 	parsed = parser(shell->args);
 	if (!shell->args)
 		return ;

@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 10:28:39 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/07 18:55:16 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 21:06:47 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,44 +59,6 @@ static char	**update_shell_lvl(char **env)
 	return (env);
 }
 
-static void	underscore_value_changer(t_shell *shell, t_token *prev)
-{
-	int	i;
-
-	i = 0;
-	while (shell->env[i])
-	{
-		if (shell->env[i][0] == '_' && shell->env[i][1] == '=')
-		{
-			if (!ft_strncmp(prev->content, "env", 3))
-				shell->env[i] = ft_strdup("_=usr/bin/env");
-			else
-				shell->env[i] = ft_strjoin("_=", prev->content);
-		}
-		i++;
-	}
-}
-
-void	set_underscore_env(t_token *args, t_shell *shell)
-{
-	t_token	*token;
-	t_token	*prev;
-
-	token = args;
-	prev = NULL;
-	while (token)
-	{
-		if (token->type == PIPE || (is_redirection_type(token->type)
-				&& (!token->next->next || !token->next->next->content)))
-			return ;
-		prev = token;
-		token = token->next;
-	}
-	if (!prev || !prev->content)
-		return ;
-	underscore_value_changer(shell, prev);
-}
-
 char	**copy_env(char **env)
 {
 	int		i;
@@ -117,4 +79,28 @@ char	**copy_env(char **env)
 	copy_env[env_len] = NULL;
 	copy_env = update_shell_lvl(copy_env);
 	return (copy_env);
+}
+
+void	remove_export_only_variable(t_shell *shell, const char *name)
+{
+	int		i;
+	int		cnt;
+	int		keep;
+	char	**new_list;
+
+	cnt = 0;
+	while (shell->export_only_list && shell->export_only_list[cnt])
+		cnt++;
+	new_list = ft_alloc(sizeof(char *) * (cnt + 1));
+	keep = 0;
+	i = 0;
+	while (shell->export_only_list && shell->export_only_list[i])
+	{
+		if (ft_strncmp(shell->export_only_list[i], name,
+				ft_strlen(name) + 1) != 0)
+			new_list[keep++] = shell->export_only_list[i];
+		i++;
+	}
+	new_list[keep] = NULL;
+	shell->export_only_list = new_list;
 }

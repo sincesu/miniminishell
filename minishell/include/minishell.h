@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/10 15:35:51 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 21:06:59 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct s_token
 	char			*content;
 	int				type;
 	int				flag;
-	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
 
@@ -98,7 +97,6 @@ int			ft_unset(t_shell *shell, t_parser *parsed);
 //env
 int			ft_env(t_shell *shell, t_parser *parsed);
 char		**copy_env(char **env);
-void		set_underscore_env(t_token *args, t_shell *shell);
 char		*find_in_env(char **env, char *name);
 int			find_in_env_index(char **env, char *name);
 
@@ -109,6 +107,7 @@ void		bubble_sort(char **arr);
 void		update_env_value(char **env, int idx, char *name, char *eq);
 void		append_env_variable(t_shell *shell, char *content);
 void		handle_export_arg(t_shell *shell, char *arg);
+void		remove_export_only_variable(t_shell *shell, const char *name);
 
 //pattern.c
 int			is_whitespace(char c);
@@ -137,7 +136,6 @@ void		merger(t_token *args);
 
 //parser
 t_parser	*parser(t_token	*token);
-t_parser	*new_node(t_parser current);
 int			arg_len_counter(t_token *token);
 int			red_len_counter(t_token *token);
 
