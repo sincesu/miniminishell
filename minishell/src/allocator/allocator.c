@@ -15,14 +15,14 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 
-t_mem_list	**get_head_mem(void)
+static t_mem_list	**get_head_mem(void)
 {
 	static t_mem_list	*head_list = NULL;
 
 	return (&head_list);
 }
 
-void	ft_free(void)
+static void	ft_free(void)
 {
 	t_mem_list	**head_mem;
 	t_mem_list	*cur_mem;
@@ -46,7 +46,7 @@ void	safe_abort(int exit_code)
 	exit(exit_code);
 }
 
-void	register_alloc_mem(void *ptr)
+static void	register_alloc_mem(void *ptr)
 {
 	t_mem_list	*mem;
 	t_mem_list	**head_mem;

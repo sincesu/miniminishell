@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 01:18:00 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/10 21:09:52 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 23:58:13 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,16 +98,4 @@ void	fill_tokens_and_flags(const char *s, char **result, int *flag_array)
 		k++;
 	}
 	result[k] = (NULL);
-}
-
-char	**lexer_split(const char *s, int **flag_array)
-{
-	int		count;
-	char	**result;
-
-	count = count_tokens(s);
-	result = ft_alloc(sizeof(char *) * (count + 1));
-	*flag_array = ft_alloc(sizeof(int) * count);
-	fill_tokens_and_flags(s, result, *flag_array);
-	return (result);
 }

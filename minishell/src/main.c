@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 20:35:09 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/10 21:02:06 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 23:59:35 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	ft_get_shell_input(t_shell *shell)
 	free(shell->old_input);
 }
 
-void	ft_process_shell_input(t_shell *shell)
+static void	ft_process_shell_input(t_shell *shell)
 {
 	t_parser	*parsed;
 

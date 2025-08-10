@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:16:40 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/01 19:14:20 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 23:55:58 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <signal.h>
 
-char	*ft_line_func(t_shell *shell, char *result, char *line)
+static char	*ft_line_func(t_shell *shell, char *result, char *line)
 {
 	char	*expanded;
 

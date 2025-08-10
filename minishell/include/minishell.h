@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:24 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/10 21:06:59 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 23:53:37 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,10 +125,7 @@ t_token		*lexer(char *input);
 int			count_tokens(const char *s);
 void		fill_tokens_and_flags(const char *s, char **res, int *flags);
 
-t_mem_list	**get_head_mem(void);
-void		ft_free(void);
 void		safe_abort(int exit_code);
-void		register_alloc_mem(void *ptr);
 void		*ft_alloc(size_t size);
 
 //merger

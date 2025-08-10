@@ -6,7 +6,7 @@
 /*   By: saincesu <saincesu@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:17:11 by saincesu          #+#    #+#             */
-/*   Updated: 2025/08/06 21:14:05 by saincesu         ###   ########.fr       */
+/*   Updated: 2025/08/10 23:57:20 by saincesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int	ft_wait_child_process(pid_t pid)
 	return (1);
 }
 
-char	*ft_get_basename(char *path)
+static char	*ft_get_basename(char *path)
 {
 	char	*last_slash;
 
